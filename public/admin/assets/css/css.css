@@ -446,3 +446,16 @@ form select {
     cursor: pointer;
 
 }
+
+.btn.btn-submit{
+    color: #012970;
+    padding: 8px 16px;
+    border-radius: 5px;
+    border: 1px solid #4154f1;
+    
+}
+
+.btn.btn-submit:hover{
+    background: #4154f1;
+    color: #fff;
+}
