@@ -14,7 +14,7 @@
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> -->
     <!-- CDN FONT-AWESOME -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="//cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    {{-- <link rel="stylesheet" href="//cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css"> --}}
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
     <!-- Favicons -->
@@ -40,7 +40,18 @@
     <link href="{{ asset('./admin/assets/css/style.css') }}" rel="stylesheet">
 
 
-
+    <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"
+  />
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css"
+    rel="stylesheet"
+  />
 
 
 
@@ -51,6 +62,7 @@
 <body>
 
     @include('admin.layouts.aside')
+    @include('admin.component.header_bar')
     @include('admin.layouts.articles')
 
 </body>
@@ -290,7 +302,7 @@
     }
 </script>
 
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+// <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
@@ -303,7 +315,8 @@
 <script src="{{asset('admin/assets/vendor/simple-datatables/simple-datatables.js')}}"></script>
 <script src="{{asset('admin/assets/vendor/tinymce/tinymce.min.js')}}"></script>
 <script src="{{asset('admin/assets/vendor/php-email-form/validate.js')}}"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
 <!-- Template Main JS File -->
 <script src="{{asset('admin/assets/js/main.js')}}"></script>
 

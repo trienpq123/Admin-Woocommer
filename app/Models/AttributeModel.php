@@ -11,13 +11,18 @@ class AttributeModel extends Model
     protected $table = 'attribute';
     protected $primaryKey = 'id_attr';
     protected $fillable = [
-        'id_category',
-        'name_attr'
+        'name',
+        'active',
+        'image'
     ];
     CONST UPDATED_AT = NULL;
     CONST CREATED_AT = NULL;
 
-    public function category(){
-        return $this->belongsTo(CategoryModel::class,'id_category','id_category');
+    // public function category(){
+    //     return $this->belongsTo(CategoryModel::class,'id_category','id_category');
+    // }
+
+    public function attributevalue(){
+        return $this->hasMany(attributeValueModel::class,'attribute_id','id_attr');
     }
 }

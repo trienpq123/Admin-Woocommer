@@ -12,12 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('attribute', function (Blueprint $table) {
-            $table->id('id_attr');
-            $table->string('name');
-            $table->string('type');
-            $table->text('image');
-            $table->boolean('active');
-            $table->timestamps();
+            $table->text('image')->nullable();
         });
     }
 
@@ -26,11 +21,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::create('attribute', function (Blueprint $table) {
-          
-            // $table->dropColumn('type');
-            $table->boolean('active');
-            $table->timestamps();
-        });
+        //
     }
 };

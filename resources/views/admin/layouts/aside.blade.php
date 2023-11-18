@@ -107,6 +107,24 @@
         </ul>
       </li>
       <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#attribute" data-bs-toggle="collapse"  href="#">
+          <i class="bi bi-menu-button-wide"></i><span>Quản lý thuộc tính</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="attribute" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{{route('admin.attr.listAttr')}}">
+              <i class="bi bi-circle"></i><span>Danh sách thuộc tính</span>
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <i class="bi bi-circle"></i><span>Thêm thuộc tính</span>
+            </a>
+          </li>
+         
+        </ul>
+      </li>
+      <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-menu-button-wide"></i><span>Components</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>

@@ -129,10 +129,10 @@ Route::group([ 'middleware' => 'Localization'],function() {
             Route::get('/',[AttributeController::class,'listAttr'])->name('listAttr');
             Route::get('/api/list',[AttributeController::class,'apiListAttr'])->name('apiListAttr');
             Route::get('/add',[AttributeController::class,'addAttr'])->name('addAttr');
-            Route::get('/edit/',[AttributeController::class,'editAttr'])->name('editAttr');
+            // Route::get('/edit/',[AttributeController::class,'editAttr'])->name('editAttr');
             Route::post('/add',[AttributeController::class,'postAddAttr'])->name('postAddAttr');
-            Route::put('/edit',[AttributeController::class,'putEditAttr'])->name('putEditAttr');
-            Route::get('/delete',[AttributeController::class,'deleteAttr'])->name('deleteAttr');
+            // Route::put('/edit',[AttributeController::class,'putEditAttr'])->name('putEditAttr');
+            // Route::get('/delete',[AttributeController::class,'deleteAttr'])->name('deleteAttr');
         });
         Route::prefix('roles')->name('roles.')->group(function(){
             Route::get('/',[RoleController::class,'index'])->name('role.index');
