@@ -756,16 +756,17 @@ body{
 }
 
 .btn-edit{
-    background: #FF0E3C;
-    color: #fff;
+    
+    color: #717ff5;
     font-weight: 700;
-    padding:6px;
+    padding:4px;
+    outline:none;
+    border:none;
 }
 .btn-delete{
-    background:#FFE30E;
-    color: #fff;
+    color: #717ff5;
     font-weight: 700;
-    padding:6px;
+    padding:4px;
 }
 
 .btn-edit, .btn-delete{
@@ -2450,4 +2451,9 @@ body{
     text-align: center;
     font-size: 13px;
     color: #012970;
+  }
+
+  .badge-soft-info{
+    background: #405189;
+    margin: 0 4px;
   }

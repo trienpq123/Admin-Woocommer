@@ -30,10 +30,12 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Thêm thuộc tính</h5>
-                            <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
+                            <button type="button" class="btn btn-close" data-bs-dismiss="modal"
+                                aria-label="Close">X</button>
                         </div>
                         <div class="modal-body">
-                            <form action="{{route('admin.attr.postAddAttr')}}" method="post" enctype="multipart/form-data">
+                            <form action="{{ route('admin.attr.postAddAttr') }}" method="post"
+                                enctype="multipart/form-data">
                                 @csrf
                                 <div class="list-attr">
                                     <div class="list-item">
@@ -42,7 +44,8 @@
                                                 <div class="form-group">
                                                     <label for="">Tên thuộc tính</label>
                                                     <input type="text" placeholder="Nhập tên thuộc tính"
-                                                        class="form-control name" id="slug" name="attr[option][1][name]">
+                                                        class="form-control name" id="slug"
+                                                        name="attr[option][1][name]">
                                                     <p class="name-error text text-danger"></p>
                                                 </div>
                                             </div>
@@ -51,19 +54,21 @@
                                                     <label for="">Giá trị thuộc tính</label>
                                                     <input type="text" placeholder="Nhập tên thuộc danh mục"
                                                         class="form-control" id="slug" name="attr[option][1][position]"
-                                                        data-role="tagsinput" >
+                                                        data-role="tagsinput">
                                                     <p class="name-error text text-danger"></p>
                                                 </div>
                                             </div>
                                             <div class="col-lg-2">
-                                                <div class="remove item-attr"><span><i class="ri-close-circle-line"></i></span></div>
+                                                <div class="remove item-attr"><span><i
+                                                            class="ri-close-circle-line"></i></span></div>
                                             </div>
 
 
                                         </div>
                                         <div class="form-group">
                                             <label for="">Ảnh đaị diện</label>
-                                            <input type="file" name="attr[option][1][file]" class="file" id="file"/>
+                                            <input type="file" name="attr[option][1][file]" class="file"
+                                                id="file" />
                                             <div class="ladi-box">
                                                 <div class="preview-image">
                                                     <img src="https://www.apple.com/ac/structured-data/images/knowledge_graph_logo.png?202209082218"
@@ -99,7 +104,7 @@
 
             <div class="table">
 
-                <table id="table" >
+                <table id="table">
 
                     <thead>
                         <tr>
@@ -141,6 +146,76 @@
 
         </div>
     </div>
+    <div class="modal fade" id="form-edit" tabindex="-1" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thêm thuộc tính</h5>
+                    <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('admin.attr.putEditAttr') }}" method="post" enctype="multipart/form-data">
+                        @csrf
+                        <div class="list-attr">
+                            <div class="list-item">
+                                <div class="row align-items-center">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label for="">Tên thuộc tính</label>
+                                            <input type="text" placeholder="Nhập tên thuộc tính"
+                                                class="form-control name" id="slug" name="attr[option][1][name]">
+                                            <p class="name-error text text-danger"></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="">Giá trị thuộc tính</label>
+                                            <input type="text" placeholder="Nhập tên thuộc danh mục"
+                                                class="form-control" id="slug" name="attr[option][1][position]"
+                                                data-role="tagsinput">
+                                            <p class="name-error text text-danger"></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <div class="remove item-attr"><span><i class="ri-close-circle-line"></i></span>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Ảnh đaị diện</label>
+                                    <input type="file" name="attr[option][1][file]" class="file" id="file" />
+                                    <div class="ladi-box">
+                                        <div class="preview-image">
+                                            <img src="https://www.apple.com/ac/structured-data/images/knowledge_graph_logo.png?202209082218"
+                                                class="1" width="60" alt="Ảnh thuộc tính">
+                                        </div>
+                                    </div>
+                                </div>
+                                {{-- <div class="form-group">
+                                    <input type="radio" name="status[]" id="status" class="status"
+                                        value="0" style="width:auto;"><label for="">Ẩn</label>
+                                    <input type="radio" name="status[]" id="status" class="status"
+                                        value="1" style="width:auto;" checked> <label for="">Hiện</label>
+                                </div> --}}
+                            </div>
+
+                        </div>
+                        {{-- <button type="button" class="btn btn-action-append">Thêm thuộc tính</button> --}}
+                        <hr>
+                        <div class="form-group">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                            <button type="submit" class="btn btn-primary">Lưu</button>
+                        </div>
+                    </form>
+                </div>
+                {{-- <div class="modal-footer">
+
+                </div> --}}
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('script-action')
@@ -167,15 +242,15 @@
                 $('#table').DataTable({
                     "ajax": {
                         type: "GET",
-                        url: "{{route('admin.attr.apiListAttr')}}",
-                   
-                
+                        url: "{{ route('admin.attr.apiListAttr') }}",
+
+
                         dataSrc: 'data'
                     },
                     "columns": [{
                             data: null,
                             render: function(data, type, row, meta) {
-                              
+
 
                                 return `<input type="checkbox" class='item-check' id="item-check" name="item-check[]" value="${data.id_attr}">`
                             }
@@ -183,30 +258,40 @@
                         {
                             data: null,
                             render: function(data, type, row, meta) {
-                               
+
                                 return `<span>${data.name}</span>`
                             }
                         },
                         {
                             data: null,
                             render: function(data, type, row, meta) {
-               
+                                let value = JSON.parse(data.attributevalue[0].value);
+                                let arr_value = value.split(',');
+                                let span_value = '';
+                                for (let i = 0; i < arr_value.length; i++) {
+                                    span_value +=
+                                        `<span class="badge badge-soft-info">${arr_value[i]}</span>`
+                                }
+                                return span_value != '' ? span_value : '';
                                 // return `<a class="btn-edit"  data-name="edit-product" data-id="${data.id_category}">Chỉnh sửa</a>`
-                                return data.attributevalue[0].value ? data.attributevalue[0].value : '';
+                                // return data.attributevalue[0].value ? data.attributevalue[0].value : '';
                             }
                         },
                         {
                             data: null,
                             render: function(data, type, row, meta) {
-                               
-                                return `<a href="" class="btn-edit"  data-name="edit-product" data-id="${data.id_attr}">Chỉnh sửa</a>`
+
+                                return `<div class="d-flex align-items-center btn-action">
+                                            <button  data-bs-toggle="modal" data-bs-target="#form-edit" class="btn-edit"  data-name="edit-product" data-id="${data.id_attr}"><i class="ri-edit-box-line"></i></button>
+                                            <a href="" class="btn-delete"  data-id="${data.id_attr}"><i class="ri-delete-bin-5-line"></i></a>
+                                        </div>`
                             }
                         },
                         {
                             data: null,
                             render: function(data, type, row, meta) {
-                               
-                                return `<td><a href="" class="btn-delete"  data-id="${data.id_attr}">Xoá</a></td>`
+
+                                return '';
                             }
                         }
                     ],
@@ -222,140 +307,164 @@
                     }
                 })
             }
-            // $('body').on('click', '.btn-edit', function() {
-            //     let name = $(this).attr('data-name');
-            //     let id = $(this).attr('data-id');
-            //     $('.popup-modal' + '.' + name).toggleClass('active');
+            $('body').on('click', '.btn-edit', function() {
+                let name = $(this).attr('data-name');
+                let id = $(this).attr('data-id');
+                console.log(name, id)
+                $('.popup-modal' + '.' + name).toggleClass('active');
 
-            //     $('.btn-close').click(function() {
-            //         $('.popup-modal').removeClass('active');
-            //     });
-            //     $('.btn-agree').click(function() {
-            //         $('.popup-modal').removeClass('active');
-            //     });
+                $('.btn-close').click(function() {
+                    $('.popup-modal').removeClass('active');
+                });
+                $('.btn-agree').click(function() {
+                    $('.popup-modal').removeClass('active');
+                });
 
-            //     $.ajax({
-            //         url: "{{ route('admin.category.editCategory') }}",
-            //         dataType: "json",
-            //         method: "GET",
-            //         data: {
-            //             id: id
-            //         },
-            //         success: (res) => {
-            //             console.log(res)
-            //             let name = $(".form-control.edit_name").val(res.data.name_category);
-            //             $(".edit_slug").val(res.data.slug);
-            //             // let link_img = `<img src="${res.data.image_category}"/>`
-            //             $(".1").removeAttr("src");
-            //             $(".1").attr("src", `${res.data.image_category}`);
-            //             id_filter = [];
-            //             for (let i = 0; i < res.listFilter.length; i++) {
-            //                 id_filter.push(res.listFilter[i].id_filter)
-            //             }
-            //             $('.edit_filter').val(id_filter);
-            //             $('.edit_filter').trigger('change');
-            //             $('.edit_desc').val(res.data.desc_category);
-            //             $('.edit_status').each(function(i, item) {
-            //                 if (res.data.hide == item.value) {
-            //                     item.checked = true;
-            //                 }
-            //             })
-            //             $('.edit_parent_category option').each(function(i, item) {
-            //                 console.log(item.value, res.data.parent_category)
-            //                 if (parseInt(item.value) == res.data.parent_category) {
-            //                     item.selected = true
-            //                     console.log(item.value)
-            //                     $('.edit_parent_category').val(item.value);
-            //                     $('.edit_parent_category').trigger('change');
-            //                 }
-            //             })
-
-            //         }
-            //     })
+                $.ajax({
+                    url: "{{ route('admin.attr.editAttr') }}",
+                    dataType: "json",
+                    method: "GET",
+                    data: {
+                        id: id
+                    },
+                    success: (res) => {
+                        console.log(res)
+                        let name = $("#form-edit .name").val(res.data.name);
 
 
-            //     // $('.form-edit').submit(function(e) {
-            //     //     //  ).val();
-            //     //     // let slug = $(".edit   // e.preventDefault();
-            //     //     // var token =  $('input[name="_token"]').attr('value');
-            //     //     // console.log(token);
-            //     //     // let name = $(".edit_names"_slug").val();
-            //     //     // let _parent = $(".edit_parent option:selected").val();
-            //     //     // $.ajax({
-            //     //     //     type:"POST",
-            //     //     //     dataType:"JSON",
-            //     //     //     url: "{{ route('admin.filter.putEditFilter') }}",
-            //     //     //     data: {id:id,_token:"{{ csrf_token() }}",name:name,slug:slug,_parent:_parent},
-            //     //     //     success: (res) => {
-            //     //     //         // window.location.reload();
-            //     //     //         // $('.table').html(res);
-            //     //     //        console.log(res)
+                        $('#form-edit input[data-role=tagsinput]').tagsinput({
 
-            //     //     //         if(res.status == 200 ){
-            //     //     //             $('#table').DataTable().destroy()
-            //     //     //             getDataTable();
-            //     //     //             $('.alert').toggleClass('active')
-            //     //     //             validator(res.status,res.message)
-            //     //     //         }
-            //     //     //         if(res.status == 404){
-            //     //     //             validator(res.status,res.message)
-            //     //     //         }
-            //     //     //     }
-            //     //     // })
-            //     //     e.preventDefault();
-            //     //     let filter = $('.edit_filter :selected');
-            //     //     let name_category = $('.form-control.edit_name').val();
-            //     //     console.log(name_category)
-            //     //     let slug_category = $('.edit_slug').val();
-            //     //     let desc_category = CKEDITOR.instances.desc.getData();
-            //     //     let image_category = $('input[type=file].edit_file')[0].files[0];
-            //     //     let parent_category = $('.edit_parent_category').val();
-            //     //     console.log(parent_category)
-            //     //     console.log(image_category)
-            //     //     console.log(desc_category)
-            //     //     let status_category = $('.edit_status:checked').val()
-            //     //     console.log(status_category)
-            //     //     var formData = new FormData();
-            //     //     formData.append('desc', desc_category)
-            //     //     formData.append('id', id)
-            //     //     formData.append('image', $('input[type=file]')[0].files[0]);
-            //     //     formData.append('name', name_category)
-            //     //     formData.append('slug', slug_category)
-            //     //     formData.append('status', status_category)
-            //     //     formData.append('parent_category', parent_category)
-            //     //     formData.append('_token', "{{ csrf_token() }}")
-            //     //     let status = $('.status').val();
-            //     //     idFilter = [];
-            //     //     filter.each(function(i, f) {
-            //     //         return idFilter.push(f.value)
-            //     //     })
-            //     //     console.log(idFilter)
-            //     //     formData.append('idFilter', idFilter)
+                            itemText: function(item) {
+                                return 123
+                            },
+                            itemValue: function(item) {
+                                return 456
+                            }
 
-            //     //     $.ajax({
-            //     //         type: "POST",
-            //     //         url: "{{ route('admin.category.putEditCategory') }}",
-            //     //         data: formData,
-            //     //         success: (res) => {
-            //     //             if (res.status == 404) {
-            //     //                 console.log(res)
-            //     //                 validator(res.status, res.message)
 
-            //     //             } else {
-            //     //                 console.log(res)
-            //     //                 $('#table').DataTable().destroy()
-            //     //                 getDataTable();
-            //     //                 $('.alert').toggleClass('active')
-            //     //                 $('.popup-modal').removeClass('active');
-            //     //             }
-            //     //         },
-            //     //         cache: false,
-            //     //         contentType: false,
-            //     //         processData: false
+                        })
 
-            //     //     })
-            //     // })
-            // })
+                        console.log($('#form-edit input[data-role=tagsinput]').tagsinput())
+
+
+                        $('#form-edit input[data-role=tagsinput]').tagsinput('add',{itemValue:1,itemText:'a'});
+
+
+
+
+
+                        // $(".edit_slug").val(res.data.slug);
+                        // // let link_img = `<img src="${res.data.image_category}"/>`
+                        // // $(".1").removeAttr("src");
+                        // $(".1").attr("src", `${res.data.image_category}`);
+                        // id_filter = [];
+                        // for (let i = 0; i < res.listFilter.length; i++) {
+                        //     id_filter.push(res.listFilter[i].id_filter)
+                        // }
+                        // $('.edit_filter').val(id_filter);
+                        // $('.edit_filter').trigger('change');
+                        // $('.edit_desc').val(res.data.desc_category);
+                        // $('.edit_status').each(function(i, item) {
+                        //     if (res.data.hide == item.value) {
+                        //         item.checked = true;
+                        //     }
+                        // })
+                        // $('.edit_parent_category option').each(function(i, item) {
+                        //     console.log(item.value, res.data.parent_category)
+                        //     if (parseInt(item.value) == res.data.parent_category) {
+                        //         item.selected = true
+                        //         console.log(item.value)
+                        //         $('.edit_parent_category').val(item.value);
+                        //         $('.edit_parent_category').trigger('change');
+                        //     }
+                        // })
+
+                    }
+                })
+
+
+                //     // $('.form-edit').submit(function(e) {
+                //     //     //  ).val();
+                //     //     // let slug = $(".edit   // e.preventDefault();
+                //     //     // var token =  $('input[name="_token"]').attr('value');
+                //     //     // console.log(token);
+                //     //     // let name = $(".edit_names"_slug").val();
+                //     //     // let _parent = $(".edit_parent option:selected").val();
+                //     //     // $.ajax({
+                //     //     //     type:"POST",
+                //     //     //     dataType:"JSON",
+                //     //     //     url: "{{ route('admin.filter.putEditFilter') }}",
+                //     //     //     data: {id:id,_token:"{{ csrf_token() }}",name:name,slug:slug,_parent:_parent},
+                //     //     //     success: (res) => {
+                //     //     //         // window.location.reload();
+                //     //     //         // $('.table').html(res);
+                //     //     //        console.log(res)
+
+                //     //     //         if(res.status == 200 ){
+                //     //     //             $('#table').DataTable().destroy()
+                //     //     //             getDataTable();
+                //     //     //             $('.alert').toggleClass('active')
+                //     //     //             validator(res.status,res.message)
+                //     //     //         }
+                //     //     //         if(res.status == 404){
+                //     //     //             validator(res.status,res.message)
+                //     //     //         }
+                //     //     //     }
+                //     //     // })
+                //     //     e.preventDefault();
+                //     //     let filter = $('.edit_filter :selected');
+                //     //     let name_category = $('.form-control.edit_name').val();
+                //     //     console.log(name_category)
+                //     //     let slug_category = $('.edit_slug').val();
+                //     //     let desc_category = CKEDITOR.instances.desc.getData();
+                //     //     let image_category = $('input[type=file].edit_file')[0].files[0];
+                //     //     let parent_category = $('.edit_parent_category').val();
+                //     //     console.log(parent_category)
+                //     //     console.log(image_category)
+                //     //     console.log(desc_category)
+                //     //     let status_category = $('.edit_status:checked').val()
+                //     //     console.log(status_category)
+                //     //     var formData = new FormData();
+                //     //     formData.append('desc', desc_category)
+                //     //     formData.append('id', id)
+                //     //     formData.append('image', $('input[type=file]')[0].files[0]);
+                //     //     formData.append('name', name_category)
+                //     //     formData.append('slug', slug_category)
+                //     //     formData.append('status', status_category)
+                //     //     formData.append('parent_category', parent_category)
+                //     //     formData.append('_token', "{{ csrf_token() }}")
+                //     //     let status = $('.status').val();
+                //     //     idFilter = [];
+                //     //     filter.each(function(i, f) {
+                //     //         return idFilter.push(f.value)
+                //     //     })
+                //     //     console.log(idFilter)
+                //     //     formData.append('idFilter', idFilter)
+
+                //     //     $.ajax({
+                //     //         type: "POST",
+                //     //         url: "{{ route('admin.category.putEditCategory') }}",
+                //     //         data: formData,
+                //     //         success: (res) => {
+                //     //             if (res.status == 404) {
+                //     //                 console.log(res)
+                //     //                 validator(res.status, res.message)
+
+                //     //             } else {
+                //     //                 console.log(res)
+                //     //                 $('#table').DataTable().destroy()
+                //     //                 getDataTable();
+                //     //                 $('.alert').toggleClass('active')
+                //     //                 $('.popup-modal').removeClass('active');
+                //     //             }
+                //     //         },
+                //     //         cache: false,
+                //     //         contentType: false,
+                //     //         processData: false
+
+                //     //     })
+                //     // })
+            })
 
 
             // $('body').on('click', 'table .btn-delete', function() {
@@ -516,14 +625,15 @@
 
         })
         $('.btn.btn-action-append').click(function() {
-            let num_position_attr =$('input.name').length + 1;
+            let num_position_attr = $('input.name').length + 1;
             let html = ` <div class="list-item">
                                         <div class="row align-items-center">
                                             <div class="col-lg-4">
                                                 <div class="form-group">
                                                     <label for="">Tên thuộc tính</label>
                                                     <input type="text" placeholder="Nhập tên thuộc tính"
-                                                        class="form-control " id="slug" name="attr[option][`+ num_position_attr +`][name]" value="2">
+                                                        class="form-control " id="slug" name="attr[option][` +
+                num_position_attr + `][name]" value="2">
                                                     <p class="name-error text text-danger"></p>
                                                 </div>
                                             </div>
@@ -531,7 +641,8 @@
                                                 <div class="form-group">
                                                     <label for="">Giá trị thuộc tính</label>
                                                     <input type="text" placeholder="Nhập tên thuộc danh mục"
-                                                        class="form-control " id="slug" name="attr[option][`+ num_position_attr +`][position]"
+                                                        class="form-control " id="slug" name="attr[option][` +
+                num_position_attr + `][position]"
                                                         data-role="tagsinput">
                                                     <p class="name-error text text-danger"></p>
                                                 </div>
@@ -544,7 +655,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="">Ảnh đaị diện</label>
-                                            <input type="file" name="attr[option][`+ num_position_attr +`][file]" class="file" id="file"
+                                            <input type="file" name="attr[option][` + num_position_attr + `][file]" class="file" id="file"
                                                 accept="image/*" />
                                             <div class="ladi-box">
                                                 <div class="preview-image">
@@ -562,35 +673,35 @@
             $('.remove.item-attr span').click(function() {
                 $(this).parents('.list-item').remove()
             })
-           
+
 
         })
     </script>
     {{-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> --}}
     <script>
-        $(function() {
-            $('input')
-                .on('change', function(event) {
-                    var $element = $(event.target);
-                    var $container = $element.closest('.example');
+        // $(function() {
+        //     $('input')
+        //         .on('change', function(event) {
+        //             var $element = $(event.target);
+        //             var $container = $element.closest('.example');
 
-                    if (!$element.data('tagsinput')) return;
+        //             if (!$element.data('tagsinput')) return;
 
-                    var val = $element.val();
-                    if (val === null) val = 'null';
-                    var items = $element.tagsinput('items');
+        //             var val = $element.val();
+        //             if (val === null) val = 'null';
+        //             var items = $element.tagsinput('items');
 
-                    $('code', $('pre.val', $container)).html(
-                        $.isArray(val) ?
-                        JSON.stringify(val) :
-                        '"' + val.replace('"', '\\"') + '"'
-                    );
-                    $('code', $('pre.items', $container)).html(
-                        JSON.stringify($element.tagsinput('items'))
-                    );
-                })
-                .trigger('change');
-        });
+        //             $('code', $('pre.val', $container)).html(
+        //                 $.isArray(val) ?
+        //                 JSON.stringify(val) :
+        //                 '"' + val.replace('"', '\\"') + '"'
+        //             );
+        //             $('code', $('pre.items', $container)).html(
+        //                 JSON.stringify($element.tagsinput('items'))
+        //             );
+        //         })
+        //         .trigger('change');
+        // });
         $("#file").change(function() {
             var file = this.files[0];
             var reader = new FileReader();

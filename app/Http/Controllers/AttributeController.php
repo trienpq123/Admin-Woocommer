@@ -36,9 +36,12 @@ class AttributeController extends Controller
 
     public function editAttr(Request $request)
     {
-        $listAttr = AttributeModel::find($request->id)->with('category')->orderBy('id_attr', 'desc')->first();
-        $listCategory = CategoryModel::whereNull('parent_category')->get();
-        return view('admin.layouts.attr.edit', compact('listAttr', 'listCategory'));
+        $listAttr = AttributeModel::find($request->id)->with('attributevalue')->orderBy('id_attr', 'desc')->first();
+        // $listCategory = CategoryModel::whereNull('parent_category')->get();
+        // return view('admin.layouts.attr.edit', compact('listAttr', 'listCategory'));
+        return response()->json([
+            'data' => $listAttr
+        ]);
     }
 
     public function postAddAttr(Request $request)
@@ -101,20 +104,20 @@ class AttributeController extends Controller
 
     public function putEditAttr(Request $request)
     {
-        $validate = Validator::make(
-            $request->all(),
-            [
-                'name' => 'required|max:50'
-            ],
-            [
-                'name.required' => 'Tên thuộc tính không được bỏ trống',
-                'name.max' => 'Tên thuộc tính không được vượt quá 50 ký tự'
-            ]
-        );
+        // $validate = Validator::make(
+        //     $request->all(),
+        //     [
+        //         'name' => 'required|max:50'
+        //     ],
+        //     [
+        //         'name.required' => 'Tên thuộc tính không được bỏ trống',
+        //         'name.max' => 'Tên thuộc tính không được vượt quá 50 ký tự'
+        //     ]
+        // );
 
-        if ($validate->fails()) {
-            return back()->withErrors($validate)->withInput();
-        }
+        // if ($validate->fails()) {
+        //     return back()->withErrors($validate)->withInput();
+        // }
         $attr = AttributeModel::find($request->id);
         $attr->name_attr = $request->name;
         $attr->status = $request->status;

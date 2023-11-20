@@ -49,7 +49,7 @@
     href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"
   />
   <link
-    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css"
+    href="{{asset('admin/assets/js/boostrap-tagsinput/bootstrap-tagsinput.css')}}"
     rel="stylesheet"
   />
 
@@ -316,7 +316,10 @@
 <script src="{{asset('admin/assets/vendor/tinymce/tinymce.min.js')}}"></script>
 <script src="{{asset('admin/assets/vendor/php-email-form/validate.js')}}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
+<script src="{{asset('admin/assets/js/boostrap-tagsinput/bootstrap-tagsinput.js')}}" ></script>
+<script src="{{asset('admin/assets/js/boostrap-tagsinput/bootstrap-tagsinput-angular.js')}}" ></script>
+<script src="https://cdn.jsdelivr.net/npm/bloodhound@5.8.2/dist/bloodhound.min.js"></script>
+
 <!-- Template Main JS File -->
 <script src="{{asset('admin/assets/js/main.js')}}"></script>
 
