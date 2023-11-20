@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('attribute', function (Blueprint $table) {
+        Schema::create('attribute', function (Blueprint $table) {
             $table->id('id_attr');
             $table->string('name');
             $table->string('type');
-            $table->text('image');
+            $table->text('image')->nullable();
             $table->boolean('active');
+            // $table->text('image')
             $table->timestamps();
         });
     }

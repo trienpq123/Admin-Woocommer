@@ -52,6 +52,7 @@
     href="{{asset('admin/assets/js/boostrap-tagsinput/bootstrap-tagsinput.css')}}"
     rel="stylesheet"
   />
+  {{-- <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" /> --}}
 
 
 
@@ -317,8 +318,10 @@
 <script src="{{asset('admin/assets/vendor/php-email-form/validate.js')}}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/js/bootstrap.min.js"></script>
 <script src="{{asset('admin/assets/js/boostrap-tagsinput/bootstrap-tagsinput.js')}}" ></script>
-<script src="{{asset('admin/assets/js/boostrap-tagsinput/bootstrap-tagsinput-angular.js')}}" ></script>
-<script src="https://cdn.jsdelivr.net/npm/bloodhound@5.8.2/dist/bloodhound.min.js"></script>
+// <script src="{{asset('admin/assets/js/boostrap-tagsinput/bootstrap-tagsinput-angular.js')}}" ></script>
+// <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+// <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+
 
 <!-- Template Main JS File -->
 <script src="{{asset('admin/assets/js/main.js')}}"></script>

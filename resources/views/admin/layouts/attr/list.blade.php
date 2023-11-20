@@ -332,22 +332,31 @@
                         let name = $("#form-edit .name").val(res.data.name);
 
 
-                        $('#form-edit input[data-role=tagsinput]').tagsinput({
+                        // $('#form-edit input[data-role=tagsinput]').tagsinput({
+                        //     itemValue: 'id',
+                        //     itemText: 'text',
+                        // })
 
-                            itemText: function(item) {
-                                return 123
-                            },
-                            itemValue: function(item) {
-                                return 456
-                            }
+                        // console.log($('#form-edit input[data-role=tagsinput]').tagsinput('items'))
+
+                        $('#form-edit [data-role=tagsinput]').on('beforeItemRemove', function(event) {
+                            var tag = event.item;
+                            // Do some processing here
+                            console.log(event);
+                            // if (!event.options || !event.options.preventPost) {
+                            //     $.ajax('/ajax-url', ajaxData, function(response) {
+                            //         if (response.failure) {
+                            //             // Re-add the tag since there was a failure
+                            //             // "preventPost" here will stop this ajax call from running when the tag is added
+                            //             $('#tags-input').tagsinput('add', tag, {
+                            //                 preventPost: true
+                            //             });
+                            //         }
+                            //     });
+                            // }
+                        });
 
 
-                        })
-
-                        console.log($('#form-edit input[data-role=tagsinput]').tagsinput())
-
-
-                        $('#form-edit input[data-role=tagsinput]').tagsinput('add',{itemValue:1,itemText:'a'});
 
 
 
