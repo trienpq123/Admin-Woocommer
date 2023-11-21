@@ -159,9 +159,33 @@
     // };
     //     let PopChart = new Chart(myChart,config)
 </script>
+ --}}
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+
+<script src="{{ asset('admin/assets/js/ckeditor/ckeditor.js') }}"></script>
+
+{{-- <script src="//cdn.ckeditor.com/4.20.2/standard/ckeditor.js"></script> --}}
+
+@stack('javascript')
+
+
+<script type="text/javascript" src="{{ asset('admin/assets/js/ckfinder/ckfinder.js') }}"></script>
+
+{{-- <script>
+    var editor = CKEDITOR.replace('desc')
+
+    CKEDITOR.replace('desc_short')
+
+    CKEDITOR.config.imageUploadUrl = '{{ route('admin.uploadFile') . '?type=Images&&_token=' . csrf_token() }}';
+
+    CKEDITOR.config.filebrowserUploadMethod = 'form';
+
+    // CKFinder.setupCKEditor(editor);
+</script> --}}
 <script type="text/javascript">
-    let a = document.getElementsByClassName('btn-edit');
-    console.log(a)
 
     function ChangeToSlug() {
         var slug;
@@ -193,33 +217,9 @@
         //In slug ra textbox có id “slug”
         document.getElementById('convert_slug').value = slug;
     }
-</script> --}}
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-
-<script src="{{ asset('admin/assets/js/ckeditor/ckeditor.js') }}"></script>
-
-{{-- <script src="//cdn.ckeditor.com/4.20.2/standard/ckeditor.js"></script> --}}
-
-@stack('javascript')
-
-
-<script type="text/javascript" src="{{ asset('admin/assets/js/ckfinder/ckfinder.js') }}"></script>
-
-<script>
-    var editor = CKEDITOR.replace('desc')
-
-    CKEDITOR.replace('desc_short')
-
-    CKEDITOR.config.imageUploadUrl = '{{ route('admin.uploadFile') . '?type=Images&&_token=' . csrf_token() }}';
-
-    CKEDITOR.config.filebrowserUploadMethod = 'form';
-
-    // CKFinder.setupCKEditor(editor);
 </script>
 
-
-
+{{-- 
 <script>
     function ChangeToSlug()
 
@@ -301,7 +301,7 @@
         price = formatNumber;
 
     }
-</script>
+</script> --}}
 
 // <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
