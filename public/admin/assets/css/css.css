@@ -107,12 +107,16 @@ input {
     border: none;
     /* border-color: #333 !important; */
     color: #333;
-    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    /* box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; */
 }
 
 input:focus {
-    box-shadow: rgba(41, 46, 51, 0.2) 0px 8px 24px;
-    ;
+    /* box-shadow: rgba(41, 46, 51, 0.2) 0px 8px 24px;
+    ; */
+}
+
+input[type="search"]{
+    padding:4px;
 }
 
 textarea {
@@ -530,4 +534,32 @@ form input::placeholder{
 }
 .btn.btn-close:hover{
     color: #fff !important;
+}
+
+.alert.alert-primary.alert-dismissible.fade.show.alert-fixed {
+    position: fixed;
+    right: 0;
+    top: 100px;
+    z-index: 1;
+    font-size: 12px;
+    animation-name: alert;
+    animation-duration: 3s;
+    animation-delay: .3s;
+    z-index: 99999;
+}
+
+.alert-dismissible .btn-close:hover{
+    background: transparent;
+    color: #000
+}
+
+@keyframes alert {
+    from{
+        right: -100px;
+        opacity: 0;
+    }
+    to{
+        right:0;
+        opacity: 1;
+    }
 }

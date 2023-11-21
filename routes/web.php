@@ -133,6 +133,7 @@ Route::group([ 'middleware' => 'Localization'],function() {
             Route::post('/add',[AttributeController::class,'postAddAttr'])->name('postAddAttr');
             Route::put('/edit/',[AttributeController::class,'putEditAttr'])->name('putEditAttr');
             Route::delete('/delete',[AttributeController::class,'deleteAttr'])->name('deleteAttr');
+            Route::get('/delete-attribute-set',[AttributeController::class,'deleteAttrSet'])->name('deleteAttrSet');
         });
         Route::prefix('roles')->name('roles.')->group(function(){
             Route::get('/',[RoleController::class,'index'])->name('role.index');

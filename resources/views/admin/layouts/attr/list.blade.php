@@ -3,8 +3,8 @@
     <style>
         .bootstrap-tagsinput .tag {
             margin-right: 2px;
-            color: white !important;
-            background-color: #0d6efd;
+            color: #4154f1 !important;
+            background-color: hsl(220, 100%, 98%);
             padding: 0.2rem;
             border-radius: 4px
         }
@@ -12,6 +12,10 @@
 @endsection
 @section('articles')
     <div class="main" id="main">
+        <div class="alert alert-primary alert-dismissible fade show alert-fixed" role="alert">
+            A simple primary alert—check it out!
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
         <div class="pagetitle">
             <h1>Thuộc tính</h1>
             <nav>
@@ -100,7 +104,7 @@
                     </div>
                 </div>
             </div>
-            <button class="btn btn-delete delete-checkbox" id="delete-checkbox" disabled
+            <button class="btn  delete-checkbox" id="delete-checkbox" disabled
                 data-name="popup-delete-checkbox">Xoá</button>
 
             <div class="table">
@@ -109,12 +113,14 @@
 
                     <thead>
                         <tr>
-                            <th>STT</th>
+                            <th>
+                                <input type="checkbox" class='item-check-all' id="item-check-all" name="item-check-all">
+                            </th>
                             <th>Tên thuộc tính</th>
                             <th>Giá trị</th>
-                            <th>Ẩn/Hiện</th>
                             <th></th>
-                            <th></th>
+                            {{-- <th></th> --}}
+                            {{-- <th></th> --}}
                         </tr>
                     </thead>
                     {{-- <tbody>
@@ -155,7 +161,7 @@
                     <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
                 </div>
                 <div class="modal-body">
-                    <form   enctype="multipart/form-data" method="POST">
+                    <form enctype="multipart/form-data" method="POST">
                         @csrf
                         @method('put')
                         <div class="list-attr">
@@ -179,8 +185,8 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-2">
-                                        <div class="remove item-attr"><span><i class="ri-close-circle-line"></i></span>
-                                        </div>
+                                        {{-- <div class="remove item-attr"><span><i class="ri-close-circle-line"></i></span>
+                                        </div> --}}
                                     </div>
 
 
@@ -250,10 +256,11 @@
                     "columns": [{
                             data: null,
                             render: function(data, type, row, meta) {
-                            console.log(data);    
+                                console.log(data);
 
                                 return `<input type="checkbox" class='item-check' id="item-check" name="item-check[]" value="${data.id_attr}">`
-                            }
+                            },
+                            orderable: false
                         },
                         {
                             data: null,
@@ -265,7 +272,7 @@
                         {
                             data: null,
                             render: function(data, type, row, meta) {
-                              
+
                                 let span_value = '';
                                 for (let i = 0; i < data.attributevalue.length; i++) {
                                     span_value +=
@@ -282,28 +289,28 @@
                                 console.log(data);
                                 return `<div class="d-flex align-items-center btn-action">
                                             <button  data-bs-toggle="modal" data-bs-target="#form-edit" class="btn-edit"  data-name="edit-product" data-id="${data.id_attr}"><i class="ri-edit-box-line"></i></button>
-                                            <a href="" class="btn-delete"  data-id="${data.id_attr}"><i class="ri-delete-bin-5-line"></i></a>
+                                            <a href="{{ route('admin.attr.deleteAttrSet') }}?id=${data.id_attr}" class="btn btn-delete" id="action-delete"  data-id="${data.id_attr}"><i class="ri-delete-bin-5-line"></i></a>
                                         </div>`
                             }
                         },
-                        {
-                            data: null,
-                            render: function(data, type, row, meta) {
 
-                                return '';
-                            }
-                        }
                     ],
                     language: {
-                        search: "Tìm kiếm",
-                        Show: "Hiển thị"
+                        "search": "Tìm kiếm",
+                        "Show": "Hiển thị",
+                        "lengthMenu": "Hiển thị _MENU_ trang",
+                        "infoEmpty": "Trang 0 to 0 of 0 trang",
+                        "infoFiltered": "(Đã lọc của _MAX_ tổng trang)",
+                        "info": "Đang hiển thị _START_ đến _END_ của _TOTAL_ trang",
+                        paginate: {
+                            "first": "Trang Đầu",
+                            "previous": "Trang trước",
+                            "next": "Trang tiếp",
+                            "last": "Trang cuối"
+                        },
                     },
-                    paginate: {
-                        first: "Trang Đầu",
-                        previous: "Trang trước",
-                        next: "Trang tiếp",
-                        last: "Trang cuối"
-                    }
+
+
                 })
             }
             $('body').on('click', '.btn-edit', function() {
@@ -326,41 +333,48 @@
                         id: id
                     },
                     success: (res) => {
-                        $('#form-edit form').attr('action', `{{ route('admin.attr.putEditAttr') }}?id=${id}`);
+                        $('#form-edit form').attr('action',
+                            `{{ route('admin.attr.putEditAttr') }}?id=${id}`);
                         let name = $("#form-edit .name").val(res.data.name);
                         console.log(res.data.attributevalue)
                         $("#form-edit input[data-role=tagsinput]").tagsinput('removeAll')
                         let attr_array = res.data.attributevalue;
-                        
+
                         for (let i = 0; i < attr_array.length; i++) {
-                            $("#form-edit input[data-role=tagsinput]").tagsinput('add', attr_array[i].value);
+                            $("#form-edit input[data-role=tagsinput]").tagsinput('add',
+                                attr_array[i].value);
                         }
                         // $("#form-edit input[data-role=tagsinput]").val(attr_value);
                         // console.log($('#form-edit input[data-role=tagsinput]').tagsinput('items'))
 
-                        $('#form-edit input[data-role=tagsinput]').on('beforeItemRemove', function(event) {
-                            var tag = event.item;
-                            // Do some processing here
-                           console.log(tag);
-                           var ajaxData = {
-                                id_attr: id,
-                                value: tag,
-                                _token: "{{ csrf_token() }}"
-                           }
+                        $('#form-edit input[data-role=tagsinput]').on('beforeItemRemove',
+                            function(event) {
+                                var tag = event.item;
+                                // Do some processing here
+                                console.log(tag);
+                                var ajaxData = {
+                                    id_attr: id,
+                                    value: tag,
+                                    _token: "{{ csrf_token() }}"
+                                }
 
-                           console.log(ajaxData)
-                            if (!event.options || !event.options.preventPost) {
-                                $.ajax({
-                                    url: "{{ route('admin.attr.deleteAttr') }}",
-                                    method: "delete",
-                                    data: ajaxData,
-                                    success: (res) => {
-                                        getDataTable();
-                                        $('#table').DataTable().ajax.reload();
-                                    }
-                                }) 
-                            }
-                        });
+                                console.log(ajaxData)
+                                if (!event.options || !event.options.preventPost) {
+                                    $.ajax({
+                                        url: "{{ route('admin.attr.deleteAttr') }}",
+                                        method: "delete",
+                                        data: ajaxData,
+                                        success: (res) => {
+                                            // getDataTable();
+
+                                            if (res.status == 200) {
+                                                $('#table').DataTable().ajax
+                                                    .reload();
+                                            }
+                                        }
+                                    })
+                                }
+                            });
 
 
 
@@ -683,7 +697,7 @@
                                 `;
             $('.list-attr').append(html);
             $('input[data-role=tagsinput]').tagsinput({
-                confirmKeys: [13, 188,'Enter']
+                confirmKeys: [13, 188, 'Enter']
             });
             $('.remove.item-attr span').click(function() {
                 $(this).parents('.list-item').remove()

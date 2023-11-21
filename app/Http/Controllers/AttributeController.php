@@ -218,9 +218,20 @@ class AttributeController extends Controller
         if ($getAttribute) {
             $getAttribute->delete();
             return response()->json([
-                'alert' => 'Xoa thanh cong',
+                'alert' => 'Xoa thành công',
                 'status' => 200
             ]);
         }
+    }
+    public function deleteAttrSet(Request $request)
+    {
+        if ($request->id) {
+            $c_attr = AttributeModel::find($request->id);
+            if ($c_attr) {
+                $c_attr->delete();
+            }
+        }
+        return back()->with(['message' => 'Xóa thành công']);
+      
     }
 }

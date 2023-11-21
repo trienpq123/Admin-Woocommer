@@ -89,6 +89,24 @@
       </li><!-- End Dashboard Nav -->
 
       <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#category" data-bs-toggle="collapse"  href="#">
+          <i class="bi bi-menu-button-wide"></i><span>Danh mục</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="category" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="">
+              <i class="bi bi-circle"></i><span>Danh sách danh mục</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{route('admin.product.addProduct')}}">
+              <i class="bi bi-circle"></i><span>Thêm danh mục mới</span>
+            </a>
+          </li>
+         
+        </ul>
+      </li>
+      <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#product" data-bs-toggle="collapse"  href="#">
           <i class="bi bi-menu-button-wide"></i><span>Sản phẩm</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
