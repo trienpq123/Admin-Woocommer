@@ -68,9 +68,9 @@
 
 </body>
 {{-- <script src="{{ asset('../../assets/js/js.js') }}"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script> --}}
 <script src="{{ asset('./admin/assets/js/js.js') }}"></script>
-<script>
+{{-- <script>
     $(document).ready(function() {
         $('.aside ul li a').click(function() {
             $('.menu-child').toggleClass('active');
@@ -318,7 +318,7 @@
 <script src="{{asset('admin/assets/vendor/php-email-form/validate.js')}}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/js/bootstrap.min.js"></script>
 <script src="{{asset('admin/assets/js/boostrap-tagsinput/bootstrap-tagsinput.js')}}" ></script>
-// <script src="{{asset('admin/assets/js/boostrap-tagsinput/bootstrap-tagsinput-angular.js')}}" ></script>
+<script src="{{asset('admin/assets/js/boostrap-tagsinput/bootstrap-tagsinput-angular.js')}}" ></script>
 // <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
 // <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
 

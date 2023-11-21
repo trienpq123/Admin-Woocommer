@@ -6,6 +6,7 @@
             color: white !important;
             background-color: #0d6efd;
             padding: 0.2rem;
+            border-radius: 4px
         }
     </style>
 @endsection
@@ -154,8 +155,9 @@
                     <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('admin.attr.putEditAttr') }}" method="post" enctype="multipart/form-data">
+                    <form   enctype="multipart/form-data" method="POST">
                         @csrf
+                        @method('put')
                         <div class="list-attr">
                             <div class="list-item">
                                 <div class="row align-items-center">
@@ -163,7 +165,7 @@
                                         <div class="form-group">
                                             <label for="">Tên thuộc tính</label>
                                             <input type="text" placeholder="Nhập tên thuộc tính"
-                                                class="form-control name" id="slug" name="attr[option][1][name]">
+                                                class="form-control name" id="name_attr" name="attr[option][1][name]">
                                             <p class="name-error text text-danger"></p>
                                         </div>
                                     </div>
@@ -171,7 +173,7 @@
                                         <div class="form-group">
                                             <label for="">Giá trị thuộc tính</label>
                                             <input type="text" placeholder="Nhập tên thuộc danh mục"
-                                                class="form-control" id="slug" name="attr[option][1][position]"
+                                                class="form-control" id="value_attr" name="attr[option][1][position]"
                                                 data-role="tagsinput">
                                             <p class="name-error text text-danger"></p>
                                         </div>
@@ -243,14 +245,12 @@
                     "ajax": {
                         type: "GET",
                         url: "{{ route('admin.attr.apiListAttr') }}",
-
-
                         dataSrc: 'data'
                     },
                     "columns": [{
                             data: null,
                             render: function(data, type, row, meta) {
-
+                            console.log(data);    
 
                                 return `<input type="checkbox" class='item-check' id="item-check" name="item-check[]" value="${data.id_attr}">`
                             }
@@ -265,12 +265,11 @@
                         {
                             data: null,
                             render: function(data, type, row, meta) {
-                                let value = JSON.parse(data.attributevalue[0].value);
-                                let arr_value = value.split(',');
+                              
                                 let span_value = '';
-                                for (let i = 0; i < arr_value.length; i++) {
+                                for (let i = 0; i < data.attributevalue.length; i++) {
                                     span_value +=
-                                        `<span class="badge badge-soft-info">${arr_value[i]}</span>`
+                                        `<span class="badge badge-soft-info">${data.attributevalue[i].value}</span>`
                                 }
                                 return span_value != '' ? span_value : '';
                                 // return `<a class="btn-edit"  data-name="edit-product" data-id="${data.id_category}">Chỉnh sửa</a>`
@@ -280,7 +279,7 @@
                         {
                             data: null,
                             render: function(data, type, row, meta) {
-
+                                console.log(data);
                                 return `<div class="d-flex align-items-center btn-action">
                                             <button  data-bs-toggle="modal" data-bs-target="#form-edit" class="btn-edit"  data-name="edit-product" data-id="${data.id_attr}"><i class="ri-edit-box-line"></i></button>
                                             <a href="" class="btn-delete"  data-id="${data.id_attr}"><i class="ri-delete-bin-5-line"></i></a>
@@ -310,7 +309,6 @@
             $('body').on('click', '.btn-edit', function() {
                 let name = $(this).attr('data-name');
                 let id = $(this).attr('data-id');
-                console.log(name, id)
                 $('.popup-modal' + '.' + name).toggleClass('active');
 
                 $('.btn-close').click(function() {
@@ -328,32 +326,40 @@
                         id: id
                     },
                     success: (res) => {
-                        console.log(res)
+                        $('#form-edit form').attr('action', `{{ route('admin.attr.putEditAttr') }}?id=${id}`);
                         let name = $("#form-edit .name").val(res.data.name);
-
-
-                        // $('#form-edit input[data-role=tagsinput]').tagsinput({
-                        //     itemValue: 'id',
-                        //     itemText: 'text',
-                        // })
-
+                        console.log(res.data.attributevalue)
+                        $("#form-edit input[data-role=tagsinput]").tagsinput('removeAll')
+                        let attr_array = res.data.attributevalue;
+                        
+                        for (let i = 0; i < attr_array.length; i++) {
+                            $("#form-edit input[data-role=tagsinput]").tagsinput('add', attr_array[i].value);
+                        }
+                        // $("#form-edit input[data-role=tagsinput]").val(attr_value);
                         // console.log($('#form-edit input[data-role=tagsinput]').tagsinput('items'))
 
-                        $('#form-edit [data-role=tagsinput]').on('beforeItemRemove', function(event) {
+                        $('#form-edit input[data-role=tagsinput]').on('beforeItemRemove', function(event) {
                             var tag = event.item;
                             // Do some processing here
-                            console.log(event);
-                            // if (!event.options || !event.options.preventPost) {
-                            //     $.ajax('/ajax-url', ajaxData, function(response) {
-                            //         if (response.failure) {
-                            //             // Re-add the tag since there was a failure
-                            //             // "preventPost" here will stop this ajax call from running when the tag is added
-                            //             $('#tags-input').tagsinput('add', tag, {
-                            //                 preventPost: true
-                            //             });
-                            //         }
-                            //     });
-                            // }
+                           console.log(tag);
+                           var ajaxData = {
+                                id_attr: id,
+                                value: tag,
+                                _token: "{{ csrf_token() }}"
+                           }
+
+                           console.log(ajaxData)
+                            if (!event.options || !event.options.preventPost) {
+                                $.ajax({
+                                    url: "{{ route('admin.attr.deleteAttr') }}",
+                                    method: "delete",
+                                    data: ajaxData,
+                                    success: (res) => {
+                                        getDataTable();
+                                        $('#table').DataTable().ajax.reload();
+                                    }
+                                }) 
+                            }
                         });
 
 
@@ -677,7 +683,7 @@
                                 `;
             $('.list-attr').append(html);
             $('input[data-role=tagsinput]').tagsinput({
-                confirmKeys: [13, 188]
+                confirmKeys: [13, 188,'Enter']
             });
             $('.remove.item-attr span').click(function() {
                 $(this).parents('.list-item').remove()
