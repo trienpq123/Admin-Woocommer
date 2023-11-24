@@ -94,12 +94,12 @@
         </a>
         <ul id="category" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="">
+            <a href="{{route('admin.category.listCategory')}}">
               <i class="bi bi-circle"></i><span>Danh sách danh mục</span>
             </a>
           </li>
           <li>
-            <a href="{{route('admin.product.addProduct')}}">
+            <a href="{{route('admin.category.addCategory')}}">
               <i class="bi bi-circle"></i><span>Thêm danh mục mới</span>
             </a>
           </li>

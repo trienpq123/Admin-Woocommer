@@ -82,11 +82,24 @@
                     </div>
                     <div class="form-group">
                         <label for="">Chọn danh mục cha</label>
-                        <select class="js-example-basic-single parent_category form-control" name="parent_category">
-                            <option>Danh mục cha</option>
-                            <option value="0">A</option>
-                            <option value="1">B</option>
-                            <option value="1">C</option>
+                        <select class="js-example-disabled-results parent_category form-control" name="parent_category">
+                            <option value="">Danh mục cha</option>
+                            @foreach ($listCategory as $category)
+                                <option value="{{ $category->id_category }}"> {{ $category->name_category }} </option>
+                                {{-- @php
+                                    $categories = $category->childrendCategory;
+                                @endphp
+
+                                @while (count($categories) > 0)
+                                    @foreach ($categories as $child)
+                                        <option value="{{ $child->id_category }}">------{{ $child->name_category }}</option>
+                                    @endforeach
+
+                                    @php
+                                        $categories = $categories->flatMap->childrendCategory;
+                                    @endphp
+                                @endwhile --}}
+                            @endforeach
                         </select>
                     </div>
                     <div class="form-group">
@@ -107,3 +120,14 @@
         </form>
     </div>
 @endsection
+@push('script-action')
+    <script>
+        $(document).ready(function() {
+            // SELECT 2
+            $('.js-example-disabled-results').select2();
+            // Render Image khi upload
+
+        });
+    </script>
+    
+@endpush
