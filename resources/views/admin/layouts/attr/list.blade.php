@@ -12,6 +12,7 @@
 @endsection
 @section('articles')
     <div class="main" id="main">
+
         <div class="alert alert-primary alert-dismissible fade show alert-fixed" role="alert">
             A simple primary alert—check it out!
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -104,9 +105,8 @@
                     </div>
                 </div>
             </div>
-            <button class="btn  delete-checkbox" id="delete-checkbox" disabled
-                data-name="popup-delete-checkbox">Xoá</button>
-
+            <button class="btn  delete-checkbox btn-danger" id="delete-checkbox" disabled data-name="popup-delete-checkbox"
+                data-bs-toggle="modal" data-bs-target="#popup-delete">Xoá</button>
             <div class="table">
 
                 <table id="table">
@@ -224,6 +224,29 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="popup-delete" tabindex="-1" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    {{-- <h5 class="modal-title">Bạn có chắc chắn xoá các thuộc tính đã chọn?</h5> --}}
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i
+                            class="ri-close-line"></i></button>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-image">
+                        <span><i class=" ri-alert-line"></i></span>
+                        <p>Bạn có chắc chắn muốn xoá những phần đã chọn?</p>
+                    </div>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Quay lại</button>
+                    <button type="button" class="btn btn-danger" data-name="popup-delete" data-bs-dismiss="modal">Xác
+                        nhận</button>
+                </div>
+                {{-- <div class="modal-footer">
+
+                </div> --}}
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('script-action')
@@ -231,27 +254,37 @@
         $(document).ready(function() {
 
 
-            // $('body').on('change', 'input[type="checkbox"]', function() {
-            //     var anyChecked = $('input[type="checkbox"]:checked').length
+            $('body').on('change', 'input[type="checkbox"]', function() {
+                var anyChecked = $('input[type="checkbox"]:checked').length
 
-            //     // Kiểm tra xem có checkbox nào được chọn hay không
-            //     if (anyChecked > 0) {
-            //         // Nếu có checkbox được chọn, loại bỏ thuộc tính "disable" khỏi button (nếu có)
-            //         $('#delete-checkbox').removeAttr('disabled');
-            //     } else {
-            //         // Nếu không có checkbox được chọn, thêm thuộc tính "disable" vào button (nếu chưa có)
-            //         $('#delete-checkbox').attr('disabled', 'disabled');
-            //     }
-            // });
-            // let array = [];
+                // Kiểm tra xem có checkbox nào được chọn hay không
+                if (anyChecked > 0) {
+                    // Nếu có checkbox được chọn, loại bỏ thuộc tính "disable" khỏi button (nếu có)
+                    $('#delete-checkbox').removeAttr('disabled');
+                } else {
+                    // Nếu không có checkbox được chọn, thêm thuộc tính "disable" vào button (nếu chưa có)
+                    $('#delete-checkbox').attr('disabled', 'disabled');
+                }
+            });
+            let array = [];
+
+
             getDataTable();
-
+            // Render ra dữ liệu table
             function getDataTable() {
                 $('#table').DataTable({
                     "ajax": {
                         type: "GET",
                         url: "{{ route('admin.attr.apiListAttr') }}",
-                        dataSrc: 'data'
+                        beforeSend: function() {
+                            $('#loader').addClass('active')
+                        },
+                        dataSrc: 'data',
+                        complete: function() {
+                            setTimeout(() => {
+                                $('#loader').removeClass('active')
+                            }, 2000);
+                        }
                     },
                     "columns": [{
                             data: null,
@@ -329,6 +362,12 @@
                     url: "{{ route('admin.attr.editAttr') }}",
                     dataType: "json",
                     method: "GET",
+                    beforeSend: function() {
+                        $('#loader').addClass('active')
+                    },
+                    complete: function() {
+                        $('#loader').removeClass('active')
+                    },
                     data: {
                         id: id
                     },
@@ -364,6 +403,12 @@
                                         url: "{{ route('admin.attr.deleteAttr') }}",
                                         method: "delete",
                                         data: ajaxData,
+                                        beforeSend: function() {
+                                            $('#loader').addClass('active')
+                                        },
+                                        complete: function() {
+                                            $('#loader').removeClass('active')
+                                        },
                                         success: (res) => {
                                             // getDataTable();
 
@@ -496,6 +541,7 @@
             })
 
 
+
             // $('body').on('click', 'table .btn-delete', function() {
             //     let id = $(this).attr('data-id');
             //     console.log(id)
@@ -523,82 +569,87 @@
             //         })
             //     });
             // })
+            // Checkbox
+            $('body').on('change', '#item-check', function(e) {
+                e.preventDefault();
+                if ($(this).is(':checked')) {
 
 
-            // $('.check-all').change(function() {
+                    array = array.filter((arr) => arr !== $(this).val());
+                    array.push($(this).val())
 
-            //     if ($(this).is(':checked')) {
-            //         if ($(this).prop('checked')) {
-            //             $('.item-check').not(this).prop('checked', true)
-            //         }
-            //         // $('tr input:checkbox').attr('checked','checked');
+                } else {
 
-            //         let getValueCheckbox = document.querySelectorAll('#item-check');
+                    array = array.filter((arr) => arr !== $(this).val());
+                    console.log($(this).val());
 
-            //         for (let i = 0; i < getValueCheckbox.length; i++) {
+                }
 
-            //             array.push(getValueCheckbox[i].value);
-            //             getValueCheckbox[i].addEventListener("click", function() {
-            //                 if (this.checked) {
-            //                     array.push(getValueCheckbox[i].value)
-            //                 } else {
-            //                     let array_new = array.filter(function(arr) {
-            //                         return arr != getValueCheckbox[i].value;
-            //                     })
-            //                     array = array_new;
-            //                 }
-            //             })
+            })
 
-            //         }
-            //     } else {
-            //         $('tr input:checkbox').removeAttr('checked');
-            //         array = [];
-            //     }
-            // })
-            // $('.delete-checkbox').click(function() {
-            //     let name = $(this).attr('data-name');
-            //     $('.popup-modal' + '.' + name).toggleClass('active');
-            //     // $('.popup-modal').click(function(){
-            //     //     $('.popup-modal').removeClass('active');
-            //     // });
-            //     $('.btn-close').click(function() {
-            //         $('.popup-modal').removeClass('active');
-            //     });
+            // Tích vào là tất cả checkbox tích
+            $('.item-check-all').change(function() {
+
+                if ($(this).is(':checked')) {
+                    if ($(this).prop('checked')) {
+                        $('.item-check').not(this).prop('checked', true)
+                    }
 
 
-            // })
+                    let getValueCheckbox = document.querySelectorAll('#item-check');
+
+                    for (let i = 0; i < getValueCheckbox.length; i++) {
+                        array = array.filter((arr) => arr !== getValueCheckbox[i].value);
+                        array.push(getValueCheckbox[i].value)
+
+
+
+                    }
+                } else {
+                    $('.item-check').not(this).prop('checked', false)
+                    array = [];
+                }
+            })
+
+            $('.delete-checkbox').click(function() {
+                let name = $(this).attr('data-name');
+                $('.popup-modal' + '.' + name).toggleClass('active');
+                // $('.popup-modal').click(function(){
+                //     $('.popup-modal').removeClass('active');
+                // });
+                $('.btn-close').click(function() {
+                    $('.popup-modal').removeClass('active');
+                });
+            })
 
             $('.action-delete').click(function() {
                 $('.popup-modal').removeClass('active');
             })
 
-            // $('.action-agree').click(function() {
-            //     let array = []
-            //     let getValueCheckbox = document.querySelectorAll('#item-check');
+            $('#popup-delete button[data-name="popup-delete"]').click(function() {
 
-            //     for (let i = 0; i < getValueCheckbox.length; i++) {
-            //         if (getValueCheckbox[i].checked) {
-            //             array.push(getValueCheckbox[i].value);
-            //         }
-            //     }
-            //     $.ajax({
-            //         type: "DELETE",
-            //         url: "{{ route('admin.category.deleteCategory') }}",
-            //         data: {
-            //             data: array,
-            //             _token: "{{ csrf_token() }}"
-            //         },
-            //         success: (res) => {
-            //             if (res.status == 200) {
-            //                 $('#table').DataTable().destroy()
-            //                 getDataTable();
-            //                 $('.alert').toggleClass('active')
-            //                 $('.popup-modal').removeClass('active');
-            //             }
-            //         }
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('admin.attr.deleteMore') }}",
+                    beforeSend: function() {
+                        $('#loader').addClass('active')
+                    },
+                    complete: function() {
+                        $('#loader').removeClass('active')
+                    },
+                    data: {
+                        data: array,
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: (res) => {
+                        if (res.status == 200) {
+                            $('#table').DataTable().ajax
+                                .reload();
+                        }
+                    }
 
-            //     })
-            // });
+                })
+            });
 
             // $('#form-add').submit(function(e) {
             //     e.preventDefault();

@@ -223,15 +223,30 @@ class AttributeController extends Controller
             ]);
         }
     }
-    public function deleteAttrSet(Request $request)
+    public function deleteMore(Request $request)
     {
-        if ($request->id) {
-            $c_attr = AttributeModel::find($request->id);
-            if ($c_attr) {
-                $c_attr->delete();
+        // if ($request->id) {
+        //     $c_attr = AttributeModel::find($request->id);
+        //     if ($c_attr) {
+        //         $c_attr->delete();
+        //     }
+        // }
+        // return back()->with(['message' => 'Xóa thành công']);
+        if($request->data){
+            foreach($request->data as $data){
+                $getAttribute = AttributeValueModel::where('attribute_id', '=', $data)->first();
+                $keyAttr = AttributeModel::where('id_attr', '=', $data)->first();
+                if ($getAttribute) {
+                    $getAttribute->delete();
+                }
+                if($keyAttr){
+                    $keyAttr->delete();
+                }
             }
         }
-        return back()->with(['message' => 'Xóa thành công']);
-      
+        return response()->json([
+            'status' => 200,
+            'data' => $request->all()
+        ]);
     }
 }

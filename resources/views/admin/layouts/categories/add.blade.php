@@ -14,7 +14,8 @@
             </nav>
         </div>
 
-        <form action="{{route('admin.category.postAddCategory')}}" id="form-add" enctype="multipart/form-data" method="post">
+        <form action="{{ route('admin.category.postAddCategory') }}" id="form-add" enctype="multipart/form-data"
+            method="post">
             @csrf
             <div class="grid grid-tempalte-colum-7-3 gap-16">
                 <div class="form-left">
@@ -23,21 +24,47 @@
                         <input type="text" placeholder="Nhập tên danh mục" class="form-control name" id="slug"
                             onkeydown="ChangeToSlug()" name="name">
                         <p class="name-error alert-danger"></p>
-                    </div>
-                    <div class="form-group">
-                        <label for="">Slug</label>
-                        <input type="text" placeholder="Nhập tên danh mục" class="form-control slug" id="convert_slug"
+                        <label for="">Đường dẫn</label>
+                        <input type="text" placeholder="Đường dẫn" class="form-control slug" id="convert_slug"
                             name="slug">
                         @if ($errors->has('slug'))
-                            <span class="text alert-danger fs-6" style="font-size: 12px">{{ $errors->first('slug') }}</span>
+                            <span class="text alert-danger fs-8" style="font-size: 12px">{{ $errors->first('slug') }}</span>
+                        @endif
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">URL muốn đến</label>
+                        <input type="text" placeholder="URL: Https://www.example.com" class="form-control"
+                            name="url">
+                        @if ($errors->has('url'))
+                            <span class="text alert-danger fs-8" style="font-size: 12px">{{ $errors->first('slug') }}</span>
                         @endif
                     </div>
                     <div class="form-group">
                         <label for="">Mô tả</label>
-                        <textarea name="desc_short" class="desc_short" id="desc_short" cols="30" rows="10"></textarea>
+                        <textarea name="desc_short" class="desc_short form-control" id="desc_short" cols="30" rows="10"></textarea>
                     </div>
 
+                    <div class="form-group">
+                        <label for="">SEO</label>
+                        <div class="form-group">
+                            <label for="">Tiêu Đề <span class="text-gray">(Nên để dưới 70 ký tự)</span> </label>
+                            <input type="text" name="meta_title" class="meta_title form-control" id="meta_title"
+                                cols="30" rows="10">
+                            <span class="text text-danger fs-8" style="font-size: 12px">Vượt quá 156 ký tự</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="label">Keywords</label>
+                            <input type="text" name="meta_keywords" class="meta_keywords form-control" id="meta_keywords"
+                                cols="30" rows="10">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Mô tả <span class="text-gray">(Nên để dưới 320 ký tự)</span> </label>
+                            <input type="text" name="meta_description" class="meta_description form-control"
+                                id="meta_description">
+                        </div>
 
+                    </div>
 
                 </div>
 
@@ -50,7 +77,7 @@
                         </div>
                         <div>
                             <input type="radio" name="status" checked id="status" class="status" value="1"
-                                style="width:auto;"> <label for="" class="ms-1" >Hiện</label>
+                                style="width:auto;"> <label for="" class="ms-1">Hiện</label>
                         </div>
                     </div>
                     <div class="form-group">

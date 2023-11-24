@@ -134,6 +134,7 @@ Route::group([ 'middleware' => 'Localization'],function() {
             Route::put('/edit/',[AttributeController::class,'putEditAttr'])->name('putEditAttr');
             Route::delete('/delete',[AttributeController::class,'deleteAttr'])->name('deleteAttr');
             Route::get('/delete-attribute-set',[AttributeController::class,'deleteAttrSet'])->name('deleteAttrSet');
+            Route::get('/delete-more',[AttributeController::class,'deleteMore'])->name('deleteMore');
         });
         Route::prefix('roles')->name('roles.')->group(function(){
             Route::get('/',[RoleController::class,'index'])->name('role.index');
