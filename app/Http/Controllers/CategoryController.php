@@ -37,29 +37,27 @@ class CategoryController extends Controller
     public function editCategory(Request $request)
     {
         $cate =  CategoryModel::find($request->id);
-        $getFilter = $cate->getFilter()->get();
-        return response()->json([
-            "status" => 200,
-            "data" => $cate,
-            "listFilter" => $getFilter
-        ]);
+        $childrend = $cate->childrendCategory();
+        $listCategory = CategoryModel::whereNot('id_category', '=', $request->id)->get();
+        return view('admin.layouts.categories.edit', compact('cate','childrend','listCategory'));
     }
 
     public function postAddCategory(Request $request)
     {
-        // $validator = Validator::make($request->all(),
-        // [
-        //     'name' => 'required|max:255',
-        //     'slug' => 'required',
-        // ]
-        // );
-        // if($validator->fails()){
-        //     return response()->json([
-        //         'status' => 404,
-        //         'message' => $validator->messages()
-        //     ]);
-        // };
-        // dd($request->all());
+        $validator = Validator::make($request->all(),
+        [
+            'name' => 'required|max:255',
+       
+        ]
+        ,
+            [
+                'name.required' => 'Tên không được bỏ trống',
+            ]
+        );
+        if($validator->fails()){
+            // dd($validator->errors());
+            return back()->with(['errors' => $validator->errors()]);
+        };
         $category = new CategoryModel();
         $category->name_category = $request->name;
         $category->slug = $request->slug;
@@ -90,6 +88,10 @@ class CategoryController extends Controller
             // }
         }
         $category->hide = $request->status;
+        $category->meta_title =  $request->meta_title;
+        $category->meta_description =  $request->meta_description;
+        $category->meta_keyword =  $request->meta_keywords;
+        $category->tags = $request->tags;
         $category->save();
     }
 
@@ -108,6 +110,7 @@ class CategoryController extends Controller
                 'message' => $validator->messages()
             ]);
         };
+        dd($request->all());
         $category =  CategoryModel::where('id_category', '=', $request->id)->first();
         $category->name_category = $request->name;
         $category->slug = $request->slug;
@@ -137,6 +140,10 @@ class CategoryController extends Controller
             }
         }
         $category->hide = $request->status;
+        $category->meta_title =  $request->meta_title;
+        $category->meta_description =  $request->meta_description;
+        $category->meta_keyword =  $request->meta_keywords;
+        $category->tags = $request->tags;
         $category->save();
         if ($request->idFilter) {
             $filter = explode(',', $request->idFilter);

@@ -2577,3 +2577,10 @@ body{
     transform: scale(1.2, 1);
   }
 }
+
+#show-file.active{
+  display: block;
+}
+#show-file{
+  display: none;
+}

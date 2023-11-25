@@ -51,8 +51,9 @@ Route::group([ 'middleware' => 'Localization'],function() {
         });
         Route::prefix('category')->name('category.')->group(function() {
             Route::get('/',[CategoryController::class,'listCategory'])->name('listCategory');
-            Route::get('/api/list',[CategoryController::class,'apiListCategory'])->name('apiListCategory');
+            Route::get('/api/list',[CategoryController::class,'apiListCategory'])->name('apiListCategory'); // Trả Api về form edit popup
             Route::get('/add',[CategoryController::class,'addCategory'])->name('addCategory');
+            // Route::get('/edit/',[CategoryController::class,'editCategory'])->name('editCategory'); // Xử lý form edit popup
             Route::get('/edit',[CategoryController::class,'editCategory'])->name('editCategory');
             Route::post('/add',[CategoryController::class,'postAddCategory'])->name('postAddCategory');
             Route::post('/edit',[CategoryController::class,'putEditCategory'])->name('putEditCategory');
@@ -161,7 +162,8 @@ Route::group([ 'middleware' => 'Localization'],function() {
             Route::post('/add',[UserController::class,'UserFormPostAdd'])->name('User.store')->middleware(['permission:user add']);
             Route::get('/delete/{id}',[UserController::class,'UserDelete'])->name('User.delete')->middleware(['permission:user delete']);
         });
-        Route::post('ckeditor/image_upload', [FileController::class,'uploadFile'])->name('uploadFile');
+        Route::get('ckeditor', [FileController::class,'index'])->name('indexCkeditor');
+        Route::post('ckeditor/upload', [FileController::class,'uploadFile'])->name('uploadFile');
     });
     Route::get('lang/{language}',[IndexController::class,'checkLanguage'])->name('checkLanguage');
 });

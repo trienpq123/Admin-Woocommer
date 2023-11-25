@@ -1,5 +1,15 @@
 @extends('admin.index')
 @section('css')
+    <style>
+        .bootstrap-tagsinput .tag {
+            margin-right: 2px;
+            color: #4154f1 !important;
+            background-color: hsl(220, 100%, 98%);
+            padding: 0.2rem;
+            border-radius: 4px;
+            width: 100%;
+        }
+    </style>
 @endsection
 @section('articles')
     <div id="main" class="main">
@@ -23,12 +33,15 @@
                         <label for="">Thêm danh mục</label>
                         <input type="text" placeholder="Nhập tên danh mục" class="form-control name" id="slug"
                             onkeydown="ChangeToSlug()" name="name">
-                        <p class="name-error alert-danger"></p>
+                            @if ($errors->has('name'))
+                            <p class="text alert-danger fs-8" style="font-size: 12px">{{ $errors->first('name') }}</p>
+                        @endif
+                      
                         <label for="">Đường dẫn</label>
                         <input type="text" placeholder="Đường dẫn" class="form-control slug" id="convert_slug"
                             name="slug">
                         @if ($errors->has('slug'))
-                            <span class="text alert-danger fs-8" style="font-size: 12px">{{ $errors->first('slug') }}</span>
+                            <p class="text alert-danger fs-8" style="font-size: 12px">{{ $errors->first('slug') }}</p>
                         @endif
                     </div>
 
@@ -105,13 +118,18 @@
                     <div class="form-group">
                         <label for="">Hình ảnh</label>
                         <input type="file" name="image" id="" class="add-file" id="upload-file"
-                            accept="image/*" multiple>
+                            accept="image/*">
                         <p class="image-error text text-danger"></p>
-                        <div class="form-group" id="show-file" style="width:120px;height:120px; padding-top: 8px">
-                            <img src="https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/t/_/t_m_18.png"
-                                alt="">
+                        <div class="form-group" id="show-file"
+                            style="width:120px;height:120px; padding: 8px;background-color:#d9e1ef;">
+                            <img src="" alt="">
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label for="">Tags</label>
+                        <input type="text" name="tags" data-role="tagsinput" class="form-control" />
+                        <p class="text-gray text-break fs-6">Mỗi tags cách nhau bởi dấu phẩy</p>
+                    </div> 
                 </div>
             </div>
 
@@ -126,8 +144,22 @@
             // SELECT 2
             $('.js-example-disabled-results').select2();
             // Render Image khi upload
+            $(".add-file").change(function(event) {
+                console.log(event.target.files);
+                if (event.target.files && event.target.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function(event) {
+
+                        var imageURL = event.target.result;
+                        console.log(imageURL);
+                        $('#show-file').addClass('active');
+                        $("#show-file img").attr("src", imageURL);
+                    };
+                    reader.readAsDataURL(event.target.files[0]);
+                }
+            });
 
         });
     </script>
-    
+   
 @endpush
