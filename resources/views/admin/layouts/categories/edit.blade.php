@@ -24,9 +24,9 @@
             </nav>
         </div>
 
-        <form action="{{ route('admin.category.postAddCategory') }}" id="form-add" enctype="multipart/form-data"
-            method="post">
+        <form action="{{ route('admin.category.putEditCategory',['id' => $cate->id_category]) }}" id="form-edit" enctype="multipart/form-data" method="post">
             @csrf
+            @method('put')
             <div class="grid grid-tempalte-colum-7-3 gap-16">
                 <div class="form-left">
                     <div class="form-group">
@@ -75,7 +75,7 @@
                         </div>
                         <div class="form-group">
                             <label for="">Mô tả <span class="text-gray">(Nên để dưới 320 ký tự)</span> </label>
-                            <input type="text" name="meta_description" class="meta_description form-control"  value="{{$cate->description}}"
+                            <input type="text" name="meta_description" class="meta_description form-control"  value="{{$cate->meta_description}}"
                                 id="meta_description">
                         </div>
 
@@ -87,11 +87,11 @@
                     <div class="form-group">
                         <label for="">Trạng thái</label>
                         <div>
-                            <input type="radio" name="status" id="status" class="status" value="0" {{$cate->status == 0 ? 'checked' : ''}}
+                            <input type="radio" name="status" id="status" class="status" value="0" {{$cate->hide == 0 ? 'checked' : ''}}
                                 style="width:auto;"><label for="" class="ms-1" >Ẩn</label>
                         </div>
                         <div>
-                            <input type="radio" name="status" {{$cate->status == 1 ? 'checked' : ''}} id="status" class="status" value="1"
+                            <input type="radio" name="status" {{$cate->hide == 1 ? 'checked' : ''}} id="status" class="status" value="1"
                                 style="width:auto;"> <label for="" class="ms-1">Hiện</label>
                         </div>
                     </div>

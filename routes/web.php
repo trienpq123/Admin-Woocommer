@@ -56,7 +56,7 @@ Route::group([ 'middleware' => 'Localization'],function() {
             // Route::get('/edit/',[CategoryController::class,'editCategory'])->name('editCategory'); // Xử lý form edit popup
             Route::get('/edit',[CategoryController::class,'editCategory'])->name('editCategory');
             Route::post('/add',[CategoryController::class,'postAddCategory'])->name('postAddCategory');
-            Route::post('/edit',[CategoryController::class,'putEditCategory'])->name('putEditCategory');
+            Route::put('/edit/{id}',[CategoryController::class,'putEditCategory'])->name('putEditCategory');
             Route::delete('/delete',[CategoryController::class,'deleteCategory'])->name('deleteCategory');
             Route::get('/getChild/',[CategoryController::class,'getChildCategory'])->name('getChildCategory');
         });
@@ -67,7 +67,7 @@ Route::group([ 'middleware' => 'Localization'],function() {
             Route::get('/edit',[ProductController::class,'editProduct'])->name('editProduct');
             Route::post('/add',[ProductController::class,'postAddProduct'])->name('postAddProduct');
             Route::post('/edit',[ProductController::class,'putEditProduct'])->name('putEditProduct');
-            Route::delete('/delete',[ProductController::class,'deleteProduct'])->name('deleteProduct');
+            Route::post('/delete',[ProductController::class,'deleteProduct'])->name('deleteProduct');
             Route::delete('/delete-product-delete',[ProductController::class,'deleteDetailProduct'])->name('deleteProductDetail');
             Route::delete('/delete-product-image',[ProductController::class,'deleteImageProduct'])->name('deleteImageProduct');
         });

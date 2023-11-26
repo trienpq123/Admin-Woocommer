@@ -3,7 +3,7 @@
     <div id="main" class="main">
 
         <a href="{{ route('admin.category.addCategory') }}" class="btn btn-add" data-name="add-product">Thêm mới</a>
-        <button class="btn btn-delete delete-checkbox" id="delete-checkbox" disabled
+        <button class="btn btn-delete delete-checkbox btn-danger" id="delete-checkbox" disabled
             data-name="popup-delete-checkbox">Xoá</button>
 
         <div class="table">
@@ -17,7 +17,7 @@
                         <th>Tên danh mục</th>
                         <th>Ẩn/Hiện</th>
                         <th></th>
-                        <th></th>
+                        {{-- <th></th> --}}
                     </tr>
                 </thead>
                 {{-- <tbody>
@@ -312,13 +312,14 @@
                             data: null,
                             render: function(data, type, row, meta) {
                                 // return `<a class="btn-edit"  data-name="edit-product" data-id="${data.id_category}">Chỉnh sửa</a>`
-                                return data.hide == 1 ? `<label class="switch">
-                                                            <input type="checkbox" checked>
-                                                            <span class="slider"></span>
-                                                        </label>` : `<label class="switch">
-                                                                        <input type="checkbox">
-                                                                        <span class="slider"></span>
-                                                                    </label>`
+                                // return data.hide == 1 ? `<label class="switch">
+                                //                             <input type="checkbox" checked>
+                                //                             <span class="slider"></span>
+                                //                         </label>` : `<label class="switch">
+                                //                                         <input type="checkbox">
+                                //                                         <span class="slider"></span>
+                                //                                     </label>`
+                                return data.hide == 0 ? `<span class="badge badge-danger">Ẩn</span>` :  `<span class="badge badge-success">Hiển thị</span>`
                             }
                         },
                         // {
@@ -330,9 +331,9 @@
                         {
                             data: null,
                             render: function(data, type, row, meta) {
-                                return `<div class="d-flex align-items-center btn-action">
-                                            <a href="{{ route('admin.category.editCategory')}}?id=${data.id_category}"   class="btn-edit" ><i class="ri-edit-box-line"></i></a>
-                                            <a href="{{ route('admin.category.editCategory') }}?id=${data.id_category}" class="btn btn-delete" id="action-delete"  data-id="${data.id_attr}"><i class="ri-delete-bin-5-line"></i></a>
+                                return `<div class="d-flex align-items-center justify-content-center btn-action">
+                                            <span><a href="{{ route('admin.category.editCategory') }}?id=${data.id_category}"   class="btn-edit" ><i class="ri-edit-box-line"></i></a></span>
+                                            <span><button  class="btn btn-delete" id="action-delete"  data-id="${data.id_category}"><i class="ri-delete-bin-5-line"></i></button></span>
                                         </div>`
                             }
                         }
@@ -462,7 +463,7 @@
 
             //         $.ajax({
             //             type: "POST",
-            //             url: "{{ route('admin.category.putEditCategory') }}",
+            //             url: "",
             //             data: formData,
             //             success: (res) => {
             //                 if (res.status == 404) {
@@ -498,21 +499,27 @@
                     $.ajax({
                         url: "{{ route('admin.category.deleteCategory') }}",
                         type: "delete",
+                        beforeSend: function() {
+                            $('#loader').addClass('active')
+                        },
+                        complete: function() {
+                            $('#loader').removeClass('active')
+                        },
                         data: {
                             data: [id],
                             _token: "{{ csrf_token() }}"
                         },
                         success: (res) => {
                             if (res.status == 200) {
-                                console.log(res)
-                                $('#table').DataTable().destroy()
-                                getDataTable();
-                                $('.alert').toggleClass('active')
+                                $('#table').DataTable().ajax
+                                    .reload();
                             }
                         }
                     })
                 });
             })
+
+
 
 
             $('.item-check-all').change(function() {

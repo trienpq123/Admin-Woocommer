@@ -517,7 +517,7 @@
 
                 //     //     $.ajax({
                 //     //         type: "POST",
-                //     //         url: "{{ route('admin.category.putEditCategory') }}",
+                //     //         url: "",
                 //     //         data: formData,
                 //     //         success: (res) => {
                 //     //             if (res.status == 404) {

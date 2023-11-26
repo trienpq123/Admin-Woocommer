@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CategoryModel;
 use App\Models\FilterCategory;
 use App\Models\FilterModel;
+use CKSource\CKFinder\Filesystem\File\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
@@ -39,22 +40,22 @@ class CategoryController extends Controller
         $cate =  CategoryModel::find($request->id);
         $childrend = $cate->childrendCategory();
         $listCategory = CategoryModel::whereNot('id_category', '=', $request->id)->get();
-        return view('admin.layouts.categories.edit', compact('cate','childrend','listCategory'));
+        return view('admin.layouts.categories.edit', compact('cate', 'childrend', 'listCategory'));
     }
 
     public function postAddCategory(Request $request)
     {
-        $validator = Validator::make($request->all(),
-        [
-            'name' => 'required|max:255',
-       
-        ]
-        ,
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required|max:255',
+
+            ],
             [
                 'name.required' => 'Tên không được bỏ trống',
             ]
         );
-        if($validator->fails()){
+        if ($validator->fails()) {
             // dd($validator->errors());
             return back()->with(['errors' => $validator->errors()]);
         };
@@ -95,7 +96,7 @@ class CategoryController extends Controller
         $category->save();
     }
 
-    public function putEditCategory(Request $request)
+    public function putEditCategory(Request $request, $id)
     {
         $validator = Validator::make(
             $request->all(),
@@ -105,12 +106,8 @@ class CategoryController extends Controller
             ]
         );
         if ($validator->fails()) {
-            return response()->json([
-                'status' => 404,
-                'message' => $validator->messages()
-            ]);
+            return back()->with(['errors' => $validator->errors()]);
         };
-        dd($request->all());
         $category =  CategoryModel::where('id_category', '=', $request->id)->first();
         $category->name_category = $request->name;
         $category->slug = $request->slug;
@@ -118,7 +115,13 @@ class CategoryController extends Controller
         if ($request->parent_category) {
             $category->parent_category = $request->parent_category;
         };
-        if ($request->image != "undefined") {
+        if ($request->image) {
+            // Xóa hình ảnh trong thư mục
+            $path = 'public/uploads/images/';
+
+            if (file_exists($path . $category->name_image)) {
+                unlink($path . $category->name_image);
+            }
             $imageName = $request->image;
             $name_image = time() . '_' . $imageName->getClientOriginalName();
             $explode = explode('.', $name_image);
@@ -130,13 +133,6 @@ class CategoryController extends Controller
                 $link_url = env('APP_URL') . '/' . $path . $name_image;
                 $category->image_category = $link_url;
                 $category->name_image = $name_image;
-            } else {
-                return response()->json(
-                    [
-                        'status' => 404,
-                        'message' => ["image" =>  "Tệp phải là hình ảnh"]
-                    ]
-                );
             }
         }
         $category->hide = $request->status;
@@ -144,26 +140,31 @@ class CategoryController extends Controller
         $category->meta_description =  $request->meta_description;
         $category->meta_keyword =  $request->meta_keywords;
         $category->tags = $request->tags;
+        $category->desc_category = $request->desc_short;
         $category->save();
-        if ($request->idFilter) {
-            $filter = explode(',', $request->idFilter);
-            $filderModel  = FilterModel::find($filter);
-            $category->filters()->sync($filderModel);
-        }
-        return response()->json([
-            "status" => 200,
-            "data" => $request->all()
-        ]);
+        // if ($request->idFilter) {
+        //     $filter = explode(',', $request->idFilter);
+        //     $filderModel  = FilterModel::find($filter);
+        //     $category->filters()->sync($filderModel);
+        // }
+        // return response()->json([
+        //     "status" => 200,
+        //     "data" => $request->all()
+        // ]);
+        return back()->with(['status' => 200, 'message' => 'Cập nhật thành công']);
     }
 
     public function deleteCategory(Request $request)
     {
         if ($request->data) {
             foreach ($request->data as $item) {
-                CategoryModel::where('id_category', '=', $item)->delete();
-                $getFilterCate = FilterCategory::where('id_category', '=', $item);
-                if (count($getFilterCate->get()) > 0) {
-                    $getFilterCate->delete();
+                $find_category = CategoryModel::where('id_category', '=', $item)->first();
+                if ($find_category) {
+                    $path = 'public/uploads/images/';
+                    if (file_exists($path . $find_category->name_image)) {
+                        unlink($path . $find_category->name_image);
+                    }
+                    $find_category->delete();
                 }
             }
         }
