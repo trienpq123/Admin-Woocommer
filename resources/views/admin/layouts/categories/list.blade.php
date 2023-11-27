@@ -1,8 +1,21 @@
 @extends('admin.index')
 @section('articles')
     <div id="main" class="main">
-
-        <a href="{{ route('admin.category.addCategory') }}" class="btn btn-add" data-name="add-product">Thêm mới</a>
+        <div class="alert alert-primary alert-dismissible fade show alert-fixed" role="alert">
+            A simple primary alert—check it out!
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div class="pagetitle">
+            <h1>Thuộc tính</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                    <li class="breadcrumb-item">Danh mục</li>
+                    <li class="breadcrumb-item active">Danh sách nhanh mục</li>
+                </ol>
+            </nav>
+        </div>
+        <a href="{{ route('admin.category.addCategory') }}" class="btn btn-add" data-name="add-product">Thêm danh mục mới</a>
         <button class="btn btn-delete delete-checkbox btn-danger" id="delete-checkbox" disabled
             data-name="popup-delete-checkbox">Xoá</button>
 
@@ -313,13 +326,15 @@
                             render: function(data, type, row, meta) {
                                 // return `<a class="btn-edit"  data-name="edit-product" data-id="${data.id_category}">Chỉnh sửa</a>`
                                 // return data.hide == 1 ? `<label class="switch">
-                                //                             <input type="checkbox" checked>
-                                //                             <span class="slider"></span>
-                                //                         </label>` : `<label class="switch">
-                                //                                         <input type="checkbox">
-                                //                                         <span class="slider"></span>
-                                //                                     </label>`
-                                return data.hide == 0 ? `<span class="badge badge-danger">Ẩn</span>` :  `<span class="badge badge-success">Hiển thị</span>`
+                            //                             <input type="checkbox" checked>
+                            //                             <span class="slider"></span>
+                            //                         </label>` : `<label class="switch">
+                            //                                         <input type="checkbox">
+                            //                                         <span class="slider"></span>
+                            //                                     </label>`
+                                return data.hide == 0 ?
+                                    `<span class="badge badge-danger">Ẩn</span>` :
+                                    `<span class="badge badge-success">Hiển thị</span>`
                             }
                         },
                         // {
@@ -339,15 +354,19 @@
                         }
                     ],
                     language: {
-                        search: "Tìm kiếm",
-                        Show: "Hiển thị"
+                        "search": "Tìm kiếm",
+                        "Show": "Hiển thị",
+                        "lengthMenu": "Hiển thị _MENU_ trang",
+                        "infoEmpty": "Trang 0 to 0 of 0 trang",
+                        "infoFiltered": "(Đã lọc của _MAX_ tổng trang)",
+                        "info": "Đang hiển thị _START_ đến _END_ của _TOTAL_ trang",
+                        paginate: {
+                            "first": "Trang Đầu",
+                            "previous": "Trang trước",
+                            "next": "Trang tiếp",
+                            "last": "Trang cuối"
+                        },
                     },
-                    paginate: {
-                        first: "Trang Đầu",
-                        previous: "Trang trước",
-                        next: "Trang tiếp",
-                        last: "Trang cuối"
-                    }
                 })
             }
             // Xử lý popup edit

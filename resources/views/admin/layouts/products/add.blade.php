@@ -2,172 +2,185 @@
 @section('articles')
     <div class="list-table">
         <div class="main" id="main">
-           
+            <div class="alert alert-primary alert-dismissible fade show alert-fixed" role="alert">
+                A simple primary alert—check it out!
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <div class="pagetitle">
+                <h1>Sản phẩm</h1>
+                <nav>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                        <li class="breadcrumb-item">Sản phẩm</li>
+                        <li class="breadcrumb-item active">Thêm sản phẩm mới</li>
+                    </ol>
+                </nav>
+            </div>
 
 
 
-                
-                    <form id="form-add" enctype="multipart/form-data" method="post">
-                        @csrf
-                        <div class="grid grid-tempalte-colum-7-3 gap-16">
-                            <div class="form-left">
-                                <div class="form-group">
-                                    <label for="">Tên sản phẩm</label>
-                                    <input type="text" placeholder="Nhập tên Sản phẩm" class="form-control name"
-                                        id="slug" onchange="ChangeToSlug()" name="name">
-                                    <p class="name-error alert-danger"></p>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Slug</label>
-                                    <input type="text" placeholder="Nhập tên Sản phẩm" class="form-control slug"
-                                        id="convert_slug" name="slug">
-                                    @if ($errors->has('slug'))
-                                        <span class="text alert-danger fs-6"
-                                            style="font-size: 12px">{{ $errors->first('slug') }}</span>
-                                    @endif
-                                </div>
-                                <div class="form-group">
-                                    <label for="parent_category">Danh mục</label>
-                                    <select class="category js-example-basic-multiple-2" id="parent_category"
-                                        name="parent_category[]" multiple>
-                                        <option value="">Chưa có</option>
-                                        @if (count($listCategory) > 0)
-                                            @foreach ($listCategory as $item)
-                                                <option value={{ $item->id_category }}>{{ $item->name_category }}</option>
-                                            @endforeach
-                                        @endif
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Mã sản phẩm (SKU)</label>
-                                    <input type="text" placeholder="Nhập tên Sản phẩm" class="form-control product_sku"
-                                        id="product_sku" name="product_sku">
 
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Mô tả</label>
-                                    <textarea name="desc_short" class="desc_short" id="desc_short" cols="30" rows="10"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Mô tả</label>
-                                    <textarea name="desc" class="desc" id="desc" cols="30" rows="10"></textarea>
-                                </div>
+            <form id="form-add" enctype="multipart/form-data" method="post">
+                @csrf
+                <div class="grid grid-tempalte-colum-7-3 gap-16">
+                    <div class="form-left">
+                        <div class="form-group">
+                            <label for="">Tên sản phẩm</label>
+                            <input type="text" placeholder="Nhập tên Sản phẩm" class="form-control name" id="slug"
+                                onchange="ChangeToSlug()" name="name">
+                            <p class="name-error alert-danger"></p>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Slug</label>
+                            <input type="text" placeholder="Nhập tên Sản phẩm" class="form-control slug"
+                                id="convert_slug" name="slug">
+                            @if ($errors->has('slug'))
+                                <span class="text alert-danger fs-6"
+                                    style="font-size: 12px">{{ $errors->first('slug') }}</span>
+                            @endif
+                        </div>
+                        <div class="form-group">
+                            <label for="">Mã sản phẩm (SKU)</label>
+                            <input type="text" placeholder="Nhập tên Sản phẩm" class="form-control product_sku"
+                                id="product_sku" name="product_sku">
 
-                                <div class="form-group">
-                                    <div class="flex align-items-center justify-content-space-betweent">
-                                        <label for="">Thêm thuộc tính</label>
-
-                                        <button type="button" class="btn btn-modal btn-primary ms-2" data-bs-toggle="modal"
-                                            data-bs-target="#attribute">Thêm thuộc tính</button>
-                                        <!-- <div class="modal fade" id="attribute" tabindex="-1" style="display: none;" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title">Thêm thuộc tính mới</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                        <button type="button" class="btn btn-primary">Save changes</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div> -->
-                                    </div>
-                                    <table class="table">
-                                        <thead>
-                                            <th>Tên thuộc tính ( Size - Color )</th>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <input type="text" placeholder="kích thước" class="add-size">
-                                                    <div class="container-size">
-                                                        {{-- <button class="badge-2" data-id="16gb">16GB <span class="close">x</span></button> --}}
-
-                                                    </div>
-                                                </td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <input type="text" placeholder="Màu sắc" class="add-color">
-                                                    <div class="container-color">
-
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="form-group table-price">
-                                    <label for="">Chỉnh sửa bảng giá</label>
-                                    <table class="table">
-                                        <thead>
-                                            <th></th>
-                                            <th>Tên thuộc tính</th>
-                                            <th>Mã sản phẩm</th>
-                                            <th>Giá</th>
-                                            <th>Giá giảm</th>
-                                            <th>Hàng tồn kho</th>
-                                        </thead>
-                                        <tbody>
-                                        </tbody>
-                                    </table>
-                                </div>
-
-
-
-                            </div>
-
-                            <div class="form-right">
-                                <div class="form-group">
-                                    <input type="radio" name="status" id="status" class="status" value="0"
-                                        style="width:auto;"><label for="">Ẩn</label>
-                                    <input type="radio" name="status" checked id="status" class="status"
-                                        value="1" style="width:auto;"> <label for="">Hiện</label>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Chọn thương hiệu</label>
-                                    <select class="js-example-basic-single brand form-control" name="idBrand"
-                                        multiple="multiple">
-                                        <option>Chưa chọn thương hiệu</option>
-                                        @if (count($getBrands) > 0)
-                                            @foreach ($getBrands as $item)
-                                                <option value={{ $item->id_brand }}>{{ $item->name_brand }}</option>
-                                            @endforeach
-                                        @endif
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Hình ảnh</label>
-                                    <input type="file" name="image" id="" class="add-file"
-                                        id="upload-file" accept="image/*" multiple>
-                                    <p class="image-error text text-danger"></p>
-                                    <div class="form-group" id="show-file"
-                                        style="width:120px;height:120px; padding-top: 8px">
-                                        <img src="https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/t/_/t_m_18.png"
-                                            alt="">
-                                    </div>
-                                </div>
-                                <div class="product-option">
-                                    <label for="">Chọn Thông số kỹ thuật</label>
-                                    <div class="product-option__inner"></div>
-                                </div>
-                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="parent_category">Danh mục</label>
+                            <select class="category" id="parent_category"
+                                name="parent_category[]" multiple>
+                                <option value="">Chưa có</option>
+                                @if (count($listCategory) > 0)
+                                    @foreach ($listCategory as $item)
+                                        <option data-img="{{$item->image_category}}" value={{ $item->id_category }}>{{ $item->name_category }}</option>
+                                    @endforeach
+                                @endif
+                            </select>
                         </div>
 
-                            <button type="submit" class="btn btn-submit">Xác nhận</button>
-                        
-                    </form>
-            
+                        <div class="form-group">
+                            <label for="">Mô tả</label>
+                            <textarea name="desc_short" class="desc_short" id="desc_short" cols="30" rows="10"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Mô tả</label>
+                            <textarea name="desc" class="desc" id="desc" cols="30" rows="10"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="flex align-items-center justify-content-space-betweent">
+                                <label for="">Thêm thuộc tính</label>
+
+                                <button type="button" class="btn btn-modal btn-primary ms-2" data-bs-toggle="modal"
+                                    data-bs-target="#attribute">Thêm thuộc tính</button>
+                                <!-- <div class="modal fade" id="attribute" tabindex="-1" style="display: none;" aria-hidden="true">
+                                                                                <div class="modal-dialog">
+                                                                                    <div class="modal-content">
+                                                                                        <div class="modal-header">
+                                                                                            <h5 class="modal-title">Thêm thuộc tính mới</h5>
+                                                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                                        </div>
+                                                                                        <div class="modal-body">
+                                                                                            
+                                                                                        </div>
+                                                                                        <div class="modal-footer">
+                                                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                                            <button type="button" class="btn btn-primary">Save changes</button>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div> -->
+                            </div>
+                            <table class="table">
+                                <thead>
+                                    <th>Tên thuộc tính ( Size - Color )</th>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <input type="text" placeholder="kích thước" class="add-size">
+                                            <div class="container-size">
+                                                {{-- <button class="badge-2" data-id="16gb">16GB <span class="close">x</span></button> --}}
+
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input type="text" placeholder="Màu sắc" class="add-color">
+                                            <div class="container-color">
+
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="form-group table-price">
+                            <label for="">Chỉnh sửa bảng giá</label>
+                            <table class="table">
+                                <thead>
+                                    <th></th>
+                                    <th>Tên thuộc tính</th>
+                                    <th>Mã sản phẩm</th>
+                                    <th>Giá</th>
+                                    <th>Giá giảm</th>
+                                    <th>Hàng tồn kho</th>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
 
 
 
-            
+                    </div>
+
+                    <div class="form-right">
+                        <div class="form-group">
+                            <input type="radio" name="status" id="status" class="status" value="0"
+                                style="width:auto;"><label for="">Ẩn</label>
+                            <input type="radio" name="status" checked id="status" class="status" value="1"
+                                style="width:auto;"> <label for="">Hiện</label>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Chọn thương hiệu</label>
+                            <select class=" brand form-control" id="brand" name="idBrand">
+                                <option>Chưa chọn thương hiệu</option>
+                                @if (count($getBrands) > 0)
+                                    @foreach ($getBrands as $item)
+                                        <option data-img="{{ $item->logo_brand }}" value={{ $item->id_brand }}>
+                                            {{ $item->name_brand }}</option>
+                                    @endforeach
+                                @endif
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Hình ảnh</label>
+                            <input type="file" name="image" id="" class="add-file" id="upload-file"
+                                accept="image/*" multiple>
+                            <p class="image-error text text-danger"></p>
+                            <div id="show-image" style="display:flex;align-items:center;flex-wrap: wrap; gap:10px;">
+                                {{-- RENDER IMAGE --> JAVASCRIPT -- Line 202 --}}
+                            </div>
+
+                        </div>
+                        <div class="product-option">
+                            <label for="">Chọn Thông số kỹ thuật</label>
+                            <div class="product-option__inner"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-submit">Xác nhận</button>
+
+            </form>
+
+
+
+
+
         </div>
     </div>
 @endsection
@@ -187,9 +200,63 @@
     </script>
     <script>
         $(document).ready(function() {
+            // Render Image khi upload
+            $(".add-file").change(function(event) {
+                console.log(event.target.files);
+                if (event.target.files && event.target.files.length > 0) {
+                    let show_image = $('#show-image');
+                    let image = '';
+                    for (let i = 0; i < event.target.files.length; i++) {
+                        console.log(event.target.files);
+                        var reader = new FileReader();
+                        reader.onload = function(event) {
+
+                            var imageURL = event.target.result;
+                            console.log(imageURL);
+                            image = ` <div class="form-group image-item" 
+                                    style="width:120px;height:120px; padding: 8px;background-color:#d9e1ef;">
+                                    <img src="${imageURL}" alt="" style="height:100%; object-fit:cover;"
+                                  
+                                </div>`
+                            show_image.append(image)
+
+                        };
+                        reader.readAsDataURL(event.target.files[i]);
+
+                    }
+
+                }
+            });
             // SELECT 2
             $('.js-example-basic-multiple-1').select2();
             $('.js-example-basic-multiple-2').select2();
+            // Element Show Brand
+
+
+            function formatState(state) {
+                console.log(state.element.attributes[0].value);
+                if (!state.id) {
+                    return state.text;
+                }
+
+                var baseUrl = state.element.attributes[0].value;
+                var $state = $(
+                    '<span><img class="img-flag" /> <span></span></span>'
+                );
+
+                // Use .text() instead of HTML string concatenation to avoid script injection issues
+                $state.find("span").text(state.text);
+                $state.find("img").attr("src", baseUrl);
+
+                return $state;
+            };
+
+            $('#brand').select2({
+                templateSelection: formatState
+            });
+            $('.category').select2({
+                templateSelection: formatState
+            });
 
             function InnerTableAttr() {
                 let check_size = document.querySelectorAll(".container-size .badge-2 span");
