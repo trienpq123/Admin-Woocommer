@@ -2722,3 +2722,25 @@ form select {
 .select2-container--default .select2-selection--single .select2-selection__rendered img{
   max-width: 20px;
 }
+
+/* SETUP TAB MENU */
+ .nav-tabs .nav-link.active{
+  background-color: #f6f9ff  !important;
+  border-bottom-color: #4154f1 !important;
+  color: #4154f1 !important;
+}
+
+.attr-item {
+  margin: 4px 0;
+}
+
+.btn.btn-action-append{
+  border-color: #4154f1;
+  background: unset;
+  color: #4154f1;
+  padding: 12px 16px;
+}
+.btn.btn-action-append:hover{
+  background: #4154f1;
+  color: #fff;
+}

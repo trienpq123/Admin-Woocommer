@@ -223,6 +223,7 @@ class AttributeController extends Controller
             ]);
         }
     }
+    
     public function deleteMore(Request $request)
     {
         // if ($request->id) {
@@ -248,5 +249,16 @@ class AttributeController extends Controller
             'status' => 200,
             'data' => $request->all()
         ]);
+    }
+    public function deleteAttrSet(Request $request)
+    {
+        if ($request->id) {
+            $c_attr = AttributeModel::find($request->id);
+            if ($c_attr) {
+                $c_attr->delete();
+            }
+        }
+        return back()->with(['message' => 'Xóa thành công']);
+       
     }
 }

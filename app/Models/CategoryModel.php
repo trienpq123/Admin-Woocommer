@@ -41,4 +41,13 @@ class CategoryModel extends Model
     public function childrendCategory(){
        return $this->hasMany(CategoryModel::class,'parent_category','id_category')->with('category');
     }
+
+    public function attribute(){
+        return $this->hasMany(FilterCategoryOption::class,'id_category','id_category');
+    }
+
+    public function attribute_category(){
+        return $this->hasOne(filterCategoryModel::class,'id_category','id_category');
+    }
+
 }

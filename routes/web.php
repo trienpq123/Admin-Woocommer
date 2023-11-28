@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttriButeCatController;
 use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BrandController;
@@ -17,6 +18,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Models\FilterCategoryOption;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -57,7 +59,7 @@ Route::group([ 'middleware' => 'Localization'],function() {
             Route::get('/edit',[CategoryController::class,'editCategory'])->name('editCategory');
             Route::post('/add',[CategoryController::class,'postAddCategory'])->name('postAddCategory');
             Route::put('/edit/{id}',[CategoryController::class,'putEditCategory'])->name('putEditCategory');
-            Route::delete('/delete',[CategoryController::class,'deleteCategory'])->name('deleteCategory');
+            Route::delete('/delete/',[CategoryController::class,'deleteCategory'])->name('deleteCategory');
             Route::get('/getChild/',[CategoryController::class,'getChildCategory'])->name('getChildCategory');
         });
         Route::prefix('product')->name('product.')->group(function() {
@@ -136,6 +138,17 @@ Route::group([ 'middleware' => 'Localization'],function() {
             Route::delete('/delete',[AttributeController::class,'deleteAttr'])->name('deleteAttr');
             Route::get('/delete-attribute-set',[AttributeController::class,'deleteAttrSet'])->name('deleteAttrSet');
             Route::get('/delete-more',[AttributeController::class,'deleteMore'])->name('deleteMore');
+        });
+        Route::prefix('attr-cat')->name('attr-cat.')->group(function() {
+            // Route::get('/',[AttributeController::class,'listAttr'])->name('listAttr');
+            // Route::get('/api/list',[AttributeController::class,'apiListAttr'])->name('apiListAttr');
+            // Route::get('/add',[AttributeController::class,'addAttr'])->name('addAttr');
+            // Route::get('/edit/',[AttributeController::class,'editAttr'])->name('editAttr');
+            // Route::post('/add',[AttributeController::class,'postAddAttr'])->name('postAddAttr');
+            // Route::put('/edit/',[AttributeController::class,'putEditAttr'])->name('putEditAttr');
+            Route::delete('/delete',[AttriButeCatController::class,'deleteAttrCatOption'])->name('deleteAttrCatOption');
+            // Route::get('/delete-attribute-set',[AttributeController::class,'deleteAttrSet'])->name('deleteAttrSet');
+            // Route::get('/delete-more',[AttributeController::class,'deleteMore'])->name('deleteMore');
         });
         Route::prefix('roles')->name('roles.')->group(function(){
             Route::get('/',[RoleController::class,'index'])->name('role.index');

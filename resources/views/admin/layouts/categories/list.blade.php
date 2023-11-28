@@ -517,7 +517,7 @@
                     $('.popup-modal').removeClass('active');
                     $.ajax({
                         url: "{{ route('admin.category.deleteCategory') }}",
-                        type: "delete",
+                        method: "delete",
                         beforeSend: function() {
                             $('#loader').addClass('active')
                         },
@@ -598,10 +598,11 @@
                     },
                     success: (res) => {
                         if (res.status == 200) {
-                            $('#table').DataTable().destroy()
-                            getDataTable();
-                            $('.alert').toggleClass('active')
-                            $('.popup-modal').removeClass('active');
+                            // $('#table').DataTable().destroy()
+                            // getDataTable();
+                            // $('.alert').toggleClass('active')
+                            // $('.popup-modal').removeClass('active');
+                            console.log(res);
                         }
                     }
 

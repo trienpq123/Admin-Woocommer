@@ -82,6 +82,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                       
                                         {{-- <div class="form-group">
                                             <input type="radio" name="status[]" id="status" class="status"
                                                 value="0" style="width:auto;"><label for="">Ẩn</label>
@@ -91,6 +92,8 @@
                                     </div>
 
                                 </div>
+                               
+                              
                                 <button type="button" class="btn btn-action-append">Thêm thuộc tính</button>
                                 <hr>
                                 <div class="form-group">
@@ -744,6 +747,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                     
                                     </div>
                                 `;
             $('.list-attr').append(html);

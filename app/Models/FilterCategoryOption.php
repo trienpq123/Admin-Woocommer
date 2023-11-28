@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class FilterCategory extends Model
+class FilterCategoryOption extends Model
 {
     use HasFactory;
-    protected $table = "filter_category";
-    protected $primaryKey = 'id_filter_category';
+    protected $table = "filter_category_option";
+    protected $primaryKey = 'id_filter_category_option';
     protected $fillable = [
-        'id_filter',
+        'id_filter_category',
         'id_category'
     ];
     CONST CREATED_AT = NULL;
@@ -20,7 +20,7 @@ class FilterCategory extends Model
         return $this->belongsTo(CategoryModel::class,'id_category','id_category');
     }
     public function childFilter(){
-        return $this->hasMany(FilterModel::class,'_parent','id_filter');
+        return $this->hasMany(FilterModel::class,'_parent','id_attr');
     }
 
     public function filter(){

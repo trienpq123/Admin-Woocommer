@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AttributeModel;
 use App\Models\CategoryModel;
 use App\Models\FilterCategory;
+use App\Models\filterCategoryModel;
+use App\Models\FilterCategoryOption;
 use App\Models\FilterModel;
 use CKSource\CKFinder\Filesystem\File\File;
 use Illuminate\Http\Request;
@@ -15,7 +18,8 @@ class CategoryController extends Controller
 {
     public function listCategory(Request $request)
     {
-        // $listFilter = FilterModel::whereNull('_parent')->get();
+
+
 
         return view('admin.layouts.categories.list');
     }
@@ -31,22 +35,29 @@ class CategoryController extends Controller
 
     public function addCategory(Request $request)
     {
+        $attr = AttributeModel::All();
         $listCategory = CategoryModel::all();
-        return view('admin.layouts.categories.add', compact('listCategory'));
+        return view('admin.layouts.categories.add', compact('listCategory', 'attr'));
     }
 
     public function editCategory(Request $request)
     {
         $cate =  CategoryModel::find($request->id);
-        $childrend = $cate->childrendCategory();
+        $att_cat = $cate->with(['attribute_category'])->where('id_category', $request->id)->first();
+        $att_option =FilterCategoryOption::where('id_filter_category',$att_cat->attribute_category->id_filter_category)->get();
+      
+        // dd($attr->attribute_category->id_attr);
+        // $childrend = $cate->childrendCategory();
         $listCategory = CategoryModel::whereNot('id_category', '=', $request->id)->get();
-        return view('admin.layouts.categories.edit', compact('cate', 'childrend', 'listCategory'));
+
+        return view('admin.layouts.categories.edit', compact('cate', 'listCategory', 'att_cat', 'att_option'));
     }
 
     public function postAddCategory(Request $request)
     {
+
         $validator = Validator::make(
-            $request->all(),
+
             [
                 'name' => 'required|max:255',
 
@@ -94,10 +105,36 @@ class CategoryController extends Controller
         $category->meta_keyword =  $request->meta_keywords;
         $category->tags = $request->tags;
         $category->save();
+        $lastCategory =  CategoryModel::orderBy('id_category', 'desc')->first();
+        if ($request->attr) {
+            if ($request->attr['id_attr']) {
+                $filterCategory =  filterCategoryModel::create([
+                    'id_category' => $lastCategory->id_category,
+                    'id_attr' => $request->attr['id_attr']
+                ]);
+
+                $filterCategorys = filterCategoryModel::orderBy('id_filter_category', 'desc')->first();
+             
+    
+                if ($request->attr['option'] && count($request->attr['option']) > 0) {
+                    foreach ($request->attr['option'] as $item) {
+                        $filter = new FilterCategoryOption();
+                        $filter->id_category = $lastCategory->id_category;
+                        $filter->id_filter_category = $filterCategorys->id_filter_category_option;
+                        $filter->name = $item['name'];
+                        $filter->value = $item['value'];
+                        $filter->save();
+                    }
+                }
+            }
+        }
+
+        return back()->with(['status' => 200, 'message' => 'Thêm thành công']);
     }
 
     public function putEditCategory(Request $request, $id)
     {
+        dd($request->all());
         $validator = Validator::make(
             $request->all(),
             [
@@ -160,10 +197,11 @@ class CategoryController extends Controller
             foreach ($request->data as $item) {
                 $find_category = CategoryModel::where('id_category', '=', $item)->first();
                 if ($find_category) {
-                    $path = 'public/uploads/images/';
-                    if (file_exists($path . $find_category->name_image)) {
-                        unlink($path . $find_category->name_image);
-                    }
+                    // Xoá hình ảnh
+                    // $path = 'public/uploads/images/';
+                    // if (file_exists($path . $find_category->name_image)) {
+                    //     unlink($path . $find_category->name_image);
+                    // }
                     $find_category->delete();
                 }
             }
@@ -171,7 +209,7 @@ class CategoryController extends Controller
         return response()->json([
             "status" => 200,
             "message" => "Xoá thành công",
-            'id' => $request->id
+            'id' => $request->data
         ]);
     }
 
