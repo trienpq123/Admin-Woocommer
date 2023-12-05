@@ -47,12 +47,12 @@
                         </div>
                         <div class="form-group">
                             <label for="parent_category">Danh mục</label>
-                            <select class="category" id="parent_category"
-                                name="parent_category[]" multiple>
+                            <select class="category" id="parent_category" name="parent_category[]" multiple>
                                 <option value="">Chưa có</option>
                                 @if (count($listCategory) > 0)
                                     @foreach ($listCategory as $item)
-                                        <option data-img="{{$item->image_category}}" value={{ $item->id_category }}>{{ $item->name_category }}</option>
+                                        <option data-img="{{ $item->image_category }}" value={{ $item->id_category }}>
+                                            {{ $item->name_category }}</option>
                                     @endforeach
                                 @endif
                             </select>
@@ -74,22 +74,22 @@
                                 <button type="button" class="btn btn-modal btn-primary ms-2" data-bs-toggle="modal"
                                     data-bs-target="#attribute">Thêm thuộc tính</button>
                                 <!-- <div class="modal fade" id="attribute" tabindex="-1" style="display: none;" aria-hidden="true">
-                                                                                <div class="modal-dialog">
-                                                                                    <div class="modal-content">
-                                                                                        <div class="modal-header">
-                                                                                            <h5 class="modal-title">Thêm thuộc tính mới</h5>
-                                                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                                        </div>
-                                                                                        <div class="modal-body">
-                                                                                            
-                                                                                        </div>
-                                                                                        <div class="modal-footer">
-                                                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                                                            <button type="button" class="btn btn-primary">Save changes</button>
+                                                                                    <div class="modal-dialog">
+                                                                                        <div class="modal-content">
+                                                                                            <div class="modal-header">
+                                                                                                <h5 class="modal-title">Thêm thuộc tính mới</h5>
+                                                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                                            </div>
+                                                                                            <div class="modal-body">
+                                                                                                
+                                                                                            </div>
+                                                                                            <div class="modal-footer">
+                                                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                                                <button type="button" class="btn btn-primary">Save changes</button>
+                                                                                            </div>
                                                                                         </div>
                                                                                     </div>
-                                                                                </div>
-                                                                            </div> -->
+                                                                                </div> -->
                             </div>
                             <table class="table">
                                 <thead>
@@ -97,23 +97,25 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>
-                                            <input type="text" placeholder="kích thước" class="add-size">
-                                            <div class="container-size">
-                                                {{-- <button class="badge-2" data-id="16gb">16GB <span class="close">x</span></button> --}}
+                                        <td class="d-flex gap-10">
+                                            <div class="type-attr me-2 col-lg-3">
+                                                <select name="attribute[]" class="select_type form-select">
+                                                    <option value="0">Chưa chọn</option>
+                                                    <option value="1">Kích thước</option>
+                                                    <option value="1">Thuộc tính</option>
+                                                </select>
+                                            </div>
+                                            <div class="value-attr col-lg-7">
+                                                <input type="text" placeholder="kích thước" class="add-size form-control">
+                                                <div class="container-size">
+                                                    {{-- <button class="badge-2" data-id="16gb">16GB <span class="close">x</span></button> --}}
 
+                                                </div>
                                             </div>
                                         </td>
 
                                     </tr>
-                                    <tr>
-                                        <td>
-                                            <input type="text" placeholder="Màu sắc" class="add-color">
-                                            <div class="container-color">
 
-                                            </div>
-                                        </td>
-                                    </tr>
                                 </tbody>
                             </table>
                         </div>
