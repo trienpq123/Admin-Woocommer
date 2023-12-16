@@ -16,7 +16,8 @@ class PagesModel extends Model
         'meta_description',
         'meta_keyword',
         'meta_title',
-        'status'
+        'status',
+        'image'
     ];
     CONST CREATED_AT = NULL;
     CONST UPDATED_AT = NULL;

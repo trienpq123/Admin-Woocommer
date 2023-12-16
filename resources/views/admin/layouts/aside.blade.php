@@ -100,7 +100,7 @@
           </li>
           <li>
             <a href="{{route('admin.category.addCategory')}}">
-              <i class="bi bi-circle"></i><span>Thêm danh mục mới</span>
+              <i class="bi bi-circle"></i> Thêm danh mục mới</span>
             </a>
           </li>
          
@@ -108,7 +108,7 @@
       </li>
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#product" data-bs-toggle="collapse"  href="#">
-          <i class="bi bi-menu-button-wide"></i><span>Sản phẩm</span><i class="bi bi-chevron-down ms-auto"></i>
+          <i class="ri-t-shirt-line"></i><span>Sản phẩm</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="product" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
@@ -126,7 +126,7 @@
       </li>
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#attribute" data-bs-toggle="collapse"  href="#">
-          <i class="bi bi-menu-button-wide"></i><span>Quản lý thuộc tính</span><i class="bi bi-chevron-down ms-auto"></i>
+          <i class="ri-sparkling-2-fill"></i><span>Quản lý thuộc tính</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="attribute" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
@@ -316,11 +316,12 @@
       <li class="nav-heading">Pages</li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="users-profile.html">
-          <i class="bi bi-person"></i>
-          <span>Profile</span>
+        <a class="nav-link "  href="{{route('admin.pages.listPages')}}">
+          <i class="ri-pages-line"></i><span>Trang</span>
         </a>
-      </li><!-- End Profile Page Nav -->
+     
+      </li>
+      <!-- End Type Page -->
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="pages-faq.html">
@@ -358,9 +359,9 @@
       </li><!-- End Error 404 Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-blank.html">
-          <i class="bi bi-file-earmark"></i>
-          <span>Blank</span>
+        <a class="nav-link" href="{{route('admin.system.config')}}">
+          <i class="ri-settings-5-line"></i>
+          <span>Cấu hình hệ thống</span>
         </a>
       </li><!-- End Blank Page Nav -->
 

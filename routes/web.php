@@ -17,6 +17,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SystemController;
 use App\Http\Controllers\UserController;
 use App\Models\FilterCategoryOption;
 use Illuminate\Support\Facades\Route;
@@ -139,6 +140,7 @@ Route::group([ 'middleware' => 'Localization'],function() {
             Route::get('/delete-attribute-set',[AttributeController::class,'deleteAttrSet'])->name('deleteAttrSet');
             Route::get('/delete-more',[AttributeController::class,'deleteMore'])->name('deleteMore');
         });
+   
         Route::prefix('attr-cat')->name('attr-cat.')->group(function() {
             // Route::get('/',[AttributeController::class,'listAttr'])->name('listAttr');
             // Route::get('/api/list',[AttributeController::class,'apiListAttr'])->name('apiListAttr');
@@ -150,6 +152,12 @@ Route::group([ 'middleware' => 'Localization'],function() {
             // Route::get('/delete-attribute-set',[AttributeController::class,'deleteAttrSet'])->name('deleteAttrSet');
             // Route::get('/delete-more',[AttributeController::class,'deleteMore'])->name('deleteMore');
         });
+
+        Route::prefix('system')->name('system.')->group(function(){
+           
+            Route::match(['get','post'],'/',[SystemController::class,'index'])->name('config');
+
+        });
         Route::prefix('roles')->name('roles.')->group(function(){
             Route::get('/',[RoleController::class,'index'])->name('role.index');
             Route::get('/api/get',[RoleController::class,'index'])->name('role.index');
@@ -159,6 +167,7 @@ Route::group([ 'middleware' => 'Localization'],function() {
             Route::post('/add',[RoleController::class,'RoleFormPostAdd'])->name('role.store');
             Route::get('/delete/{id}',[RoleController::class,'RoleDelete'])->name('role.delete');
         });
+      
         Route::prefix('permisson')->name('permisson.')->group(function(){
             Route::get('/',[PermissionController::class,'index'])->name('permisson.index');
             Route::get('/add',[PermissionController::class,'PermissionFormAdd'])->name('permisson.create');

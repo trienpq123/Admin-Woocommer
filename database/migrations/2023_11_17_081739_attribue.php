@@ -11,15 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('attribute', function (Blueprint $table) {
-            $table->id('id_attr');
-            $table->string('name');
-            $table->string('type');
-            $table->text('image')->nullable();
-            $table->boolean('active');
-            // $table->text('image')
-            $table->timestamps();
-        });
+        // Schema::create('attribute', function (Blueprint $table) {
+        //     $table->id('id_attr');
+        //     $table->string('name');
+        //     $table->string('type');
+        //     $table->text('image')->nullable();
+        //     $table->boolean('active');
+        //     // $table->text('image')
+        //     $table->timestamp('last_used_at')->nullable();
+        //     $table->timestamp('expires_at')->nullable();
+        //     $table->timestamps();
+        // });
     }
 
     /**
@@ -27,11 +29,11 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::create('attribute', function (Blueprint $table) {
+        // Schema::create('attribute', function (Blueprint $table) {
           
-            // $table->dropColumn('type');
-            $table->boolean('active');
-            $table->timestamps();
-        });
+        //     // $table->dropColumn('type');
+        //     $table->boolean('active');
+        //     $table->timestamps();
+        // });
     }
 };

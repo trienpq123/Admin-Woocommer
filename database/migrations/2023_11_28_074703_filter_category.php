@@ -13,7 +13,7 @@ return new class extends Migration
     {
       
             Schema::table('filter_category', function (Blueprint $table) {
-                $table->unsignedBigInteger('id_filter_category')->autoIncrement();
+                // $table->unsignedBigInteger('id_filter_category')->autoIncrement();
                 // $table->integer('id_attr');
                 // $table->integer('id_category');
                 // $table->timestamp('created_at')->useCurrent();
@@ -27,8 +27,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('filter_category', function (Blueprint $table) {
-            //
-        });
+        // Schema::create('filter_category', function (Blueprint $table) {
+            
+        // });
     }
 };

@@ -106,7 +106,9 @@ class CategoryController extends Controller
         $category->tags = $request->tags;
         $category->save();
         $lastCategory =  CategoryModel::orderBy('id_category', 'desc')->first();
-        if ($request->attr) {
+
+        if ($request->attr && $request->attr['id_attr']) {
+            dd($request->attr);
             if ($request->attr['id_attr']) {
                 $filterCategory =  filterCategoryModel::create([
                     'id_category' => $lastCategory->id_category,

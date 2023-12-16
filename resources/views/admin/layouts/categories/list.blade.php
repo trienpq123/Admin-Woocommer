@@ -15,7 +15,7 @@
                 </ol>
             </nav>
         </div>
-        <a href="{{ route('admin.category.addCategory') }}" class="btn btn-add" data-name="add-product">Thêm danh mục mới</a>
+        <a href="{{ route('admin.category.addCategory') }}" class="btn btn-add" data-name="add-product"><span><i class="ri-add-circle-line"></i></span>Thêm danh mục mới</a>
         <button class="btn btn-delete delete-checkbox btn-danger" id="delete-checkbox" disabled
             data-name="popup-delete-checkbox">Xoá</button>
 

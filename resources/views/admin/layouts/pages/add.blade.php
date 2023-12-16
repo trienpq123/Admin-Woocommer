@@ -18,12 +18,12 @@
 @section('articles')
     <div id="main" class="main">
         <div class="pagetitle">
-            <h1>Danh mục</h1>
+            <h1>Trang</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                    <li class="breadcrumb-item">Danh mục</li>
-                    <li class="breadcrumb-item active">Thêm danh mục</li>
+                    <li class="breadcrumb-item">Trang</li>
+                    <li class="breadcrumb-item active">Thêm Trang</li>
                 </ol>
             </nav>
         </div>
@@ -33,13 +33,10 @@
                     type="button" role="tab" aria-controls="infor" aria-selected="false" tabindex="-1">Thông
                     tin</button>
             </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link " id="attr-tab" data-bs-toggle="tab" data-bs-target="#bordered-attr" type="button"
-                    role="tab" aria-controls="attr" aria-selected="true">Thuộc tính</button>
-            </li>
+         
 
         </ul>
-        <form action="{{ route('admin.category.postAddCategory') }}" id="form-add" enctype="multipart/form-data"
+        <form  id="form-add" enctype="multipart/form-data"
             method="post">
             @csrf
             <div class="tab-content" id="borderedTabContent">
@@ -48,11 +45,11 @@
                     <div class="grid grid-tempalte-colum-7-3 gap-16">
                         <div class="form-left">
                             <div class="form-group">
-                                <label for="">Thêm danh mục</label>
-                                <input type="text" placeholder="Nhập tên danh mục" class="form-control name"
-                                    id="slug" onkeydown="ChangeToSlug()" name="name">
-                                @if ($errors->has('name'))
-                                    <p class="text alert-danger fs-8" style="font-size: 12px">{{ $errors->first('name') }}
+                                <label for="">Tên Trang</label>
+                                <input type="text" placeholder="Nhập tên Trang" class="form-control name"
+                                    id="slug" onkeydown="ChangeToSlug()" name="name_page">
+                                @if ($errors->has('name_page'))
+                                    <p class="text alert-danger fs-8" style="font-size: 12px">{{ $errors->first('name_page') }}
                                     </p>
                                 @endif
 
@@ -66,17 +63,21 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="">URL muốn đến</label>
-                                <input type="text" placeholder="URL: Https://www.example.com" class="form-control"
-                                    name="url">
-                                @if ($errors->has('url'))
+                                <label for="">Chọn loại trang</label>
+                                <select name="type_page" id="" class="form-select">
+                                    <option value="0">Không thuộc trang nào</option>
+                                    <option value="sanpham">Trang sản phẩmm</option>
+                                    <option value="tintuc">Trang tin tức</option>
+                                    <option value="trangchu">Trang chủ</option>
+                                </select>
+                                @if ($errors->has('type_page'))
                                     <span class="text alert-danger fs-8"
-                                        style="font-size: 12px">{{ $errors->first('slug') }}</span>
+                                        style="font-size: 12px">{{ $errors->first('type_page') }}</span>
                                 @endif
                             </div>
                             <div class="form-group">
                                 <label for="">Mô tả</label>
-                                <textarea name="desc_short" class="desc_short form-control" id="desc_short" cols="30" rows="10"></textarea>
+                                <textarea name="desc" class="desc form-control" id="desc" cols="30" rows="10"></textarea>
                             </div>
 
                             <div class="form-group">
@@ -117,30 +118,7 @@
                                         class="ms-1">Hiện</label>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="">Chọn danh mục cha</label>
-                                <select class="js-example-disabled-results parent_category form-control"
-                                    name="parent_category">
-                                    <option value="">Danh mục cha</option>
-                                    @foreach ($listCategory as $category)
-                                        <option value="{{ $category->id_category }}"> {{ $category->name_category }}
-                                        </option>
-                                        {{-- @php
-                                            $categories = $category->childrendCategory;
-                                        @endphp
-        
-                                        @while (count($categories) > 0)
-                                            @foreach ($categories as $child)
-                                                <option value="{{ $child->id_category }}">------{{ $child->name_category }}</option>
-                                            @endforeach
-        
-                                            @php
-                                                $categories = $categories->flatMap->childrendCategory;
-                                            @endphp
-                                        @endwhile --}}
-                                    @endforeach
-                                </select>
-                            </div>
+                          
                             <div class="form-group">
                                 <label for="">Hình ảnh</label>
                                 <input type="file" name="image" id="" class="add-file" id="upload-file"
@@ -159,55 +137,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="bordered-attr" role="tabpanel" aria-labelledby="attr-tab"
-                    tabindex="0">
-
-                    <div class="col-md-4">
-                        <div class="form-floating mb-3">
-                            <select class="form-select" id="floatingSelect" aria-label="Chọn thuộc tính"
-                                name="attr[id_attr]">
-                                @if (count($attr) > 0)
-                                    <option value="">Chọn thuộc tính</option>
-                                    @foreach ($attr as $item)
-                                        <option value="{{ $item->id_attr }}">{{ $item->name }}</option>
-                                    @endforeach
-                                @endif
-
-                            </select>
-                            <label for="floatingSelect">Chọn thuộc tính</label>
-                        </div>
-                    </div>
-
-                    <div class="col-xs-12">
-                        <div class="form-group">
-                            <div class="list-attr">
-                                <div class="attr-item row d-flex fl-wrap align-items-center">
-                                    <div class="col-lg-2 ">
-
-                                        <input type="text" name="attr[option][1][name]" class="form-control "
-                                            placeholder="Tên thuộc tính">
-
-                                    </div>
-                                    <div class="col-lg-8">
-
-                                        <input type="text" name="attr[option][1][value]" class="form-control"
-                                            placeholder="Giá trị thuộc tính" data-role="tagsinput">
-
-                                    </div>
-                                    <div class="col-lg-2 text-right">
-                                        <div class="btn btn-danger delete-attr">Xoá</div>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="attr-action text-right mt-3 mb-1">
-                                <button type="button" class="btn btn-submit btn-action-append attr">Thêm mới</button>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
+            
             </div>
 
             <button type="submit" class="btn btn-submit">Xác nhận</button>
@@ -227,7 +157,7 @@
                     var reader = new FileReader();
                     reader.onload = function(event) {
 
-                        var imageURL = event.target.result;
+                        var imagetype_page = event.target.result;
                         console.log(imageURL);
                         $('#show-file').addClass('active');
                         $("#show-file img").attr("src", imageURL);

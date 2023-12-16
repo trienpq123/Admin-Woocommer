@@ -101,13 +101,13 @@ img {
 
 input {
     width: 100%;
-    padding: 8px;
+    padding: 8px 16px !important;
     border-radius: 3px;
     outline: none;
     border: none;
-    /* border-color: #333 !important; */
-    color: #333;
-    /* box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; */
+    /* border:1px solid #dc3545 !important;
+    color: #000 !important;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; */
 }
 
 input:focus {
@@ -115,9 +115,20 @@ input:focus {
     ; */
 }
 
-input[type="search"]{
-    padding:4px;
+input[type="search"] {
+    padding: 4px;
 }
+
+.table input[type="search"] {
+    color: #012970;
+    border: 1px solid rgba(1, 41, 112, 0.2);
+    padding: 7px 38px 7px 8px;
+    border-radius: 3px;
+    transition: 0.3s;
+    width: 100%;
+}
+
+
 
 textarea {
     width: 100%;
@@ -266,10 +277,17 @@ table {
     width: 100%;
 }
 
+.table {
+    padding: 1rem !important;
+    background: #fff !important;
+    border-radius: 8px !important;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px !important;
+}
+
 table th {
-    font-weight: 400;
+    font-weight: 700;
     font-size: 12px;
-    background: hsla(0, 6%, 78%, 0.2)
+    background: hsla(0, 6%, 78%, 0.2);
 }
 
 table th,
@@ -424,6 +442,11 @@ form select {
     margin: 8px 0;
 }
 
+.badge {
+    padding: 6px 16px !important;
+    border-radius: 100px !important;
+}
+
 
 .badge-2 {
     padding: 2px;
@@ -451,46 +474,56 @@ form select {
 
 }
 
-.btn.btn-submit{
+.btn.btn-submit {
     color: #012970;
     padding: 8px 16px;
     border-radius: 5px;
     border: 1px solid #4154f1;
-    
+
 }
 
-.btn.btn-submit:hover{
+.btn.btn-submit:hover {
     background: #4154f1;
     color: #fff;
 }
 
-.btn.btn-add{
-    background: #4154f1;
-    border: 1px solid #155724;
-    color: #fff;
-    padding: 6px 16px;
+.btn.btn-add {
+
+    border: 1px solid #4154f1;
+    color: #4154f1;
+    padding: 8px 16px;
     border-radius: 5px;
+    font-size: 14px !important;
 }
 
-.btn.btn-add:hover{
+
+.btn.btn-add:hover {
     background: #4154f1;
     color: #fff;
 }
 
-form input{
-    font-size: 14px !important; 
+.btn-danger.disabled,
+.btn-danger:disabled {
+    padding: 8px 16px;
+    background: unset !important;
+    border: 1px solid #dc3545;
+    color: #dc3545 !important;
 }
 
-form input::placeholder{
+form input {
+    font-size: 14px !important;
+}
+
+form input::placeholder {
     font-size: 12px;
-    
+
 }
 
-.btn{
+.btn {
     font-size: 12px !important;
 }
 
-.btn.btn-action-append{
+.btn.btn-action-append {
     background: #4154f1;
     border: 1px solid #155724;
     color: #fff;
@@ -498,8 +531,8 @@ form input::placeholder{
     border-radius: 5px;
 }
 
-.ladi-box{
-    margin-top:4px;
+.ladi-box {
+    margin-top: 4px;
     background: #fff;
     padding: 8px;
 }
@@ -509,11 +542,12 @@ form input::placeholder{
     aspect-ratio: 1/1;
     object-fit: cover;
 }
-.remove.item-attr{
+
+.remove.item-attr {
     position: absolute;
 }
 
-.remove.item-attr span{
+.remove.item-attr span {
     border: 1px solid #012970;
     color: #012970;
     border-radius: 5px;
@@ -532,7 +566,8 @@ form input::placeholder{
     top: 50%;
     transform: translateY(-50%);
 }
-.btn.btn-close:hover{
+
+.btn.btn-close:hover {
     color: #fff !important;
 }
 
@@ -548,18 +583,19 @@ form input::placeholder{
     z-index: 99999;
 }
 
-.alert-dismissible .btn-close:hover{
+.alert-dismissible .btn-close:hover {
     background: transparent;
     color: #000
 }
 
 @keyframes alert {
-    from{
+    from {
         right: -100px;
         opacity: 0;
     }
-    to{
-        right:0;
+
+    to {
+        right: 0;
         opacity: 1;
     }
 }
