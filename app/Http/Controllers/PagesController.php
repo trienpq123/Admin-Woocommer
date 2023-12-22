@@ -104,11 +104,11 @@ class PagesController extends Controller
         //     ]);
         // }
         $page = new PagesModel();
-        $page->name_page = $request->name;
+        $page->title = $request->name_page;
         $page->slug = $request->slug;
-        $page->meta_description = $request->desc;
-        $page->meta_keyword = $request->keyword;
-        $page->meta_title = $request->title;
+        $page->meta_description = $request->meta_description;
+        $page->meta_keyword = $request->meta_keywords;
+        $page->meta_title = $request->meta_title;
         $page->status = $request->status;
         if ($request->image) {
             $imageName = $request->image;

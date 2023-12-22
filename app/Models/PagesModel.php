@@ -11,7 +11,7 @@ class PagesModel extends Model
     protected $table = 'pages';
     protected $primaryKey = 'id_page';
     protected $fillable = [
-        'name_page',
+        'title',
         'slug',
         'meta_description',
         'meta_keyword',
