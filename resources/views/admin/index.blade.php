@@ -213,10 +213,10 @@
 
 <script>
     $(document).ready(function(){
-        $('#loader').addClass('active');
-        setTimeout(() => {
-            $('#loader').removeClass('active')
-        }, 3000);
+        // $('#loader').addClass('active');
+        // setTimeout(() => {
+        //     $('#loader').removeClass('active')
+        // }, 3000);
     })
 </script>
 

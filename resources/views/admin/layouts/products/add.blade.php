@@ -73,27 +73,30 @@
 
                                 <button type="button" class="btn btn-modal btn-primary ms-2" data-bs-toggle="modal"
                                     data-bs-target="#attribute">Thêm thuộc tính</button>
-                                <!-- <div class="modal fade" id="attribute" tabindex="-1" style="display: none;" aria-hidden="true">
-                                                                                    <div class="modal-dialog">
-                                                                                        <div class="modal-content">
-                                                                                            <div class="modal-header">
-                                                                                                <h5 class="modal-title">Thêm thuộc tính mới</h5>
-                                                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                                            </div>
-                                                                                            <div class="modal-body">
-                                                                                                
-                                                                                            </div>
-                                                                                            <div class="modal-footer">
-                                                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                                                                <button type="button" class="btn btn-primary">Save changes</button>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div> -->
+                                {{-- <div class="modal fade" id="attribute" tabindex="-1" style="display: none;"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Thêm thuộc tính mới</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-primary">Save changes</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> --}}
                             </div>
                             <table class="table">
                                 <thead>
-                                    <th>Tên thuộc tính ( Size - Color )</th>
+                                    <th>Tên thuộc tính</th>
                                 </thead>
                                 <tbody>
                                     <tr>
@@ -101,22 +104,34 @@
                                             <div class="type-attr me-2 col-lg-3">
                                                 <select name="attribute[]" class="select_type form-select">
                                                     <option value="0">Chưa chọn</option>
-                                                    <option value="1">Kích thước</option>
-                                                    <option value="1">Thuộc tính</option>
+                                                    @foreach ($listAttr as $item)
+                                                        <option value="{{ $item->id_attr }}">{{ $item->name }}</option>
+                                                    @endforeach
+
                                                 </select>
                                             </div>
                                             <div class="value-attr col-lg-7">
-                                                <input type="text" placeholder="kích thước" class="add-size form-control">
-                                                <div class="container-size">
+                                                <input type="text" placeholder="Giá trị" class="add-option form-control">
+                                                <div class="container-option">
                                                     {{-- <button class="badge-2" data-id="16gb">16GB <span class="close">x</span></button> --}}
 
                                                 </div>
                                             </div>
+                                            <div class="col-lg-2">
+                                                <div class="btn btn-danger remove-attr" onclick="removeAttr(this)"><span><i
+                                                            class="ri-delete-bin-2-fill"></i></span></div>
+                                            </div>
                                         </td>
 
                                     </tr>
-
                                 </tbody>
+                                <tfoot class="t-foot">
+                                    <tr>
+                                        <td colspan="3">
+                                            <button type="button" class="btn btn-create">Thêm thuộc tính</button>
+                                        </td>
+                                    </tr>
+                                </tfoot>
                             </table>
                         </div>
                         <div class="form-group table-price">
@@ -262,7 +277,7 @@
 
             function InnerTableAttr() {
                 let check_size = document.querySelectorAll(".container-size .badge-2 span");
-                let check_color = document.querySelectorAll(".container-color .badge-2 span");
+                // let check_color = document.querySelectorAll(".container-color .badge-2 span");
                 let table = document.querySelector(".table-price table tbody");
                 let tr = "";
                 if (check_size.length > 0) {
@@ -274,99 +289,99 @@
                             for (let c = 0; c < check_color.length; c++) {
                                 let getValueColor = check_color[c].getAttribute("data-value")
                                 tr += `<tr>
-                                                <td> <input type="checkbox" /> </td>
-                                                <td>
-                                                    <span>${getValueSize}</span>    -
-                                                    <span>${getValueColor}
-                                                    <input type="text" hidden value="${getValueSize}" class="size" />
-                                                    <input type="text" hidden value="${getValueColor}" class="color" />
-                                                </td>
-                                                <td>
-                                                    <input type="text" placeholder="Mã sản phẩm" name="product_type_sku" class="product_type_sku" value="" />
-                                                </td>
-                                                <td>
-                                                    <input type="number" placeholder="Giá" class="product_price" value="" />
-                                                </td>
-                                                <td>
-                                                    <input type="number" placeholder="Giá giảm" class="product_price_old" value="" />
-                                                </td>
-                                                <td>
-                                                    <input type="number" placeholder="Số lượng" class="product_stock" value="" />
-                                                </td>
-                                        </tr>`
+                                            <td> <input type="checkbox" /> </td>
+                                            <td>
+                                                <span>${getValueSize}</span>    -
+                                                <span>${getValueColor}
+                                                <input type="text" hidden value="${getValueSize}" class="size" />
+                                                <input type="text" hidden value="${getValueColor}" class="color" />
+                                            </td>
+                                            <td>
+                                                <input type="text" placeholder="Mã sản phẩm" name="product_type_sku" class="product_type_sku" value="" />
+                                            </td>
+                                            <td>
+                                                <input type="number" placeholder="Giá" class="product_price" value="" />
+                                            </td>
+                                            <td>
+                                                <input type="number" placeholder="Giá giảm" class="product_price_old" value="" />
+                                            </td>
+                                            <td>
+                                                <input type="number" placeholder="Số lượng" class="product_stock" value="" />
+                                            </td>
+                                    </tr>`
                             }
                         } else {
                             tr += `<tr>
-                                                <td> <input type="checkbox" /> </td>
-                                                <td>
-                                                    <span>${getValueSize}</span>
-                                                    <input type="text" hidden value="${getValueSize}" class="size" />
-                                                </td>
-                                                <td>
-                                                    <input type="text" placeholder="Mã sản phẩm" class="product_type_sku" value="" />
-                                                </td>
-                                                <td>
-                                                    <input type="number" placeholder="Giá" class="product_price" value="" />
-                                                </td>
-                                                <td>
-                                                    <input type="number" placeholder="Giá giảm" class="product_price_old" value="" />
-                                                </td>
-                                                <td>
-                                                    <input type="number" placeholder="Số lượng" class="product_stock" value="" />
-                                                </td>
-                                        </tr>`
+                                            <td> <input type="checkbox" /> </td>
+                                            <td>
+                                                <span>${getValueSize}</span>
+                                                <input type="text" hidden value="${getValueSize}" class="size" />
+                                            </td>
+                                            <td>
+                                                <input type="text" placeholder="Mã sản phẩm" class="product_type_sku" value="" />
+                                            </td>
+                                            <td>
+                                                <input type="number" placeholder="Giá" class="product_price" value="" />
+                                            </td>
+                                            <td>
+                                                <input type="number" placeholder="Giá giảm" class="product_price_old" value="" />
+                                            </td>
+                                            <td>
+                                                <input type="number" placeholder="Số lượng" class="product_stock" value="" />
+                                            </td>
+                                    </tr>`
                         }
                     }
                 } else if (check_color.length > 0) {
                     for (let i = 0; i < check_color.length; i++) {
                         let getValueColor = check_color[i].getAttribute("data-value")
-                        let check_size = document.querySelectorAll(".container-size .badge-2 span");
+                        let check_size = document.querySelectorAll(".container-option .badge-2 span");
                         if (check_size.length > 0) {
 
                             for (let c = 0; c < check_size.length; c++) {
                                 let getValueSize = check_size[c].getAttribute("data-value")
                                 tr += `<tr>
-                                                <td> <input type="checkbox" /> </td>
-                                                <td>
-                                                    <span>${getValueSize}
-                                                    <span>${getValueColor}
-                                                    <input type="text" hidden value="${getValueColor}" class="color" />
-                                                    <input type="text" hidden value="${getValueSize}" class="size" />
-                                                </td>
-                                                <td>
-                                                    <input type="text" placeholder="Mã sản phẩm" class="product_type_sku" value="" />
-                                                </td>
-                                                <td>
-                                                    <input type="number" placeholder="Giá" class="product_price" value="" />
-                                                </td>
-                                                <td>
-                                                    <input type="number" placeholder="Giá giảm" class="product_price_old" value="" />
-                                                </td>
-                                                <td>
-                                                    <input type="number" placeholder="Số lượng" class="product_stock" value="" />
-                                                </td>
-                                        </tr>`
+                                            <td> <input type="checkbox" /> </td>
+                                            <td>
+                                                <span>${getValueSize}
+                                                <span>${getValueColor}
+                                                <input type="text" hidden value="${getValueColor}" class="color" />
+                                                <input type="text" hidden value="${getValueSize}" class="size" />
+                                            </td>
+                                            <td>
+                                                <input type="text" placeholder="Mã sản phẩm" class="product_type_sku" value="" />
+                                            </td>
+                                            <td>
+                                                <input type="number" placeholder="Giá" class="product_price" value="" />
+                                            </td>
+                                            <td>
+                                                <input type="number" placeholder="Giá giảm" class="product_price_old" value="" />
+                                            </td>
+                                            <td>
+                                                <input type="number" placeholder="Số lượng" class="product_stock" value="" />
+                                            </td>
+                                    </tr>`
                             }
                         } else {
                             tr += `<tr>
-                                                <td> <input type="checkbox" /> </td>
-                                                <td>
-                                                    <span>${getValueColor}</span>
-                                                    <input type="text" hidden value="${getValueColor}" class="color" />
-                                                </td>
-                                                <td>
-                                                    <input type="text" placeholder="Mã sản phẩm" class="product_type_sku" value="" />
-                                                </td>
-                                                <td>
-                                                    <input type="number" placeholder="Giá" class="product_price" value="" />
-                                                </td>
-                                                <td>
-                                                    <input type="number" placeholder="Giá giảm" class="product_price_old" value="" />
-                                                </td>
-                                                <td>
-                                                    <input type="number" placeholder="Số lượng" class="product_stock" value="" />
-                                                </td>
-                                        </tr>`
+                                            <td> <input type="checkbox" /> </td>
+                                            <td>
+                                                <span>${getValueColor}</span>
+                                                <input type="text" hidden value="${getValueColor}" class="color" />
+                                            </td>
+                                            <td>
+                                                <input type="text" placeholder="Mã sản phẩm" class="product_type_sku" value="" />
+                                            </td>
+                                            <td>
+                                                <input type="number" placeholder="Giá" class="product_price" value="" />
+                                            </td>
+                                            <td>
+                                                <input type="number" placeholder="Giá giảm" class="product_price_old" value="" />
+                                            </td>
+                                            <td>
+                                                <input type="number" placeholder="Số lượng" class="product_stock" value="" />
+                                            </td>
+                                    </tr>`
                         }
 
 
@@ -374,12 +389,15 @@
                 }
                 table.innerHTML = tr;
             }
-            let btn_size = 1;
-            createButtonSize();
-
-            function createButtonSize() {
-                let get_add_size = document.querySelector('.add-size');
+            let btn_option = 1;
+            addOptionAttribute()
+            function addOptionAttribute() {
+                let get_add_size = document.querySelector('.add-option');
+                $('.add-option').on('keypress', function() {
+                    let option = ''
+                })
                 get_add_size.addEventListener("keydown", function(e) {
+                    // e.preventDefault();
                     let i = 1
                     if (e.keyCode === 13 || e.keyCode === 32 || e.keyCode === 44) {
                         let value = this.value;
@@ -387,272 +405,379 @@
                         let create_span = document.createElement("span");
                         create_span.setAttribute("class", 'close');
                         create_span.setAttribute("data-value", value);
-
                         create_span.textContent = "x";
                         setValuteSizeButton = create_button.setAttribute("class", `badge-2`)
-                        setValuteSizeButton = create_button.setAttribute("id", `btn-${btn_size++}`)
+                        setValuteSizeButton = create_button.setAttribute("id", `btn-${btn_option++}`)
                         let getValueSizeButton = create_button.getAttribute("id");
                         create_span.setAttribute("data-id", getValueSizeButton);
                         create_button.textContent = value
                         create_button.appendChild(create_span)
-                        let container_size = document.querySelector('.container-size');
-                        container_size.appendChild(create_button)
+                        let container_option = document.querySelector('.container-option');
+                        container_option.appendChild(create_button)
                         InnerTableAttr()
                         this.value = "";
+
                     }
                 })
             }
-            createButtonColor();
+            // createButtonColor();
 
-            function createButtonColor() {
-                let get_add_size = document.querySelector('.add-color');
-                get_add_size.addEventListener("keydown", function(e) {
-                    let i = 1
-                    if (e.keyCode === 13) {
-                        let value = this.value;
-                        let create_button = document.createElement("div");
-                        let create_span = document.createElement("span");
-                        create_span.setAttribute("class", 'close');
-                        create_span.setAttribute("data-value", value);
+            // function createButtonColor() {
+            //     let get_add_size = document.querySelector('.add-color');
+            //     get_add_size.addEventListener("keydown", function(e) {
+            //         let i = 1
+            //         if (e.keyCode === 13) {
+            //             let value = this.value;
+            //             let create_button = document.createElement("div");
+            //             let create_span = document.createElement("span");
+            //             create_span.setAttribute("class", 'close');
+            //             create_span.setAttribute("data-value", value);
 
-                        create_span.textContent = "x";
-                        setValuteSizeButton = create_button.setAttribute("class", `badge-2`)
-                        setValuteSizeButton = create_button.setAttribute("id", `btn-color-${btn_size++}`)
-                        let getValueSizeButton = create_button.getAttribute("id");
-                        create_span.setAttribute("data-id", getValueSizeButton);
-                        create_button.textContent = value
-                        create_button.appendChild(create_span)
-                        let container_size = document.querySelector('.container-color');
-                        container_size.appendChild(create_button)
-                        this.value = ""
-                        InnerTableAttr();
-                    }
+            //             create_span.textContent = "x";
+            //             setValuteSizeButton = create_button.setAttribute("class", `badge-2`)
+            //             setValuteSizeButton = create_button.setAttribute("id", `btn-color-${btn_size++}`)
+            //             let getValueSizeButton = create_button.getAttribute("id");
+            //             create_span.setAttribute("data-id", getValueSizeButton);
+            //             create_button.textContent = value
+            //             create_button.appendChild(create_span)
+            //             let container_size = document.querySelector('.container-color');
+            //             container_size.appendChild(create_button)
+            //             this.value = ""
+            //             InnerTableAttr();
+            //         }
 
-                })
-            }
+            //     })
+            // }
 
-            $('.category').change(function() {
-                let value = $(this).val();
-                $.ajax({
-                    type: "GET",
-                    url: "{{ route('admin.category.getChildCategory') }}",
-                    data: {
-                        id: value
-                    },
-                    success: (res) => {
-                        if (res.status == 200) {
-                            console.log(res)
-                            let child_category = ''
-                            res.data.forEach(function(data, i) {
-                                child_category +=
-                                    `<option value="${data.id_category}">${data.name_category}</option>`;
-                            });
-                            $('.child-category-1').html(child_category);
-                            let filter = ''
-                            let i = 1;
-                            res.filter.forEach(function(f, i) {
-                                f.filter.forEach(function(fp, i) {
-                                    filter += `<div class="form-group">
-                                                 <label>${fp.filter_name}</label>
-                                                <select data-id="${fp.filter_id}" name="${fp.slug}" class="select-option"  class="select-option-${i++}">
-                                            `
-                                    f.child_filter.forEach(function(fc, l) {
-                                        filter +=
-                                            `<option value="${fc.filter_id}">${fc.filter_name}</option>`
-                                    })
-                                    filter += `</select>
-                                         </div>`
-                                })
-                            })
-                            console.log(filter)
-                            $('.product-option__inner').html(filter)
-                        }
+            // $('.category').change(function() {
+            //     let value = $(this).val();
+            //     $.ajax({
+            //         type: "GET",
+            //         url: "{{ route('admin.category.getChildCategory') }}",
+            //         data: {
+            //             id: value
+            //         },
+            //         success: (res) => {
+            //             if (res.status == 200) {
+            //                 console.log(res)
+            //                 let child_category = ''
+            //                 res.data.forEach(function(data, i) {
+            //                     child_category +=
+            //                         `<option value="${data.id_category}">${data.name_category}</option>`;
+            //                 });
+            //                 $('.child-category-1').html(child_category);
+            //                 let filter = ''
+            //                 let i = 1;
+            //                 res.filter.forEach(function(f, i) {
+            //                     f.filter.forEach(function(fp, i) {
+            //                         filter += `<div class="form-group">
+        //                                      <label>${fp.filter_name}</label>
+        //                                     <select data-id="${fp.filter_id}" name="${fp.slug}" class="select-option"  class="select-option-${i++}">
+        //                                 `
+            //                         f.child_filter.forEach(function(fc, l) {
+            //                             filter +=
+            //                                 `<option value="${fc.filter_id}">${fc.filter_name}</option>`
+            //                         })
+            //                         filter += `</select>
+        //                              </div>`
+            //                     })
+            //                 })
+            //                 console.log(filter)
+            //                 $('.product-option__inner').html(filter)
+            //             }
 
-                    }
-                })
+            //         }
+            //     })
 
-            })
-            $('.child-category-1').change(function() {
-                let value = $(this).val();
-                $.ajax({
-                    type: "GET",
-                    url: "{{ route('admin.category.getChildCategory') }}",
-                    data: {
-                        id: value
-                    },
-                    success: (res) => {
-                        console.log(res)
-                        let child_category = ''
-                        res.data.forEach(function(data, i) {
-                            child_category +=
-                                `<option value="${data.id_category}">${data.name_category}</option>`;
-                        });
-                        $('.child-category-2').html(child_category);
-                    }
-                })
+            // })
+            // $('.child-category-1').change(function() {
+            //     let value = $(this).val();
+            //     $.ajax({
+            //         type: "GET",
+            //         url: "{{ route('admin.category.getChildCategory') }}",
+            //         data: {
+            //             id: value
+            //         },
+            //         success: (res) => {
+            //             console.log(res)
+            //             let child_category = ''
+            //             res.data.forEach(function(data, i) {
+            //                 child_category +=
+            //                     `<option value="${data.id_category}">${data.name_category}</option>`;
+            //             });
+            //             $('.child-category-2').html(child_category);
+            //         }
+            //     })
 
-            })
+            // })
 
-            $(document).on('click', '.badge-2 span.close', function() {
-                $(this).parent().remove();
-                InnerTableAttr();
+            // $(document).on('click', '.badge-2 span.close', function() {
 
-            })
+            //     $(this).parent().remove();
+            //     InnerTableAttr();
+
+            // })
 
             $('.btn.btn-modal').click(function() {
 
             })
 
-            $('#form-add').submit(function(e) {
-                e.preventDefault();
-                let product_detail = [];
-                $('.table-price table tbody tr').each(function(i, tr) {
-                    let SizeOfProductValue = '';
-                    let colorOfProductValue = '';
-                    let product_stock = '';
-                    let product_type_sku = '';
-                    let product_price = '';
-                    let product_price_old = '';
-                    let sizeOfProduct = tr.querySelector('.size')
-                    if (sizeOfProduct) {
-                        SizeOfProductValue = sizeOfProduct.value
-                    }
+            // $('#form-add').submit(function(e) {
+            //     e.preventDefault();
+            //     let product_detail = [];
+            //     $('.table-price table tbody tr').each(function(i, tr) {
+            //         let SizeOfProductValue = '';
+            //         let colorOfProductValue = '';
+            //         let product_stock = '';
+            //         let product_type_sku = '';
+            //         let product_price = '';
+            //         let product_price_old = '';
+            //         let sizeOfProduct = tr.querySelector('.size')
+            //         if (sizeOfProduct) {
+            //             SizeOfProductValue = sizeOfProduct.value
+            //         }
 
-                    let colorOfP = tr.querySelector('input[type=text].color')
-                    if (colorOfP) {
-                        colorOfProductValue = colorOfP.value;
-                    }
-                    let StockofProduct = tr.querySelector('input[type=number].product_stock')
-                    if (StockofProduct) {
-                        product_stock = StockofProduct.value
-                    }
-                    let TypeSkuOfProduct = tr.querySelector('input[type=text].product_type_sku');
-                    if (TypeSkuOfProduct) {
-                        product_type_sku = TypeSkuOfProduct.value;
-                    }
-                    let productPrice = tr.querySelector('input[type=number].product_price');
-                    if (productPrice) {
-                        product_price = productPrice.value;
-                    }
-                    let productPriceOld = tr.querySelector('input[type=number].product_price_old');
-                    if (productPriceOld) {
-                        product_price_old = productPriceOld.value;
-                    }
+            //         let colorOfP = tr.querySelector('input[type=text].color')
+            //         if (colorOfP) {
+            //             colorOfProductValue = colorOfP.value;
+            //         }
+            //         let StockofProduct = tr.querySelector('input[type=number].product_stock')
+            //         if (StockofProduct) {
+            //             product_stock = StockofProduct.value
+            //         }
+            //         let TypeSkuOfProduct = tr.querySelector('input[type=text].product_type_sku');
+            //         if (TypeSkuOfProduct) {
+            //             product_type_sku = TypeSkuOfProduct.value;
+            //         }
+            //         let productPrice = tr.querySelector('input[type=number].product_price');
+            //         if (productPrice) {
+            //             product_price = productPrice.value;
+            //         }
+            //         let productPriceOld = tr.querySelector('input[type=number].product_price_old');
+            //         if (productPriceOld) {
+            //             product_price_old = productPriceOld.value;
+            //         }
 
-                    let option = {
-                        SizeOfProductValue: SizeOfProductValue,
-                        colorOfProductValue: colorOfProductValue,
-                        product_stock: product_stock,
-                        product_type_sku: product_type_sku,
-                        product_price: product_price,
-                        product_price_old: product_price_old
-                    }
-                    product_detail.push(option)
+            //         let option = {
+            //             SizeOfProductValue: SizeOfProductValue,
+            //             colorOfProductValue: colorOfProductValue,
+            //             product_stock: product_stock,
+            //             product_type_sku: product_type_sku,
+            //             product_price: product_price,
+            //             product_price_old: product_price_old
+            //         }
+            //         product_detail.push(option)
 
-                })
+            //     })
 
-                let name_product = $('.form-control.name').val();
-                let idBrand = [];
-                $('.brand option:checked').each(function(i, item) {
-                    return idBrand.push(item.value)
-                })
-                let slug_product = $('.slug').val();
-                let desc_product = CKEDITOR.instances.desc.getData();
-                let desc_short_product = CKEDITOR.instances.desc_short.getData();
-                let product_sku = $('.product_sku').val();
-                let id_category = $('.category').val();
-                let status_product = $('.status:checked').val();
-                var formData = new FormData();
+            //     let name_product = $('.form-control.name').val();
+            //     let idBrand = [];
+            //     $('.brand option:checked').each(function(i, item) {
+            //         return idBrand.push(item.value)
+            //     })
+            //     let slug_product = $('.slug').val();
+            //     let desc_product = CKEDITOR.instances.desc.getData();
+            //     let desc_short_product = CKEDITOR.instances.desc_short.getData();
+            //     let product_sku = $('.product_sku').val();
+            //     let id_category = $('.category').val();
+            //     let status_product = $('.status:checked').val();
+            //     var formData = new FormData();
 
-                for (let i = 0; i < $('input[type=file].add-file')[0].files.length; i++) {
-                    formData.append('image[]', $('input[type=file].add-file')[0].files[i]);
-                }
-                $('.table-price table tbody tr').each(function(i, tr) {
-                    let SizeOfProductValue = '';
-                    let colorOfProductValue = '';
-                    let product_stock = '';
-                    let product_type_sku = '';
-                    let product_price = '';
-                    let product_price_old = '';
-                    let sizeOfProduct = tr.querySelector('.size')
+            //     for (let i = 0; i < $('input[type=file].add-file')[0].files.length; i++) {
+            //         formData.append('image[]', $('input[type=file].add-file')[0].files[i]);
+            //     }
+            //     $('.table-price table tbody tr').each(function(i, tr) {
+            //         let SizeOfProductValue = '';
+            //         let colorOfProductValue = '';
+            //         let product_stock = '';
+            //         let product_type_sku = '';
+            //         let product_price = '';
+            //         let product_price_old = '';
+            //         let sizeOfProduct = tr.querySelector('.size')
 
-                    if (sizeOfProduct) {
-                        SizeOfProductValue = sizeOfProduct.value
-                    }
+            //         if (sizeOfProduct) {
+            //             SizeOfProductValue = sizeOfProduct.value
+            //         }
 
-                    let colorOfP = tr.querySelector('input[type=text].color')
-                    if (colorOfP) {
-                        colorOfProductValue = colorOfP.value;
-                    }
-                    let StockofProduct = tr.querySelector('input[type=number].product_stock')
-                    console.log(StockofProduct)
-                    if (StockofProduct) {
-                        product_stock = StockofProduct.value
-                    }
-                    let TypeSkuOfProduct = tr.querySelector('input[type=text].product_type_sku');
-                    if (TypeSkuOfProduct) {
-                        product_type_sku = TypeSkuOfProduct.value;
-                    }
-                    let productPrice = tr.querySelector('input[type=number].product_price');
-                    if (productPrice) {
-                        product_price = productPrice.value;
-                    }
-                    let productPriceOld = tr.querySelector('input[type=number].product_price_old');
-                    if (productPriceOld) {
-                        product_price_old = productPriceOld.value;
-                    }
+            //         let colorOfP = tr.querySelector('input[type=text].color')
+            //         if (colorOfP) {
+            //             colorOfProductValue = colorOfP.value;
+            //         }
+            //         let StockofProduct = tr.querySelector('input[type=number].product_stock')
+            //         console.log(StockofProduct)
+            //         if (StockofProduct) {
+            //             product_stock = StockofProduct.value
+            //         }
+            //         let TypeSkuOfProduct = tr.querySelector('input[type=text].product_type_sku');
+            //         if (TypeSkuOfProduct) {
+            //             product_type_sku = TypeSkuOfProduct.value;
+            //         }
+            //         let productPrice = tr.querySelector('input[type=number].product_price');
+            //         if (productPrice) {
+            //             product_price = productPrice.value;
+            //         }
+            //         let productPriceOld = tr.querySelector('input[type=number].product_price_old');
+            //         if (productPriceOld) {
+            //             product_price_old = productPriceOld.value;
+            //         }
 
-                    let option = {
-                        SizeOfProductValue: SizeOfProductValue,
-                        colorOfProductValue: colorOfProductValue,
-                        product_stock: product_stock,
-                        product_type_sku: product_type_sku,
-                        product_price: product_price,
-                        product_price_old: product_price_old
-                    }
-                    product_detail.push(option)
+            //         let option = {
+            //             SizeOfProductValue: SizeOfProductValue,
+            //             colorOfProductValue: colorOfProductValue,
+            //             product_stock: product_stock,
+            //             product_type_sku: product_type_sku,
+            //             product_price: product_price,
+            //             product_price_old: product_price_old
+            //         }
+            //         product_detail.push(option)
 
-                })
-                let option = [];
-                $('body .select-option').each(function(i, data) {
-                    option.push(data.value);
-                })
-                console.log(product_detail);
-                formData.append('product_detail', JSON.stringify(product_detail))
-                formData.append('desc', desc_product)
-                formData.append('desc_short', desc_short_product)
-                formData.append('name', name_product)
-                formData.append('slug', slug_product)
-                formData.append('status', status_product)
-                formData.append('idBrand', idBrand)
-                formData.append('product_sku', product_sku)
-                formData.append('parent_category[]', id_category)
-                formData.append('option', option)
-                formData.append('_token', "{{ csrf_token() }}")
-                $.ajax({
-                    type: "POST",
-                    url: "{{ route('admin.product.postAddProduct') }}",
-                    data: formData,
-                    success: (res) => {
+            //     })
+            //     let option = [];
+            //     $('body .select-option').each(function(i, data) {
+            //         option.push(data.value);
+            //     })
+            //     console.log(product_detail);
+            //     formData.append('product_detail', JSON.stringify(product_detail))
+            //     formData.append('desc', desc_product)
+            //     formData.append('desc_short', desc_short_product)
+            //     formData.append('name', name_product)
+            //     formData.append('slug', slug_product)
+            //     formData.append('status', status_product)
+            //     formData.append('idBrand', idBrand)
+            //     formData.append('product_sku', product_sku)
+            //     formData.append('parent_category[]', id_category)
+            //     formData.append('option', option)
+            //     formData.append('_token', "{{ csrf_token() }}")
+            //     $.ajax({
+            //         type: "POST",
+            //         url: "{{ route('admin.product.postAddProduct') }}",
+            //         data: formData,
+            //         success: (res) => {
 
-                        validator(res.status, res.message)
-                        if (res.status == 404) {
-                            console.log(res)
+            //             validator(res.status, res.message)
+            //             if (res.status == 404) {
+            //                 console.log(res)
 
-                        } else {
-                            console.log(res.request)
-                            // $('#table').DataTable().destroy()
-                            // getDataTable();
-                            // $('.alert').toggleClass('active')
-                            // $('.popup-modal').removeClass('active');
-                        }
-                    },
-                    cache: false,
-                    contentType: false,
-                    processData: false
+            //             } else {
+            //                 console.log(res.request)
+            //                 // $('#table').DataTable().destroy()
+            //                 // getDataTable();
+            //                 // $('.alert').toggleClass('active')
+            //                 // $('.popup-modal').removeClass('active');
+            //             }
+            //         },
+            //         cache: false,
+            //         contentType: false,
+            //         processData: false
 
-                })
-            })
+            //     })
+            // })
         });
     </script>
+
+    {{-- 1.1.2024 --}}
+    <script>
+        $(document).ready(function() {
+
+            $('.btn.btn-create').click(function(e) {
+
+                e.preventDefault();
+
+                let html = '';
+
+
+
+                $.ajax({
+                    type: "get",
+                    url: "{{ route('admin.attr.apiListAttr') }}",
+                    data: {
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: (res) => {
+                        console.log(res.data)
+                        let attr = res.data;
+                        let tr = $(this).parent().parent().parent().parent().find('tbody tr');
+                        for (let i = 0; i < tr.length; i++) {
+                            let selected_type = tr[i].querySelector('.select_type').value;
+                            console.log(selected_type);
+                            html = `<tr>
+                                        <td class="d-flex gap-10">
+                                            <div class="type-attr me-2 col-lg-3">
+                                                <select name="attribute[]" class="select_type form-select">
+                                                    <option value="0">Chưa chọn</option>
+                                            `
+                            for (let index = 0; index < attr.length; index++) {
+                                const element = attr[index];
+
+                                if (selected_type == element.id_attr) {
+                                    html +=
+                                        `<option disabled value="${element.id_attr}">${element.name}</option>`
+                                } else {
+
+                                    html +=
+                                        `<option  value="${element.id_attr}">${element.name}</option>`
+                                }
+                            }
+                            html += `
+                                                </select>
+                                            </div>
+                                            <div class="value-attr col-lg-7">
+                                                <input type="text" placeholder="kích thước"
+                                                    class="add-size form-control">
+                                                <div class="container-size">
+                                                    {{-- <button class="badge-2" data-id="16gb">16GB <span class="close">x</span></button> --}}
+
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <div class="btn btn-danger" onclick="removeAttr(this)"><span><i class="ri-delete-bin-2-fill"></i></span></div>
+                                            </div>
+                                            
+                                        </td>
+
+                                    </tr>`;
+                        }
+                        $(this).parent().parent().parent().parent().find('tbody').append(html);
+                        c_attr = $(this).parent().parent().parent().parent().find('tbody tr');
+                        if (c_attr.length == attr.length) {
+                            $(this).attr('disabled', true)
+                        } else {
+                            $(this).attr('disabled', false);
+
+
+                        }
+                    }
+                })
+
+
+            })
+        })
+
+        function removeAttr(tr) {
+            console.log($(tr).parent().parent().parent().parent().find('tr').length)
+            $(tr).parents('tr').remove()
+            $.ajax({
+                type: "get",
+                url: "{{ route('admin.attr.apiListAttr') }}",
+                data: {
+                    _token: "{{ csrf_token() }}"
+                },
+                success: (res) => {
+                    console.log(res.data)
+                    let attr = res.data;
+                    let c_tr = $(tr).parent().parent().parent();
+                    console.log(c_tr.length)
+
+                    if (c_tr.length == attr.length) {
+                        $('.btn.btn-create').attr('disabled', true)
+                    } else {
+                        $('.btn.btn-create').attr('disabled', false)
+                    }
+                }
+            })
+
+        }
+    </script>
+   
+
 @endpush

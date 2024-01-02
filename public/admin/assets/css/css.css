@@ -438,7 +438,7 @@ form select {
     border-color: #f5c6cb;
 }
 
-.container-size {
+.container-option {
     margin: 8px 0;
 }
 
@@ -460,10 +460,10 @@ form select {
     display: inline-block;
 }
 
-.container-size span,
+.container-option span,
 .container-color span,
 .container-color-edit span,
-.container-size-edit span {
+.container-option-edit span {
     position: absolute;
     top: 50%;
     right: 0;

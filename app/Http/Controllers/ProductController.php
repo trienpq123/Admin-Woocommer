@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AttributeModel;
 use App\Models\BrandModel;
 use App\Models\CategoryModel;
 use App\Models\CategoryProductModel;
@@ -20,7 +21,8 @@ class ProductController extends Controller
         $listProduct = ProductModel::orderBy('id_product', 'desc')->get();
         $getBrands = BrandModel::orderBy('id_brand', 'desc')->get();
         $listCategory = CategoryModel::whereNull('parent_category')->orderBy('id_category', 'desc')->get();
-        return view('admin.layouts.products.list', compact('getBrands', 'listCategory', 'listProduct'));
+        $listAttr = AttributeModel::orderBy('id_attr', 'desc')->get();
+        return view('admin.layouts.products.list', compact('getBrands', 'listCategory', 'listProduct','listAttr'));
     }
 
     public function apiListProduct(Request $request)
@@ -36,7 +38,8 @@ class ProductController extends Controller
     {  $listProduct = ProductModel::orderBy('id_product', 'desc')->get();
         $getBrands = BrandModel::orderBy('id_brand', 'desc')->get();
         $listCategory = CategoryModel::whereNull('parent_category')->orderBy('id_category', 'desc')->get();
-        return view('admin.layouts.products.add',compact('getBrands', 'listCategory', 'listProduct'));
+        $listAttr = AttributeModel::orderBy('id_attr', 'desc')->get();
+        return view('admin.layouts.products.add',compact('getBrands', 'listCategory', 'listProduct','listAttr'));
     }
 
     public function editProduct(Request $request)
