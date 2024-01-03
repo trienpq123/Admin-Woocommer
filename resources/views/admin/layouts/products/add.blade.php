@@ -105,7 +105,7 @@
                                                 <select name="attr[].name" class="select_type form-select">
                                                     <option value="0">Chưa chọn</option>
                                                     @foreach ($listAttr as $key => $item)
-                                                        <option value="{{ $item->id_attr }}" >{{ $item->name }}</option>
+                                                        <option value="{{ $item->id_attr }}">{{ $item->name }}</option>
                                                     @endforeach
 
                                                 </select>
@@ -218,6 +218,73 @@
     <script>
         $(document).ready(function() {
             // Render Image khi upload
+            btn_option = 1;
+            let attr = [];
+            let variants = [];
+            let option_value = [];
+            addOptionAttribute()
+
+            function addOptionAttribute() {
+                let get_add_size = document.querySelector('.add-option');
+                $('.add-option').on('keypress', function() {
+                    let option = ''
+                })
+
+                $(document).on('keydown', '.add-option', function(e) {
+                    // e.preventDefault();
+                    let i = 1
+                    if (e.keyCode === 13 || e.keyCode === 32 || e.keyCode === 44) {
+                        let value = this.value;
+                        let create_button = document.createElement("div");
+                        let create_span = document.createElement("span");
+                        create_span.setAttribute("class", 'close');
+                        create_span.setAttribute("data-value", value);
+                        create_span.textContent = "x";
+                        setValuteSizeButton = create_button.setAttribute("class", `badge-2`)
+                        setValuteSizeButton = create_button.setAttribute("id", `btn-${btn_option++}`)
+                        let getValueSizeButton = create_button.getAttribute("id");
+                        create_span.setAttribute("data-id", getValueSizeButton);
+                        create_button.textContent = value
+                        create_button.appendChild(create_span)
+                        let container_option = $(this).parent();
+                        container_option.append(create_button);
+                        let get_tr = $(this).parents('tr')
+                        let getIdAttr = get_tr.find('.select_type').val();
+                        let item = {};
+                        item[getIdAttr] = value
+                        attr.push(item);
+
+
+
+
+
+
+                        // if (!option_value[getIdAttr]) {
+                        //     option_value[getIdAttr] = [];
+                        //     option_value[getIdAttr].push(value);
+                        // } else {
+                        //     option_value[getIdAttr].push(value);
+                        // }
+                        let attr_options = option_value.filter((array) => array.length > 0)
+                        // option_value[getIdAttr].push(value)
+
+                        console.log(attr_options)
+                        // InnerTableAttr(attr_options)
+                        this.value = "";
+
+                    }
+                    attr = attr.reduce((a, b) => {
+                        a.flatMap(c => b.map(e => ({
+                            ...c,
+                            ...e
+                        })))
+                    })
+
+                    console.log(attr)
+
+                })
+
+            }
             $(".add-file").change(function(event) {
                 console.log(event.target.files);
                 if (event.target.files && event.target.files.length > 0) {
@@ -279,9 +346,9 @@
                 console.log(optionValue);
                 const table = $('.table-price table tbody');
                 let tr = '';
-                if(optionValue.length > 0) {
+                if (optionValue.length > 0) {
                     for (let i = 0; i < optionValue.length; i++) {
-                        
+
                         tr += `<tr>
                                 <td> <input type="checkbox" /> </td>
                                 <td>
@@ -300,11 +367,11 @@
                                     <input type="number" value="50" class="product_stock" />
                                 </td>
                             </tr>`
-                        
+
                     }
 
-                 
-                    
+
+
                 }
                 // if (check_size.length > 0) {
                 //     for (let i = 0; i < check_size.length; i++) {
@@ -315,263 +382,65 @@
                 //             for (let c = 0; c < check_color.length; c++) {
                 //                 let getValueColor = check_color[c].getAttribute("data-value")
                 //                 tr += `<tr>
-                //                             <td> <input type="checkbox" /> </td>
-                //                             <td>
-                //                                 <span>${getValueSize}</span>    -
-                //                                 <span>${getValueColor}
-                //                                 <input type="text" hidden value="${getValueSize}" class="size" />
-                //                                 <input type="text" hidden value="${getValueColor}" class="color" />
-                //                             </td>
-                //                             <td>
-                //                                 <input type="text" placeholder="Mã sản phẩm" name="product_type_sku" class="product_type_sku" value="" />
-                //                             </td>
-                //                             <td>
-                //                                 <input type="number" placeholder="Giá" class="product_price" value="" />
-                //                             </td>
-                //                             <td>
-                //                                 <input type="number" placeholder="Giá giảm" class="product_price_old" value="" />
-                //                             </td>
-                //                             <td>
-                //                                 <input type="number" placeholder="Số lượng" class="product_stock" value="" />
-                //                             </td>
-                //                     </tr>`
-                //             }
-                //         } else {
-                //             tr += `<tr>
-                //                             <td> <input type="checkbox" /> </td>
-                //                             <td>
-                //                                 <span>${getValueSize}</span>
-                //                                 <input type="text" hidden value="${getValueSize}" class="size" />
-                //                             </td>
-                //                             <td>
-                //                                 <input type="text" placeholder="Mã sản phẩm" class="product_type_sku" value="" />
-                //                             </td>
-                //                             <td>
-                //                                 <input type="number" placeholder="Giá" class="product_price" value="" />
-                //                             </td>
-                //                             <td>
-                //                                 <input type="number" placeholder="Giá giảm" class="product_price_old" value="" />
-                //                             </td>
-                //                             <td>
-                //                                 <input type="number" placeholder="Số lượng" class="product_stock" value="" />
-                //                             </td>
-                //                     </tr>`
-                //         }
-                //     }
-                // } else if (check_color.length > 0) {
-                //     for (let i = 0; i < check_color.length; i++) {
-                //         let getValueColor = check_color[i].getAttribute("data-value")
-                //         let check_size = document.querySelectorAll(".container-option .badge-2 span");
-                //         if (check_size.length > 0) {
 
-                //             for (let c = 0; c < check_size.length; c++) {
-                //                 let getValueSize = check_size[c].getAttribute("data-value")
-                //                 tr += `<tr>
-                //                             <td> <input type="checkbox" /> </td>
-                //                             <td>
-                //                                 <span>${getValueSize}
-                //                                 <span>${getValueColor}
-                //                                 <input type="text" hidden value="${getValueColor}" class="color" />
-                //                                 <input type="text" hidden value="${getValueSize}" class="size" />
-                //                             </td>
-                //                             <td>
-                //                                 <input type="text" placeholder="Mã sản phẩm" class="product_type_sku" value="" />
-                //                             </td>
-                //                             <td>
-                //                                 <input type="number" placeholder="Giá" class="product_price" value="" />
-                //                             </td>
-                //                             <td>
-                //                                 <input type="number" placeholder="Giá giảm" class="product_price_old" value="" />
-                //                             </td>
-                //                             <td>
-                //                                 <input type="number" placeholder="Số lượng" class="product_stock" value="" />
-                //                             </td>
-                //                     </tr>`
-                //             }
-                //         } else {
-                //             tr += `<tr>
-                //                             <td> <input type="checkbox" /> </td>
-                //                             <td>
-                //                                 <span>${getValueColor}</span>
-                //                                 <input type="text" hidden value="${getValueColor}" class="color" />
-                //                             </td>
-                //                             <td>
-                //                                 <input type="text" placeholder="Mã sản phẩm" class="product_type_sku" value="" />
-                //                             </td>
-                //                             <td>
-                //                                 <input type="number" placeholder="Giá" class="product_price" value="" />
-                //                             </td>
-                //                             <td>
-                //                                 <input type="number" placeholder="Giá giảm" class="product_price_old" value="" />
-                //                             </td>
-                //                             <td>
-                //                                 <input type="number" placeholder="Số lượng" class="product_stock" value="" />
-                //                             </td>
-                //                     </tr>`
-                //         }
+            table.html(tr);
+        }
 
+        // $('.category').change(function() {
+        //     let value = $(this).val();
+        //     $.ajax({
+        //         type: "GET",
+        //         url: "{{ route('admin.category.getChildCategory') }}",
+        //         data: {
+        //             id: value
+        //         },
+        //         success: (res) => {
+        //             if (res.status == 200) {
+        //                 console.log(res)
+        //                 let child_category = ''
+        //                 res.data.forEach(function(data, i) {
+        //                     child_category +=
+        //                         `<option value="${data.id_category}">${data.name_category}</option>`;
+        //                 });
+        //                 $('.child-category-1').html(child_category);
+        //                 let filter = ''
+        //                 let i = 1;
+        //                 res.filter.forEach(function(f, i) {
+        //                     f.filter.forEach(function(fp, i) {
+        //                         filter += `<div class="form-group">
+            //                                      <label>${fp.filter_name}</label>
+            //                                     <select data-id="${fp.filter_id}" name="${fp.slug}" class="select-option"  class="select-option-${i++}">
+            //                                 `
+        //                         f.child_filter.forEach(function(fc, l) {
+        //                             filter +=
+        //                                 `<option value="${fc.filter_id}">${fc.filter_name}</option>`
+        //                         })
+        //                         filter += `</select>
+            //                              </div>`
+        //                     })
+        //                 })
+        //                 console.log(filter)
+        //                 $('.product-option__inner').html(filter)
+        //             }
 
-                //     }
-                // }
-                
-                table.html(tr);
-            }
-            let btn_option = 1;
-            addOptionAttribute()
-            function addOptionAttribute() {
-                let get_option = document.querySelectorAll('.add-option');
-                console.log(get_option)
-                
-                $('.add-option').on('keypress', function() {
-                    let option = '';
-                })
-                const option_value = [];
-                $(document).on('keypress','.add-option', function(e) {
-                         // e.preventDefault();
-                    let i = 1
-                    if (e.keyCode === 13 || e.keyCode === 32 || e.keyCode === 44) {
-                        let value = this.value;
-                        let create_button = document.createElement("div");
-                        let create_span = document.createElement("span");
-                        create_span.setAttribute("class", 'close');
-                        create_span.setAttribute("data-value", value);
-                        create_span.textContent = "x";
-                        setValuteSizeButton = create_button.setAttribute("class", `badge-2`)
-                        setValuteSizeButton = create_button.setAttribute("id", `btn-${btn_option++}`)
-                        let getValueSizeButton = create_button.getAttribute("id");
-                        create_span.setAttribute("data-id", getValueSizeButton);
-                        create_button.textContent = value
-                        create_button.appendChild(create_span);
-                        
-                        let container_option = $(this).parent();
-                        container_option.append(create_button)
-                        
-                        
-                        let getIdAttr = $(this).parents('tr').find('.select_type').val();
-                        if(!option_value[getIdAttr]) {
-                            option_value[getIdAttr] = [];
-                            option_value[getIdAttr].push(value);
-                        }else{
-                            option_value[getIdAttr].push(value);
-                        }
-                        let attr_options  = option_value.filter((array) => array.length > 0)
-                        // option_value[getIdAttr].push(value)
-                        
-                        console.log(attr_options)
-                        InnerTableAttr(attr_options)
-                       
-                    }
-                })
-                // get_option.addEventListener("keydown", function() {
-                //     // e.preventDefault();
-                //     let i = 1
-                //     if (e.keyCode === 13 || e.keyCode === 32 || e.keyCode === 44) {
-                //         let value = this.value;
-                //         let create_button = document.createElement("div");
-                //         let create_span = document.createElement("span");
-                //         create_span.setAttribute("class", 'close');
-                //         create_span.setAttribute("data-value", value);
-                //         create_span.textContent = "x";
-                //         setValuteSizeButton = create_button.setAttribute("class", `badge-2`)
-                //         setValuteSizeButton = create_button.setAttribute("id", `btn-${btn_option++}`)
-                //         let getValueSizeButton = create_button.getAttribute("id");
-                //         create_span.setAttribute("data-id", getValueSizeButton);
-                //         create_button.textContent = value
-                //         create_button.appendChild(create_span)
-                //         let container_option = document.querySelector('.container-option');
-                //         container_option.appendChild(create_button)
-                //         option_value.push(value)
-                        
-                //         let getIdAttr = $(this).parents('tr').find('.select_type').val();
-                //         InnerTableAttr(getIdAttr,option_value)
-                //         this.value = "";
-                //     }
-                // })
-            }
-            // createButtonColor();
+        //         }
+        //     })
 
-            // function createButtonColor() {
-            //     let get_add_size = document.querySelector('.add-color');
-            //     get_add_size.addEventListener("keydown", function(e) {
-            //         let i = 1
-            //         if (e.keyCode === 13) {
-            //             let value = this.value;
-            //             let create_button = document.createElement("div");
-            //             let create_span = document.createElement("span");
-            //             create_span.setAttribute("class", 'close');
-            //             create_span.setAttribute("data-value", value);
-
-            //             create_span.textContent = "x";
-            //             setValuteSizeButton = create_button.setAttribute("class", `badge-2`)
-            //             setValuteSizeButton = create_button.setAttribute("id", `btn-color-${btn_size++}`)
-            //             let getValueSizeButton = create_button.getAttribute("id");
-            //             create_span.setAttribute("data-id", getValueSizeButton);
-            //             create_button.textContent = value
-            //             create_button.appendChild(create_span)
-            //             let container_size = document.querySelector('.container-color');
-            //             container_size.appendChild(create_button)
-            //             this.value = ""
-            //             InnerTableAttr();
-            //         }
-
-            //     })
-            // }
-
-            // $('.category').change(function() {
-            //     let value = $(this).val();
-            //     $.ajax({
-            //         type: "GET",
-            //         url: "{{ route('admin.category.getChildCategory') }}",
-            //         data: {
-            //             id: value
-            //         },
-            //         success: (res) => {
-            //             if (res.status == 200) {
-            //                 console.log(res)
-            //                 let child_category = ''
-            //                 res.data.forEach(function(data, i) {
-            //                     child_category +=
-            //                         `<option value="${data.id_category}">${data.name_category}</option>`;
-            //                 });
-            //                 $('.child-category-1').html(child_category);
-            //                 let filter = ''
-            //                 let i = 1;
-            //                 res.filter.forEach(function(f, i) {
-            //                     f.filter.forEach(function(fp, i) {
-            //                         filter += `<div class="form-group">
-        //                                      <label>${fp.filter_name}</label>
-        //                                     <select data-id="${fp.filter_id}" name="${fp.slug}" class="select-option"  class="select-option-${i++}">
-        //                                 `
-            //                         f.child_filter.forEach(function(fc, l) {
-            //                             filter +=
-            //                                 `<option value="${fc.filter_id}">${fc.filter_name}</option>`
-            //                         })
-            //                         filter += `</select>
-        //                              </div>`
-            //                     })
-            //                 })
-            //                 console.log(filter)
-            //                 $('.product-option__inner').html(filter)
-            //             }
-
-            //         }
-            //     })
-
-            // })
-            // $('.child-category-1').change(function() {
-            //     let value = $(this).val();
-            //     $.ajax({
-            //         type: "GET",
-            //         url: "{{ route('admin.category.getChildCategory') }}",
-            //         data: {
-            //             id: value
-            //         },
-            //         success: (res) => {
-            //             console.log(res)
-            //             let child_category = ''
-            //             res.data.forEach(function(data, i) {
-            //                 child_category +=
-            //                     `<option value="${data.id_category}">${data.name_category}</option>`;
+        // })
+        // $('.child-category-1').change(function() {
+        //     let value = $(this).val();
+        //     $.ajax({
+        //         type: "GET",
+        //         url: "{{ route('admin.category.getChildCategory') }}",
+        //         data: {
+        //             id: value
+        //         },
+        //         success: (res) => {
+        //             console.log(res)
+        //             let child_category = ''
+        //             res.data.forEach(function(data, i) {
+        //                 child_category +=
+        //                     `<option value="${data.id_category}">${data.name_category}</option>`;
             //             });
             //             $('.child-category-2').html(child_category);
             //         }
@@ -760,11 +629,11 @@
                         console.log(res.data)
                         let attr = res.data;
                         let tr = $(this).parent().parent().parent().parent().find('tbody tr');
-                       if (tr.length == attr.length) {
-                           $(this).attr('disabled', true)
-                       } else {
-                           $(this).attr('disabled', false);
-                       }
+                        if (tr.length == attr.length) {
+                            $(this).attr('disabled', true)
+                        } else {
+                            $(this).attr('disabled', false);
+                        }
                         for (let i = 0; i < tr.length; i++) {
                             let selected_type = tr[i].querySelector('.select_type').value;
 
@@ -806,7 +675,7 @@
                                     </tr>`;
                         }
                         $(this).parent().parent().parent().parent().find('tbody').append(html);
-                      
+
                     }
                 })
             })
@@ -836,6 +705,4 @@
 
         }
     </script>
-   
-
 @endpush
