@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('id_skus_product_variant_options')->autoIncrement();
             $table->bigInteger('id_product_variants');
             $table->bigInteger('id_product_variant_options');
-            $table->string('sku')->nullable()->unique();
+            $table->string('sku')->nullable();
             $table->integer('price')->default(0);
             $table->integer('discount')->default(0);
             $table->integer('stock')->default(0);

@@ -35,7 +35,9 @@ class ProductController extends Controller
     }
 
     public function addProduct(Request $request)
-    {  $listProduct = ProductModel::orderBy('id_product', 'desc')->get();
+    {   
+      
+        $listProduct = ProductModel::orderBy('id_product', 'desc')->get();
         $getBrands = BrandModel::orderBy('id_brand', 'desc')->get();
         $listCategory = CategoryModel::whereNull('parent_category')->orderBy('id_category', 'desc')->get();
         $listAttr = AttributeModel::orderBy('id_attr', 'desc')->get();
@@ -58,6 +60,7 @@ class ProductController extends Controller
 
     public function postAddProduct(Request $request)
     {
+        dd($request->all());
         $validator = Validator::make(
             $request->all(),
             [
