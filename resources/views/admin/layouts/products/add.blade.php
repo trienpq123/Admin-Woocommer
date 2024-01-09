@@ -219,20 +219,21 @@
         $(document).ready(function() {
             // Render Image khi upload
             btn_option = 1;
-            let attr = [];
-            let variants = [];
+
             let option_value = [];
             addOptionAttribute()
 
             function addOptionAttribute() {
                 let get_add_size = document.querySelector('.add-option');
-                $('.add-option').on('keypress', function() {
-                    let option = ''
-                })
+
+                // $('.add-option').on('keypress', function() {
+                //     let option = ''
+                // })
 
                 $(document).on('keydown', '.add-option', function(e) {
                     // e.preventDefault();
-                    let i = 1
+                    let i = 1;
+
                     if (e.keyCode === 13 || e.keyCode === 32 || e.keyCode === 44) {
                         let value = this.value;
                         let create_button = document.createElement("div");
@@ -246,18 +247,10 @@
                         create_span.setAttribute("data-id", getValueSizeButton);
                         create_button.textContent = value
                         create_button.appendChild(create_span)
-                        let container_option = $(this).parent();
+                        let container_option = $(this).parent().find('.container-option');
                         container_option.append(create_button);
                         let get_tr = $(this).parents('tr')
                         let getIdAttr = get_tr.find('.select_type').val();
-                        let item = {};
-                        item[getIdAttr] = value
-                        attr.push(item);
-
-
-
-
-
 
                         // if (!option_value[getIdAttr]) {
                         //     option_value[getIdAttr] = [];
@@ -265,22 +258,41 @@
                         // } else {
                         //     option_value[getIdAttr].push(value);
                         // }
-                        let attr_options = option_value.filter((array) => array.length > 0)
+                        // let attr_options = option_value.filter((array) => array.length > 0)
                         // option_value[getIdAttr].push(value)
+                        let tr = $(this).parents('tbody').find('tr');
+                        let attribute = [];
+                        let variants = [];
+                        tr.each(function() {
+                            let attribute_selected = $(this).find('.select_type option:selected').val();
+                            console.log(attribute_selected)
+                            let attribute_options = $(this).find('.container-option').find('.badge-2');
+                            let attr = [];
+                            if (attribute_options.length > 0) {
+                                for (let i = 0; i < attribute_options.length; i++) {
+                                    let item = {};
+                                    let data_value = $(attribute_options[i]).find('span.close').attr("data-value");
+                                        console.log(data_value)
+                                    item[attribute_selected] = data_value;
+                                    attr.push(item);
+                                }
+                                attribute.push(attr);
+                            }
+                        })
+                        attribute = attribute.reduce((a, b) => 
+                            a.flatMap(c => b.map(d => ({
+                                ...c,
+                                ...d
+                            })))
+                        )
+                        console.log(attribute);
 
-                        console.log(attr_options)
                         // InnerTableAttr(attr_options)
                         this.value = "";
 
                     }
-                    attr = attr.reduce((a, b) => {
-                        a.flatMap(c => b.map(e => ({
-                            ...c,
-                            ...e
-                        })))
-                    })
 
-                    console.log(attr)
+                    // console.log(attr)
 
                 })
 
@@ -626,7 +638,7 @@
                         _token: "{{ csrf_token() }}"
                     },
                     success: (res) => {
-                        console.log(res.data)
+                        // console.log(res.data)
                         let attr = res.data;
                         let tr = $(this).parent().parent().parent().parent().find('tbody tr');
                         if (tr.length == attr.length) {
