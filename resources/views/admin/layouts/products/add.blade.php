@@ -264,22 +264,25 @@
                         let attribute = [];
                         let variants = [];
                         tr.each(function() {
-                            let attribute_selected = $(this).find('.select_type option:selected').val();
+                            let attribute_selected = $(this).find('.select_type option:selected')
+                                .val();
                             console.log(attribute_selected)
-                            let attribute_options = $(this).find('.container-option').find('.badge-2');
+                            let attribute_options = $(this).find('.container-option').find(
+                                '.badge-2');
                             let attr = [];
                             if (attribute_options.length > 0) {
                                 for (let i = 0; i < attribute_options.length; i++) {
                                     let item = {};
-                                    let data_value = $(attribute_options[i]).find('span.close').attr("data-value");
-                                        console.log(data_value)
+                                    let data_value = $(attribute_options[i]).find('span.close')
+                                        .attr("data-value");
+                                    console.log(data_value)
                                     item[attribute_selected] = data_value;
                                     attr.push(item);
                                 }
                                 attribute.push(attr);
                             }
                         })
-                        attribute = attribute.reduce((a, b) => 
+                        attribute = attribute.reduce((a, b) =>
                             a.flatMap(c => b.map(d => ({
                                 ...c,
                                 ...d
@@ -287,7 +290,7 @@
                         )
                         console.log(attribute);
 
-                        // InnerTableAttr(attr_options)
+                        InnerTableAttr(attribute)
                         this.value = "";
 
                     }
@@ -355,19 +358,32 @@
             });
 
             function InnerTableAttr(optionValue = []) {
-                console.log(optionValue);
+
                 const table = $('.table-price table tbody');
                 let tr = '';
                 if (optionValue.length > 0) {
-                    for (let i = 0; i < optionValue.length; i++) {
+                    for (let j = 0; j < optionValue.length; j++) {
 
                         tr += `<tr>
                                 <td> <input type="checkbox" /> </td>
                                 <td>
-                                    <span>Trắng</span>    -
-                                    <span>32GB</span>
-                                    <input type="text" hidden value="Trắng" class="size" />
-                                    <input type="text" hidden value="32GB" class="color" />
+                                    `
+                        $.each(optionValue[j],function(index, item) {
+                            console.log(index);
+                            if(optionValue.length>1){
+                                tr+= ` - `
+                                tr += `<span>${item}</span>`
+                            }else{
+                                tr += `<span>${item}</span>`
+                            }
+                        
+                        })
+                       
+                        // $.each((optionValue[j]),function(j, item) {
+                        //     tr += `   <input type="text" hidden value="${item}" class="size" />`
+                        // })
+                        tr += `            
+                                 
                                 </td>
                                 <td>
                                     <input type="number" value="100000" class="product_price" />
