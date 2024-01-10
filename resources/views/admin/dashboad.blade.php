@@ -1,6 +1,5 @@
 @extends('admin.index');
 @section('articles')
-
     <div class="box-analytic grid grid-tempalte-colum-2 align-items-center mg-section">
         <div class="analytic-item user">
             <div class="analytic-name mg-section">

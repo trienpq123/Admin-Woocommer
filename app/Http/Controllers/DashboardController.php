@@ -17,9 +17,20 @@ class DashboardController extends Controller
 
     public function loginPost(Request $request){
         $array = $request->only('email','password');
-        if (Auth::attempt($array)){
+        $user = [
+            'email' => $request->email,
+            'password' => $request->password
+        ];
+        if (Auth::attempt($user)){
+            
             return redirect()->route('admin.DashboardAdmin');
         }
-        return back();
+        notify()->error('Tài khoản hoặc mật khẩu không đúng!','Lỗi');
+        return back()->with('success','Tài khoản hoặc mật khẩu không đúng');
+    }
+
+    public function logout(){
+        Auth::logout();
+        return redirect()->route('login');
     }
 }

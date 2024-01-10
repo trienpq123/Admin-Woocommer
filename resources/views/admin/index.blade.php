@@ -52,16 +52,16 @@
 </head>
 
 <body>
-    <div id="loader">
+    {{-- <div id="loader">
         <div class="loader"></div>
-    </div>
+    </div> --}}
     @include('admin.layouts.aside')
     @include('admin.component.header_bar')
     @include('admin.layouts.articles')
 
 </body>
-{{-- <script src="{{ asset('../../assets/js/js.js') }}"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script> --}}
+<script src="{{ asset('../../assets/js/js.js') }}"></script>
+{{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script> --}}
 <script src="{{ asset('./admin/assets/js/js.js') }}"></script>
 {{-- <script>
     $(document).ready(function() {
@@ -220,8 +220,6 @@
     })
 </script>
 
-
-//
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i

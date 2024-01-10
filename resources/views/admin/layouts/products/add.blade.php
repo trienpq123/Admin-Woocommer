@@ -370,7 +370,7 @@
                                     `
                         $.each(optionValue[j],function(index, item) {
                             console.log(index);
-                            if(optionValue.length>1){
+                            if(optionValue[j].length>1){
                                 tr+= ` - `
                                 tr += `<span>${item}</span>`
                             }else{

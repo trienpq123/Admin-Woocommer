@@ -35,12 +35,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+});  
+Route::get('login',[DashboardController::class,'login'])->name('login');
+Route::post('login',[DashboardController::class,'loginPost'])->name('loginPost');
 Route::group([ 'middleware' => 'Localization'],function() {
-
-    Route::prefix('admin')->name('admin.')->group(function(){
-        Route::get('login',[DashboardController::class,'login'])->name('login');
-        Route::post('login',[DashboardController::class,'loginPost'])->name('loginPost');
+  
+    Route::get('logout',[DashboardController::class,'logout'])->name('logout');
+    Route::middleware(['check_login'])->prefix('admin')->name('admin.')->group(function(){
+       
 
         Route::get('/dashboard',[IndexController::class,'index'])->name('DashboardAdmin');
         Route::prefix('filter')->name('filter.')->group(function() {
@@ -160,7 +162,7 @@ Route::group([ 'middleware' => 'Localization'],function() {
         });
         Route::prefix('roles')->name('roles.')->group(function(){
             Route::get('/',[RoleController::class,'index'])->name('role.index');
-            Route::get('/api/get',[RoleController::class,'index'])->name('role.index');
+            Route::get('/api/get',[RoleController::class,'index'])->name('role.list');
             Route::get('/add',[RoleController::class,'RoleFormAdd'])->name('role.create');
             Route::get('/edit-role/{id}',[RoleController::class,'RoleFormEdit'])->name('role.edit');
             Route::put('/edit-role/{id}',[RoleController::class,'RoleFormUpdate'])->name('role.update');
@@ -191,4 +193,4 @@ Route::group([ 'middleware' => 'Localization'],function() {
 });
 
 
-require __DIR__.'/auth.php';
+// require __DIR__.'/auth.php';
