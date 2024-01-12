@@ -178,11 +178,11 @@ Route::group([ 'middleware' => 'Localization'],function() {
             Route::post('/add',[PermissionController::class,'PermissionFormPostAdd'])->name('permisson.store');
             Route::get('/delete/{id}',[PermissionController::class,'PermissionDelete'])->name('permisson.delete');
         });
-        Route::middleware(['role_or_permission:admin|manager user'])->prefix('User')->name('User.')->group(function(){
-            Route::get('/',[UserController::class,'index'])->name('User.index')->middleware(['permission:public user']) ;
+        Route::middleware(['role:Administrator'])->prefix('User')->name('User.')->group(function(){
+            Route::get('/',[UserController::class,'index'])->name('User.index') ;
             Route::get('/add',[UserController::class,'UserFormAdd'])->name('User.create')->middleware(['permission:user add']);
-            Route::get('/edit-user/{id}',[UserController::class,'UserFormEdit'])->name('User.edit')->middleware(['permission:user edit']);
-            Route::put('/edit-user/{id}',[UserController::class,'UserFormUpdate'])->name('User.update')->middleware(['permission:user edit']);
+            Route::get('/edit-user/{id}',[UserController::class,'UserFormEdit'])->name('User.edit')->middleware(['permission:edit user']);
+            Route::put('/edit-user/{id}',[UserController::class,'UserFormUpdate'])->name('User.update')->middleware(['permission:edit user']);
             Route::post('/add',[UserController::class,'UserFormPostAdd'])->name('User.store')->middleware(['permission:user add']);
             Route::get('/delete/{id}',[UserController::class,'UserDelete'])->name('User.delete')->middleware(['permission:user delete']);
         });

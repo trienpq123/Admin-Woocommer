@@ -330,12 +330,12 @@
             <ul id="user" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="{{route('admin.roles.role.index')}}">
-                        <i class="bi bi-circle"></i><span>Người dùng</span>
+                        <i class="bi bi-circle"></i><span>Phân quyền</span>
                     </a>
                 </li>
                 <li>
-                    <a href="icons-remix.html">
-                        <i class="bi bi-circle"></i><span>Phân quyền</span>
+                    <a href="{{route('admin.User.User.index')}}">
+                        <i class="bi bi-circle"></i><span>Quản lý User</span>
                     </a>
                 </li>
              

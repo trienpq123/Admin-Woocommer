@@ -54,7 +54,7 @@ class UserController extends Controller
         $User = $User->findOrFail($id);
         $User->name = $request->fullName;
         $User->email = $request->email;
-        $User->username = $request->username;
+        // $User->username = $request->username;
         $User->save();
 
             $User->syncRoles($request->role);
