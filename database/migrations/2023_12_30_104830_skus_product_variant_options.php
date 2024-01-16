@@ -11,17 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('skus_product_variant_options', function (Blueprint $table) {
-            $table->id('id_skus_product_variant_options')->autoIncrement();
-            $table->bigInteger('id_product_variants');
-            $table->bigInteger('id_product_variant_options');
-            $table->string('sku')->nullable();
-            $table->integer('price')->default(0);
-            $table->integer('discount')->default(0);
-            $table->integer('stock')->default(0);
-            $table->text('image')->nullable();
-            $table-> timestamps();
-        });
+        // Schema::create('skus_product_variant_options', function (Blueprint $table) {
+        //     $table->id('id_skus_product_variant_options')->autoIncrement();
+        //     $table->bigInteger('id_product_variants');
+        //     $table->bigInteger('id_product_variant_options');
+        //     $table->string('sku')->nullable();
+        //     $table->integer('price')->default(0);
+        //     $table->integer('discount')->default(0);
+        //     $table->integer('stock')->default(0);
+        //     $table->text('image')->nullable();
+        //     $table-> timestamps();
+        // });
 
      
     }

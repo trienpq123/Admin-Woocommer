@@ -76,7 +76,6 @@
     <script>
         // Nested demo
         var nestedSortables = [].slice.call(document.querySelectorAll('.nested-sortable'));
-
         // Loop through each nested sortable element
         for (var i = 0; i < nestedSortables.length; i++) {
             new Sortable(nestedSortables[i], {
@@ -89,7 +88,6 @@
         const nestedQuery = '.nested-sortable';
         const identifier = 'sortableId';
         const root = document.getElementById('nestedDemo');
-
         function serialize(sortable) {
             var serialized = [];
             var children = [].slice.call(sortable.children);
@@ -102,8 +100,6 @@
             }
             return serialized
         }
-
-
         $(document).ready(function() {
             $('.btn-test').click(function() {
                 console.log(serialize(root))

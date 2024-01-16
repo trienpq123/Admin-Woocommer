@@ -340,7 +340,26 @@
                 </li>
              
             </ul>
-        </li><!-- End Icons Nav -->
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#menu" data-bs-toggle="collapse" href="">
+                <i class="bi bi-gem"></i><span>Quản lý menu</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="menu" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="{{route('admin.menu.listMenu')}}">
+                        <i class="bi bi-circle"></i><span>Xem menu</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('admin.menu.addMenu')}}">
+                        <i class="bi bi-circle"></i><span>Thêm menu</span>
+                    </a>
+                </li>
+             
+            </ul>
+        </li>
+        <!-- End Icons Nav -->
         <!-- End Type Page -->
 
         <li class="nav-item">

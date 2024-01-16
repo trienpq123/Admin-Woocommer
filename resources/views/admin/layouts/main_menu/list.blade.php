@@ -51,44 +51,139 @@
             <br>
 
 
-            <ul class="sortable list-unstyled" id="sortable">
-                @if (count($menu) > 0)
-                    @foreach ($menu as $m)
-                        <li style="position: relative" id="sortableId" data-position-menu="{{ $m->position }}"
-                            data-id-menu="{{ $m->id_menu }}" data-parent-menu="{{ $m->parent_menu }}">
-                            <a class="btn btn-edit" data-name="edit-menu" data-id="{{ $m->id_menu }}"
-                                style="position:absolute; z-index: 99999; right: 35px; "><i class="fas fa-edit"></i></a>
-                            <a class="btn btn-delete" data-name="edit-menu" data-id="{{ $m->id_menu }}"
-                                style="position:absolute; z-index: 99999; right: 0; "><i class="fas fa-close"></i></a>
-                            <div class="block block-title">{{ $m->name_menu }}</div>
-                            <ul class="sortable list-unstyled">
-                                @if (count($m->chirendMenu) > 0)
-                                    @foreach ($m->chirendMenu as $cm)
-                                        <li style="position: relative" id="sortableId"
-                                            data-position-menu="{{ $cm->position }}" data-name="edit-product"
-                                            data-id="{{ $m->id_menu }}" data-id-menu="{{ $cm->id_menu }}"
-                                            data-parent-menu="{{ $cm->parent_menu }}">
-                                            <a class="btn btn-edit" data-name="edit-menu" data-id="{{ $cm->id_menu }}"
-                                                style="position:absolute; z-index: 99999; right: 35px; "><i
-                                                    class="fas fa-edit"></i></a>
-                                            <a class="btn btn-delete" data-name="edit-menu" data-id="{{ $cm->id_menu }}"
-                                                style="position:absolute; z-index: 99999; right: 0; "><i
-                                                    class="fas fa-close"></i></a>
-                                            <div style="position: relative" class="block block-title"
-                                                data-position-menu="{{ $cm->position }}"
-                                                data-id-menu="{{ $cm->id_menu }}"
-                                                data-parent-menu="{{ $cm->parent_menu }}">{{ $cm->name_menu }}</div>
-                                            <ul class="sortable list-unstyled"></ul>
-                                        </li>
+            <div class="row">
+                <div class="col-lg-4 col-md-12 col-xs-12">
+                    <h3 class="ladi-title fs-18">Thêm liên kết</h3>
+
+                    <div class="accordion" id="accordionExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                    Trang
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                                data-bs-parent="#accordionExample" style="">
+                                <div class="accordion-body">
+
+                                    <ul class="list-group" id="menu-pages" data-bs-parent="#menu-toggle">
+                                        @if (count($pages) > 0)
+                                            @foreach ($pages as $page)
+                                                <li class="list-group-item">
+                                                    <input class="form-check-input me-1" type="checkbox" name="links[]"
+                                                        value="{{ $page->id_page }}" aria-label="...">
+                                                    <label for="">{{ $page->title }}</label>
+                                                </li>
+                                            @endforeach
+                                        @endif
+                                    </ul>
+                                    <div class="text-right m-1 ">
+                                        <button type="submit" name="Pagesubmit" class="btn btn-submit">Lưu</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="col-lg-8 col-md-12 col-xs-12">
+                    <h3 class="ladi-title fs-18">Danh sách menu</h3>
+                    <div class="table">
+
+                        <table id="table">
+
+                            <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Tên Menu</th>
+                                    <th>Ẩn/Hiện</th>
+                                    <th></th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (count($getTypeMenu) > 0)
+                                    @php
+                                        $i = 1;
+                                    @endphp
+                                    @foreach ($getTypeMenu as $item)
+                                        <tr>
+                                            <td>{{ $i }}</td>
+                                            <td>{{ $item->title }}</td>
+                                            <td>
+                                                @if ($item->enabled)
+                                                    <span class="badge bg-success">Hiện</span>
+                                                @else
+                                                <span class="badge bg-danger">Tắt</span>
+                                                @endif
+                                            </td>
+                                            <td colspan="2">
+                                                <div class="d-flex justify-content-center gap-3">
+                                                    <a class="btn-edit"><span><i class="ri-edit-box-line"></i></span></a>
+                                                    <a class="btn-delete"><span><i
+                                                                class="ri-delete-bin-2-line"></i></span></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @php
+                                            $i++;
+                                        @endphp
                                     @endforeach
                                 @endif
-                            </ul>
-                        </li>
-                    @endforeach
-                @endif
+                            </tbody>
 
-            </ul>
-            <button class="btn-test">SAVE</button>
+                        </table>
+                        <div class="col-lg-3">
+                            <button class="btn-edit btn btn-primary" data-name="add-menu">Tạo Menu</button>
+                        </div>
+                    </div>
+                    {{-- <ul class="sortable list-unstyled" id="sortable">
+                        @if (count($menu) > 0)
+                            @foreach ($menu as $m)
+                                <li style="position: relative" id="sortableId" data-position-menu="{{ $m->position }}"
+                                    data-id-menu="{{ $m->id_menu }}" data-parent-menu="{{ $m->parent_menu }}">
+                                    <a class="btn btn-edit" data-name="edit-menu" data-id="{{ $m->id_menu }}"
+                                        style="position:absolute; z-index: 99999; right: 35px; "><i
+                                            class="fas fa-edit"></i></a>
+                                    <a class="btn btn-delete" data-name="edit-menu" data-id="{{ $m->id_menu }}"
+                                        style="position:absolute; z-index: 99999; right: 0; "><i
+                                            class="fas fa-close"></i></a>
+                                    <div class="block block-title">{{ $m->name_menu }}</div>
+                                    <ul class="sortable list-unstyled">
+                                        @if (count($m->chirendMenu) > 0)
+                                            @foreach ($m->chirendMenu as $cm)
+                                                <li style="position: relative" id="sortableId"
+                                                    data-position-menu="{{ $cm->position }}" data-name="edit-product"
+                                                    data-id="{{ $m->id_menu }}" data-id-menu="{{ $cm->id_menu }}"
+                                                    data-parent-menu="{{ $cm->parent_menu }}">
+                                                    <a class="btn btn-edit" data-name="edit-menu"
+                                                        data-id="{{ $cm->id_menu }}"
+                                                        style="position:absolute; z-index: 99999; right: 35px; "><i
+                                                            class="fas fa-edit"></i></a>
+                                                    <a class="btn btn-delete" data-name="edit-menu"
+                                                        data-id="{{ $cm->id_menu }}"
+                                                        style="position:absolute; z-index: 99999; right: 0; "><i
+                                                            class="fas fa-close"></i></a>
+                                                    <div style="position: relative" class="block block-title"
+                                                        data-position-menu="{{ $cm->position }}"
+                                                        data-id-menu="{{ $cm->id_menu }}"
+                                                        data-parent-menu="{{ $cm->parent_menu }}">{{ $cm->name_menu }}
+                                                    </div>
+                                                    <ul class="sortable list-unstyled"></ul>
+                                                </li>
+                                            @endforeach
+                                        @endif
+                                    </ul>
+                                </li>
+                            @endforeach
+                        @endif
+
+                    </ul> --}}
+                </div>
+            </div>
+            <button class="btn btn-submit">SAVE</button>
 
             <div class="popup-modal edit-menu">
                 <div class="box-alert">
@@ -150,6 +245,24 @@
                                     Xác nhận
                                 </button>
                             </div>
+                        </form>
+                    </div>
+                    <div class="btn-close">
+                        <span><i class="fas fa-times"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="popup-modal add-menu">
+                <div class="box-alert">
+                    <div class="form-feild">
+                        <div class="form-title">
+                            <h2>Thêm mới menu</h2>
+                        </div>
+                        <form action="{{ route('admin.menu.addTypeMenu') }}" method="post">
+                            @csrf
+                            <label for="">Tên menu</label>
+                            <input type="text" class="form-control" name="title">
+                            <button type="submit" class="btn btn-submit">Thêm</button>
                         </form>
                     </div>
                     <div class="btn-close">
@@ -243,6 +356,7 @@
         $(document).ready(function() {
             $('.btn-edit').click(function() {
                 let name = $(this).attr('data-name');
+
                 let id = $(this).attr('data-id');
                 $('.popup-modal' + '.' + name).toggleClass('active');
 

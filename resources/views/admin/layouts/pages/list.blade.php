@@ -21,7 +21,7 @@
                
                
                 <a href="{{ route('admin.pages.addPages') }}" class="btn btn-add" data-name="add-product"><span><i
-                            class="ri-add-circle-line"></i></span>Thêm danh mục mới</a>
+                            class="ri-add-circle-line"></i></span>Thêm trang mới</a>
                 <button class="btn btn-delete delete-checkbox btn-danger" id="delete-checkbox" disabled
                     data-name="popup-delete-checkbox">Xoá</button>
 
@@ -237,7 +237,7 @@
                         {
                             data: null,
                             render: function(data, type, row, meta) {
-                                return `<span>${data.name_page}</span>`
+                                return `<span>${data.title}</span>`
                             }
                         },
                         {
@@ -256,7 +256,7 @@
                         {
                             data: null,
                             render: function(data, type, row, meta) {
-                                return `<a class="btn-edit"  data-name="edit-product" data-id="${data.id_page}">Chỉnh sửa</a>`
+                                return `<a class="btn-edit"  data-name="edit-product" data-id="${data.id_page}" >Chỉnh sửa</a>`
                             }
                         },
                         {
@@ -299,7 +299,7 @@
                     },
                     success: (res) => {
                         console.log(res)
-                        let name = $(".form-control.name_edit").val(res.data.name_page);
+                        let name = $(".form-control.name_edit").val(res.data.title);
                         $(".slug_edit").val(res.data.slug);
                         CKEDITOR.instances.desc_edit.setData(res.data.meta_description);
                         $('.status_edit').each(function(i, item) {
@@ -331,6 +331,7 @@
                         data: formData,
                         success: (res) => {
                             if (res.status == 404) {
+                                console.log(res);
                                 validator(res.status, res.message)
                             } else {
 

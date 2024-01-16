@@ -98,10 +98,12 @@ Route::group([ 'middleware' => 'Localization'],function() {
             Route::get('/',[PagesController::class,'listPages'])->name('listPages');
             Route::get('/api/list',[PagesController::class,'apiListPages'])->name('apiListPages');
             Route::get('/add',[PagesController::class,'addPages'])->name('addPages');
-            Route::get('/edit',[PagesController::class,'editPages'])->name('editPages');
+          
             Route::post('/add',[PagesController::class,'postAddPages'])->name('postAddPages');
             Route::post('/edit',[PagesController::class,'putEditPages'])->name('putEditPages');
             Route::delete('/delete',[PagesController::class,'deletePages'])->name('deletePages');
+            // Ajax routes
+            Route::get('/edit',[PagesController::class,'editPages'])->name('editPages');
         });
         Route::prefix('news')->name('news.')->group(function() {
             Route::get('/',[NewsController::class,'listNews'])->name('listNews');
@@ -130,6 +132,7 @@ Route::group([ 'middleware' => 'Localization'],function() {
             Route::post('/type-menu',[MenuController::class,'typeMenu'])->name('typeMenu');
             Route::post('/api/edit-menu',[MenuController::class,'apiPutEditMenu'])->name('apiPutEditMenu');
             Route::delete('/delete-menu',[MenuController::class,'deleteMenu'])->name('deleteMenu');
+            Route::post('/add-type-menu',[MenuController::class,'addTypeMenu'])->name('addTypeMenu');
         });
         Route::prefix('attr')->name('attr.')->group(function() {
             Route::get('/',[AttributeController::class,'listAttr'])->name('listAttr');
@@ -180,11 +183,12 @@ Route::group([ 'middleware' => 'Localization'],function() {
         });
         Route::middleware(['role:Administrator'])->prefix('User')->name('User.')->group(function(){
             Route::get('/',[UserController::class,'index'])->name('User.index') ;
-            Route::get('/add',[UserController::class,'UserFormAdd'])->name('User.create')->middleware(['permission:user add']);
+            Route::get('/add',[UserController::class,'UserFormAdd'])->name('User.create')->middleware(['permission:add_user']);
             Route::get('/edit-user/{id}',[UserController::class,'UserFormEdit'])->name('User.edit')->middleware(['permission:edit user']);
             Route::put('/edit-user/{id}',[UserController::class,'UserFormUpdate'])->name('User.update')->middleware(['permission:edit user']);
-            Route::post('/add',[UserController::class,'UserFormPostAdd'])->name('User.store')->middleware(['permission:user add']);
-            Route::get('/delete/{id}',[UserController::class,'UserDelete'])->name('User.delete')->middleware(['permission:user delete']);
+            Route::post('/add',[UserController::class,'UserFormPostAdd'])->name('User.store')->middleware(['permission:add_user']);
+            Route::get('/delete/{id}',[UserController::class,'UserDelete'])->name('User.delete')->middleware(['permission:delete user']);
+            Route::get('/get-permission-role',[UserController::class,'getPermissionRole'])->name('user.getPermissionRole');
         });
         Route::get('ckeditor', [FileController::class,'index'])->name('indexCkeditor');
         Route::post('ckeditor/upload', [FileController::class,'uploadFile'])->name('uploadFile');

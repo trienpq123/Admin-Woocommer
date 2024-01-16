@@ -59,6 +59,8 @@ class PagesController extends Controller
                 'message' => 'Trang không tồn tại'
             ]);
         }
+
+        // return view('admin.layouts.pages.edit');
     }
 
     public function putEditPages(Request $request)
@@ -67,7 +69,7 @@ class PagesController extends Controller
         if ($request->id) {
             $check_pages = PagesModel::find($request->id)->first();
             if ($check_pages) {
-                $check_pages->name_page = $request->name;
+                $check_pages->title = $request->name;
                 $check_pages->slug = $request->slug;
                 $check_pages->meta_description = $request->desc;
                 $check_pages->meta_keyword = $request->keyword;
@@ -84,32 +86,34 @@ class PagesController extends Controller
 
     public function postAddPages(Request $request)
     {
-        // $validator = Validator::make(
-        //     $request->all(),
-        //     [
-        //         'name' => "required|unique:pages,name_page",
-        //         'slug' => "required|unique:pages,slug"
-        //     ],
-        //     [
-        //         'name.required' => 'Tên trang không được bỏ trống',
-        //         'name.unique' => 'Tên trang đã tồn tại',
-        //         'slug.required' => 'Đường dẫn không được bỏ trống',
-        //         'slug.unique' => 'Đường dẫn đã tồn tại'
-        //     ]
-        // );
-        // if ($validator->fails()) {
-        //     return response()->json([
-        //         'status' => 404,
-        //         'message' => $validator->messages()
-        //     ]);
-        // }
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => "required|unique:pages,title",
+                'slug' => "required|unique:pages,slug"
+            ],
+            [
+                'name.required' => 'Tên trang không được bỏ trống',
+                'name.unique' => 'Tên trang đã tồn tại',
+                'slug.required' => 'Đường dẫn không được bỏ trống',
+                'slug.unique' => 'Đường dẫn đã tồn tại'
+            ]
+        );
+        if ($validator->fails()) {
+            // return response()->json([
+            //     'status' => 404,
+            //     'message' => $validator->messages()
+            // ]);
+            return redirect()->route('admin.pages.listPages')->with('success', 'Cập nhật thành công');
+        }
         $page = new PagesModel();
-        $page->title = $request->name_page;
+        $page->title = $request->name;
         $page->slug = $request->slug;
         $page->meta_description = $request->meta_description;
         $page->meta_keyword = $request->meta_keywords;
         $page->meta_title = $request->meta_title;
         $page->status = $request->status;
+        $page->tag = $request->tags;
         if ($request->image) {
             $imageName = $request->image;
             $name_image = time() . '_' . $imageName->getClientOriginalName();
@@ -128,7 +132,7 @@ class PagesController extends Controller
         //     'status' => 200,
         //     'message' => $request->all()
         // ]);
-        return redirect()->back();
+        return redirect()->back()->with(['message' => 'Thêm trang thành công']);
     }
 
     public function deletePages(Request $request)

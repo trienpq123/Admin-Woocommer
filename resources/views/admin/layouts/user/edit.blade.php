@@ -39,13 +39,22 @@
                             <select class="js-example-basic-multiple-2" name="permission[]" multiple="multiple">
                                 @foreach ($permission as $item)
                                     <option value="{{ $item->id }}"
-                                        {{ $User->hasPermissionTo($item) ? 'selected' : '' }}>{{ $item->name }}</option>
+                                        {{ $User->permissions->contains('id', $item->id) ? 'selected' : '' }}>{{ $item->name }}
+
+                                    </option>
+                                    @php
+                                        $check = $User->hasPermissionTo($item->name);
+
+                                    @endphp
                                 @endforeach
+
                             </select>
+
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-submit">Xác nhận</button>
                         </div>
+
                     </form>
                 </div>
 
@@ -64,6 +73,8 @@
             // SELECT 2
             $('.js-example-basic-multiple-1').select2();
             $('.js-example-basic-multiple-2').select2();
+
+
         });
     </script>
 @endpush

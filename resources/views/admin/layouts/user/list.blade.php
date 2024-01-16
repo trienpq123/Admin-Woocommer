@@ -61,10 +61,10 @@
                                     @endif
 
                                     <td><a href="{{ route('admin.User.User.edit', ['id' => $item->id]) }}" class="btn-edit"
-                                            data-name="edit-product" data-id="{{ $item->id }}">Chỉnh sửa</a></td>
+                                            data-name="edit-product" data-id="{{ $item->id }}"><span><i class="ri-edit-box-line"></i></span></a></td>
                                     {{-- class="btn-edit"  --}}
                                     <td><a href="{{ route('admin.User.User.delete', ['id' => $item->id]) }}"
-                                            class="btn-delete">Xoá</a></td>
+                                            class="btn-delete"><span><i class="ri-delete-bin-2-line"></i></span></a></td>
                                 </tr>
                             @endforeach
                         </tbody>
