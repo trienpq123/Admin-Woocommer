@@ -121,7 +121,7 @@
                                             </td>
                                             <td colspan="2">
                                                 <div class="d-flex justify-content-center gap-3">
-                                                    <a class="btn-edit"><span><i class="ri-edit-box-line"></i></span></a>
+                                                    <a href="{{route('admin.menu.editTypeMenu',['id' => $item->id ])}}" class="btn-edit"><span><i class="ri-edit-box-line"></i></span></a>
                                                     <a class="btn-delete"><span><i
                                                                 class="ri-delete-bin-2-line"></i></span></a>
                                                 </div>

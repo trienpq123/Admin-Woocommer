@@ -6,6 +6,7 @@ use App\Models\CategoryModel;
 use App\Models\MenuModel;
 use App\Models\PagesModel;
 use App\Models\typeMenuModel;
+use App\Models\User;
 use App\Repositories\Pages\PageRepository;
 use Illuminate\Http\Request;
 
@@ -34,9 +35,25 @@ class MenuController extends Controller
     }
     public function postAddMenu(Request $request)
     {
+        
         $menu = new MenuModel();
-        $menu->name_menu = $request->name;
-        $menu->slug = $request->slug;
+        // if($request->links){
+        //     $typeMenu = isset($_POST['customLinkSubmit']) ? $_POST['customLinkSubmit'] : '';
+   
+        //     $links = $request->links;
+        //     switch ($typeMenu) {
+        //         case 'customLinkSubmit':
+        //             $menu->title = $links['title'];
+        //             $menu->url = $links['link'];
+                    
+        //             break;
+                
+        //         default:
+        //             # code...
+        //             break;
+        //     }
+        // }
+        
         $menu->link_url = $request->url;
         $menu->position = $request->position;
         $menu->status = $request->status;
@@ -172,5 +189,12 @@ class MenuController extends Controller
             'enabled' => $request->enabled ? true : false
         ]);
         return back()->with(['message' => 'thêm thành công']);
+    }
+
+    public function editTypeMenu(Request $request,$id){
+        $pages = $this->pageRepository->getAll();
+        $menu = MenuModel::whereNull('parent_menu')->with('chirendMenu')->get();
+        $getTypeMenu = typeMenuModel::orderBy('id', 'desc')->get();
+        return view('admin.layouts.main_menu.edit',compact('pages','menu','getTypeMenu','id'));
     }
 }

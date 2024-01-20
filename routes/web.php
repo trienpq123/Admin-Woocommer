@@ -132,7 +132,10 @@ Route::group([ 'middleware' => 'Localization'],function() {
             Route::post('/type-menu',[MenuController::class,'typeMenu'])->name('typeMenu');
             Route::post('/api/edit-menu',[MenuController::class,'apiPutEditMenu'])->name('apiPutEditMenu');
             Route::delete('/delete-menu',[MenuController::class,'deleteMenu'])->name('deleteMenu');
-            Route::post('/add-type-menu',[MenuController::class,'addTypeMenu'])->name('addTypeMenu');
+            // New
+            Route::get('/add-type-menu',[MenuController::class,'addTypeMenu'])->name('addTypeMenu');
+            Route::get('/add-type-menu/{id}',[MenuController::class,'editTypeMenu'])->name('editTypeMenu');
+            
         });
         Route::prefix('attr')->name('attr.')->group(function() {
             Route::get('/',[AttributeController::class,'listAttr'])->name('listAttr');
