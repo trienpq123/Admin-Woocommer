@@ -6,8 +6,6 @@
             <div class="type-page"><span>Page</span></div>
             <button data-action="expand" type="button"style="display: none;">Expand</button>
             <div class="actions">
-                {{-- <span class="btn-edit"> <i class="ri-edit-2-line"></i> </span>
-            <span class="btn-delete"> <i class=" ri-delete-bin-2-line"></i> </span> --}}
                 <span class="drop-down"><i class=" ri-arrow-down-s-line"></i></span>
             </div>
             <div class="form-show">

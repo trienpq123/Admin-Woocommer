@@ -42,19 +42,20 @@
             margin-bottom: 5px;
             margin-top: 5px;
         }
+
+        .form-show {
+            display: none;
+        }
     </style>
     <div id="main" class="main">
         <div class="wraper-container">
-            <div class="action-link">
+            {{-- <div class="action-link">
                 <a href="{{ route('admin.menu.addMenu') }}" class="btn btn-add btn-success">Thêm menu</a>
-            </div>
+            </div> --}}
             <br>
-
-
             <div class="row">
                 <div class="col-lg-4 col-md-12 col-xs-12">
                     <h3 class="ladi-title fs-18">Thêm liên kết</h3>
-
                     <div class="accordion" id="accordionExample">
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingOne">
@@ -98,20 +99,17 @@
                             <div id="custom-link" class="accordion-collapse collapse" aria-labelledby="headingOne"
                                 data-bs-parent="#custom-link" style="">
                                 <div class="accordion-body">
-                                    <form action="{{ route('admin.menu.postAddMenu') }}" method="post">
-                                        @csrf
+                                    <form action="" method="post">
                                         <ul class="list-group" id="menu-pages" data-bs-parent="#menu-toggle">
-
                                             <li class="list-group-item">
                                                 <label for="">Tiêu đề</label>
                                                 <input type="text" class="form-control me-1" placeholder="Tên menu"
-                                                    name="links[0][title]">
-
+                                                    name="title">
                                             </li>
                                             <li class="list-group-item">
                                                 <label for="">Đường dẫn</label>
                                                 <input type="text" placeholder="#" class="form-control me-1"
-                                                    name="links[0][link]">
+                                                    name="link">
                                             </li>
 
                                         </ul>
@@ -128,7 +126,11 @@
                     </div>
                 </div>
                 <div class="col-lg-8 col-md-12 col-xs-12">
-                    <h3 class="ladi-title fs-18">Danh sách menu</h3>
+                    <div class="d-flex justify-content-betweent"
+                        style="justify-content: space-between; align-items: center">
+                        <h3 class="ladi-title fs-14">Danh sách menu</h3>
+                        <button class="btn" id="btn-save-menu" type="button" data-name="btn-save-menu">Lưu menu</button>
+                    </div>
                     {{-- <ul class="sortable list-unstyled" id="sortable">
                         @if (count($menu) > 0)
                             @foreach ($menu as $m)
@@ -172,57 +174,11 @@
 
                     </ul> --}}
                     <div class="dd" id="nestable">
-                        <ol class="dd-list">
-                            <li class="dd-item" data-id="1">
-                                <div class="dd-handle">Item 1</div>
-                            </li>
-                            <li class="dd-item" data-id="2"><button data-action="collapse"
-                                    type="button">Collapse</button><button data-action="expand" type="button"
-                                    style="display: none;">Expand</button>
-                                <div class="dd-handle">Item 2</div>
-                                <ol class="dd-list">
-                                    <li class="dd-item" data-id="3">
-                                        <div class="dd-handle">Item 3</div>
-                                    </li>
-                                    <li class="dd-item" data-id="4">
-                                        <div class="dd-handle">Item 4</div>
-                                    </li>
-                                    <li class="dd-item" data-id="5"><button data-action="collapse"
-                                            type="button">Collapse</button><button data-action="expand" type="button"
-                                            style="display: none;">Expand</button>
-                                        <div class="dd-handle">Item 5</div>
-                                        <ol class="dd-list">
-                                            <li class="dd-item" data-id="6">
-                                                <div class="dd-handle">Item 6</div>
-                                            </li>
-                                            <li class="dd-item" data-id="7">
-                                                <div class="dd-handle">Item 7</div>
-                                            </li>
-                                            <li class="dd-item" data-id="8">
-                                                <div class="dd-handle">Item 8</div>
-                                            </li>
-                                        </ol>
-                                    </li>
-                                    <li class="dd-item" data-id="9">
-                                        <div class="dd-handle">Item 9</div>
-                                    </li>
-                                    <li class="dd-item" data-id="10">
-                                        <div class="dd-handle">Item 10</div>
-                                    </li>
-                                </ol>
-                            </li>
-                            <li class="dd-item" data-id="11">
-                                <div class="dd-handle">Item 11</div>
-                            </li>
-                            <li class="dd-item" data-id="12">
-                                <div class="dd-handle">Item 12</div>
-                            </li>
-                        </ol>
+                        <x-listMenu :menu="$menu" />
                     </div>
-
                 </div>
             </div>
-            <button class="btn btn-submit">SAVE</button>
+
 
             <div class="popup-modal edit-menu">
                 <div class="box-alert">
@@ -539,17 +495,31 @@
 
     {{-- Nestable --}}
     <script>
+        const nestedQuery = '.dd-list';
+        const identifier = '#sortableId';
+        const root = document.querySelector('.dd-list');
+        var serialize = [];
         $(document).ready(function() {
 
             var updateOutput = function(e) {
                 var list = e.length ? e : $(e.target),
                     output = list.data('output');
-                if (window.JSON) {
-                    output.val(window.JSON.stringify(list.nestable('serialize'))); //, null, 2));
-                } else {
-                    output.val('JSON browser support required for this demo.');
-                }
+                // console.log(output);
+                // console.log(list.nestable('serialize'));
+
+                $(output).val(JSON.stringify(list.nestable('serialize')))
+                 JSON.stringify(list.nestable('serialize'));
+
+
+                console.log(serialize);
+                // if (window.JSON) {
+                //     output.val(window.JSON.stringify()); //, null, 2));
+                // } else {
+                //     output.val('JSON browser support required for this demo.');
+                // }
             };
+
+
 
             // activate Nestable for list 1
             $('#nestable').nestable({
@@ -572,13 +542,42 @@
                     action = target.data('action');
                 if (action === 'expand-all') {
                     $('.dd').nestable('expandAll');
+                    $('.dd-list .dd-list').toggleClass('show')
                 }
                 if (action === 'collapse-all') {
                     $('.dd').nestable('collapseAll');
+                    $('.dd-list .dd-list').toggleClass('show')
                 }
             });
 
-            $('#nestable3').nestable();
+
+
+            $('#nestable3').nestable('serialize');
+        })
+
+        // Save Menu
+        $('#btn-save-menu').click(function() {
+            var serialize = $('#nestable3').nestable('serialize');
+            console.log(serialize)
+        })
+        // Form Update Menu Defatil
+
+        $('.actions .drop-down').click(function() {
+            $(this).parent().parent().find('.form-show').first().slideToggle();
+        })
+
+        $('.accordion-body form').submit(function(e) {
+            e.preventDefault();
+            let title = $(this).find('input[name="title"]').val();
+            let link = $(this).find('input[name="link"]').val();
+            var item = ` <li class="dd-item" data-id="" data-position="1" data-title="${title}" data-parent="" data-link="${link}">
+
+                            <div class="dd-handle">${title}</div>
+                            <div class="type-page"><span>Page</span></div>
+                            <button data-action="expand" type="button"style="display: none;">Expand</button>
+                          
+                        </li>`
+            $('#nestable .dd-list').first().append(item);
         })
     </script>
 @endpush

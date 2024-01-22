@@ -35,7 +35,6 @@ class MenuController extends Controller
     }
     public function postAddMenu(Request $request)
     {
-        
         $menu = new MenuModel();
         // if($request->links){
         //     $typeMenu = isset($_POST['customLinkSubmit']) ? $_POST['customLinkSubmit'] : '';
@@ -194,7 +193,28 @@ class MenuController extends Controller
     public function editTypeMenu(Request $request,$id){
         $pages = $this->pageRepository->getAll();
         $menu = MenuModel::whereNull('parent_menu')->with('chirendMenu')->get();
+        // dd($menu);
         $getTypeMenu = typeMenuModel::orderBy('id', 'desc')->get();
+      
         return view('admin.layouts.main_menu.edit',compact('pages','menu','getTypeMenu','id'));
+    }
+
+    public function updateTypeMenu(Request $request,$id){
+        if(isset($_REQUEST['updateMenuForm'])){
+            $updateFormMenu = MenuModel::where('id_menu',$request->id_menu)->update([
+                'title' => $request->title,
+                'url' => $request->url
+            ]);
+            return back()->with('success','Cập nhật thành công');
+        }
+        
+
+        // dd($request->all());
+        // $typeMenuUpdate =  typeMenuModel::where('id',$id)->update([
+        //     'title' => $request->title,
+        //     'enabled' => $request->enabled ? true : false
+        // ]);
+            
+        return back()->with('success','Cập nhật thành công');
     }
 }

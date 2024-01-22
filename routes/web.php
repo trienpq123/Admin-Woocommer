@@ -135,6 +135,7 @@ Route::group([ 'middleware' => 'Localization'],function() {
             // New
             Route::get('/add-type-menu',[MenuController::class,'addTypeMenu'])->name('addTypeMenu');
             Route::get('/add-type-menu/{id}',[MenuController::class,'editTypeMenu'])->name('editTypeMenu');
+            Route::post('/add-type-menu/{id}',[MenuController::class,'updateTypeMenu'])->name('updateTypeMenu');
             
         });
         Route::prefix('attr')->name('attr.')->group(function() {
