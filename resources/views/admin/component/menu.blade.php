@@ -1,6 +1,9 @@
 <ol class="dd-list">
+    @php
+        $i = 1;
+    @endphp
     @foreach ($menu as $item)
-        <li class="dd-item" data-id="{{ $item->id_menu }}" data-position="{{$item->position}}" data-title="{{$item->title}}" data-parent="{{$item->parent_menu}}">
+        <li class="dd-item" data-id="{{$i++}}" data-id_menu="{{ $item->id_menu }}"  data-position="{{$item->position}}" data-title="{{$item->title}}" data-parent="{{$item->parent_menu}}">
 
             <div class="dd-handle">{{ $item->title }}</div>
             <div class="type-page"><span>Page</span></div>

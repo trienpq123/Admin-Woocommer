@@ -3124,3 +3124,8 @@ form select {
   cursor: pointer;
 }
 
+.form-show{
+  display: block;
+  border: 1px solid #cdcdcd;
+  border-radius: 4px;
+}

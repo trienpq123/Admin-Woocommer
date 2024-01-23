@@ -207,6 +207,15 @@ class MenuController extends Controller
             ]);
             return back()->with('success','Cập nhật thành công');
         }
+
+        if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST'){
+            
+        }
+
+        return response()->json([
+            'status' => 200,
+            'data' => $request->all()
+        ]);
         
 
         // dd($request->all());
@@ -215,6 +224,6 @@ class MenuController extends Controller
         //     'enabled' => $request->enabled ? true : false
         // ]);
             
-        return back()->with('success','Cập nhật thành công');
+        // return back()->with('success','Cập nhật thành công');
     }
 }
