@@ -3101,9 +3101,10 @@ form select {
   top: 0;
   right: 0;
   margin-right: 98px;
-  margin-top:8px;
+  margin-top:12px;
   color: #827a7a;
   font-weight: 700;
+  font-size: .75rem;
 }
 
 

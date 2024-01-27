@@ -38,21 +38,21 @@ class MenuController extends Controller
         $menu = new MenuModel();
         // if($request->links){
         //     $typeMenu = isset($_POST['customLinkSubmit']) ? $_POST['customLinkSubmit'] : '';
-   
+
         //     $links = $request->links;
         //     switch ($typeMenu) {
         //         case 'customLinkSubmit':
         //             $menu->title = $links['title'];
         //             $menu->url = $links['link'];
-                    
+
         //             break;
-                
+
         //         default:
         //             # code...
         //             break;
         //     }
         // }
-        
+
         $menu->link_url = $request->url;
         $menu->position = $request->position;
         $menu->status = $request->status;
@@ -190,40 +190,97 @@ class MenuController extends Controller
         return back()->with(['message' => 'thêm thành công']);
     }
 
-    public function editTypeMenu(Request $request,$id){
+    public function editTypeMenu(Request $request, $id)
+    {
         $pages = $this->pageRepository->getAll();
-        $menu = MenuModel::whereNull('parent_menu')->with('chirendMenu')->get();
+        $menu = MenuModel::whereNull('parent_menu')->with('chirendMenu')->orderBy('position')->get();
         // dd($menu);
         $getTypeMenu = typeMenuModel::orderBy('id', 'desc')->get();
-      
-        return view('admin.layouts.main_menu.edit',compact('pages','menu','getTypeMenu','id'));
+
+        return view('admin.layouts.main_menu.edit', compact('pages', 'menu', 'getTypeMenu', 'id'));
     }
 
-    public function updateTypeMenu(Request $request,$id){
-        if(isset($_REQUEST['updateMenuForm'])){
-            $updateFormMenu = MenuModel::where('id_menu',$request->id_menu)->update([
+    public function updateTypeMenu(Request $request, $id)
+    {
+        if (isset($_REQUEST['updateMenuForm'])) {
+            $updateFormMenu = MenuModel::where('id_menu', $request->id_menu)->update([
                 'title' => $request->title,
                 'url' => $request->url
             ]);
-            return back()->with('success','Cập nhật thành công');
+            return back()->with('success', 'Cập nhật thành công');
         }
 
-        if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST'){
-            
+        $data = $request->data;
+        // foreach ($data as $value) {
+        //     $findMenu = MenuModel::where('id_menu', $value['id_menu'])->first();
+        //     if ($findMenu) {
+        //         $findMenu->title = $value['title'];
+        //         if ($value['position'] != 'null') {
+        //             $findMenu->position = $value['id'];
+        //         }
+        //         $findMenu->parent_menu = $value['parent'];
+        //         $findMenu->url = $value['url'];
+        //         $findMenu->save();
+        //     } else {
+        //         MenuModel::create([
+        //             'title' => $value['title'],
+        //             'position' => $value['id'],
+        //             'parent_menu' => $value['parent'],
+        //             'url' => $value['url']
+        //         ]);
+        //     }
+        //     // if (isset($value->children)) {
+        //     //     foreach ($value->children as $child) {
+        //     //         $findMenu = MenuModel::where('id_menu', $child->id_menu)->first();
+        //     //         if ($findMenu) {
+        //     //             $findMenu->title = $child->title;
+        //     //             if ($child->position != 'null') {
+        //     //                 $findMenu->position = $child->id;
+        //     //             }
+        //     //             $findMenu->parent_menu = $value->id_menu;
+        //     //             $findMenu->url = $child->url;
+        //     //             $findMenu->save();
+        //     //         } else {
+        //     //             MenuModel::create([
+        //     //                 'title' => $child->title,
+        //     //                 'position' => $child->id,
+        //     //                 'parent_menu' => $value->id_menu,
+        //     //                 'url' => $child->url
+        //     //             ]);
+        //     //         }
+        //     //     }
+        //     // }
+        // }
+        if ($data['parent'] != 'undefined') {
+            $find_id = MenuModel::find($data['id']);
+            if ($find_id->first()) {
+                $results = MenuModel::find($data['id'])->update([
+                    'title' => $data['title'],
+                    'position' => $data['position'],
+                    'parent_menu' => $data['parent'],
+                    'url' => $data['url']
+                ]);
+            }
+        } else {
+            $results = MenuModel::find($data['id'])->update([
+                'title' => $data['title'],
+                'position' => $data['position'],
+                'url' => $data['url'],
+                'parent_menu' => NULL,
+            ]);
         }
-
         return response()->json([
             'status' => 200,
-            'data' => $request->all()
+            'data' => $data
         ]);
-        
+
 
         // dd($request->all());
         // $typeMenuUpdate =  typeMenuModel::where('id',$id)->update([
         //     'title' => $request->title,
         //     'enabled' => $request->enabled ? true : false
         // ]);
-            
+
         // return back()->with('success','Cập nhật thành công');
     }
 }

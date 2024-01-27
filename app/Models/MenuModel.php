@@ -13,11 +13,14 @@ class MenuModel extends Model
     protected $fillable = [
         'name_menu',
         'parent_menu',
-        'link_url',
-        'position',
-        'status',
+        'url',
+        'title',
+        'parent_menu',
+        'icon',
+        'class',
+        'target',
         'type',
-        'slug'
+        'position'
     ];
     CONST UPDATED_AT = NULL;
     CONST CREATED_AT  = NULL;

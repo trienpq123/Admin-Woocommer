@@ -1,16 +1,10 @@
-<ol class="dd-list">
-    @php
-        $i = 1;
-    @endphp
-    @foreach ($menu as $item)
-        <li class="dd-item" data-id="{{$i++}}" data-id_menu="{{ $item->id_menu }}"  data-position="{{$item->position}}" data-title="{{$item->title}}" data-parent="{{$item->parent_menu}}">
-
-            <div class="dd-handle">{{ $item->title }}</div>
-            <div class="type-page"><span>Page</span></div>
-            <button data-action="expand" type="button"style="display: none;">Expand</button>
+@if (count($menu) > 0)
+    @foreach ($menu as $m)
+        <li style="position: relative" id="sortableId" data-position="{{ $m->position }}"
+            data-id-menu="{{ $m->id_menu }}" data-parent-menu="{{ $m->parent_menu }}" data-title="{{ $m->title }}" data-url="{{ $m->url }}">
+            <div class="block block-title">{{ $m->title }}</div>
+            <div class="type-page"><span>{{ $m->type }}</span></div>
             <div class="actions">
-                {{-- <span class="btn-edit"> <i class="ri-edit-2-line"></i> </span>
-            <span class="btn-delete"> <i class=" ri-delete-bin-2-line"></i> </span> --}}
                 <span class="drop-down"><i class=" ri-arrow-down-s-line"></i></span>
             </div>
             <div class="form-show">
@@ -19,24 +13,22 @@
                     @csrf
                     <div class="form-group">
                         <label for="url">URL</label>
-                        <input type="text" id="url" name="url" placeholder="#" value="{{ $item->url }}">
+                        <input type="text" id="url" name="url" placeholder="#"
+                            value="{{ $m->url }}">
                     </div>
                     <div class="form-group">
                         <label for="title">Nhãn Đều Hướng</label>
                         <input type="text" id="title" name="title" placeholder="Tiêu đề"
-                            value="{{ $item->title }}">
+                            value="{{ $m->title }}">
                     </div>
-                    <input type="text" name="id_menu" value="{{ $item->id_menu }}" hidden>
+                    <input type="text" name="id_menu" value="{{ $m->id_menu }}" hidden>
                     <div class="form-group">
                         <button type="submit" name="updateMenuForm" class="btn btn-primary">Save</button>
                         <button type="button" class="btn btn-outline-danger">Huỷ</button>
                     </div>
                 </form>
             </div>
-            @if ($item->chirendMenu->count() > 0)
-                <x-childMenu :menu="$item->chirendMenu" />
-            @endif
-
+            <x-childMenu :menu="$m->chirendMenu" />
         </li>
     @endforeach
-</ol>
+@endif
