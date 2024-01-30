@@ -35,7 +35,7 @@ class CategoryController extends Controller
 
     public function addCategory(Request $request)
     {
-        $attr = AttributeModel::All();
+        $attr = AttributeModel::all();
         $listCategory = CategoryModel::all();
         return view('admin.layouts.categories.add', compact('listCategory', 'attr'));
     }
@@ -44,13 +44,16 @@ class CategoryController extends Controller
     {
         $cate =  CategoryModel::find($request->id);
         $att_cat = $cate->with(['attribute_category'])->where('id_category', $request->id)->first();
-        $att_option =FilterCategoryOption::where('id_filter_category',$att_cat->attribute_category->id_filter_category)->get();
-      
+        $att_option = FilterCategoryOption::where('id_filter_category', $att_cat->attribute_category->id_filter_category)->get();
+       
         // dd($attr->attribute_category->id_attr);
         // $childrend = $cate->childrendCategory();
         $listCategory = CategoryModel::whereNot('id_category', '=', $request->id)->get();
-
-        return view('admin.layouts.categories.edit', compact('cate', 'listCategory', 'att_cat', 'att_option'));
+        if($att_option){
+     
+            return view('admin.layouts.categories.edit', compact('cate', 'listCategory', 'att_cat','att_option'));
+        }
+        return view('admin.layouts.categories.edit', compact('cate', 'listCategory', 'att_cat'));
     }
 
     public function postAddCategory(Request $request)
@@ -108,7 +111,7 @@ class CategoryController extends Controller
         $lastCategory =  CategoryModel::orderBy('id_category', 'desc')->first();
 
         if ($request->attr && $request->attr['id_attr']) {
-            dd($request->attr);
+            // dd($request->attr);
             if ($request->attr['id_attr']) {
                 $filterCategory =  filterCategoryModel::create([
                     'id_category' => $lastCategory->id_category,
@@ -116,16 +119,17 @@ class CategoryController extends Controller
                 ]);
 
                 $filterCategorys = filterCategoryModel::orderBy('id_filter_category', 'desc')->first();
-             
-    
-                if ($request->attr['option'] && count($request->attr['option']) > 0) {
-                    foreach ($request->attr['option'] as $item) {
-                        $filter = new FilterCategoryOption();
-                        $filter->id_category = $lastCategory->id_category;
-                        $filter->id_filter_category = $filterCategorys->id_filter_category_option;
-                        $filter->name = $item['name'];
-                        $filter->value = $item['value'];
-                        $filter->save();
+
+                if ($filterCategorys) {
+                    if ($request->attr['option'] && count($request->attr['option']) > 0) {
+                        foreach ($request->attr['option'] as $item) {
+                            $filter = new FilterCategoryOption();
+                            $filter->id_category = $lastCategory->id_category;
+                            $filter->id_filter_category = $filterCategorys->id_filter_category;
+                            $filter->name = $item['name'];
+                            $filter->value = $item['value'];
+                            $filter->save();
+                        }
                     }
                 }
             }

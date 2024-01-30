@@ -16,6 +16,6 @@ class filterCategoryModel extends Model
     ];
 
     public function filterCategoryOption(){
-        return $this->hasMany(filterCategoryOptionModel::class, 'id_filter_category', 'id_filter_category');
+        return $this->hasMany(FilterCategoryOption::class, 'id_filter_category', 'id_filter_category');
     }
 }

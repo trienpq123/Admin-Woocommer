@@ -193,7 +193,7 @@ class MenuController extends Controller
     public function editTypeMenu(Request $request, $id)
     {
         $pages = $this->pageRepository->getAll();
-        $menu = MenuModel::whereNull('parent_menu')->with('chirendMenu')->orderBy('position')->get();
+        $menu = MenuModel::whereNull('parent_menu')->with('chirendMenu')->orderBy('position','asc')->get();
         // dd($menu);
         $getTypeMenu = typeMenuModel::orderBy('id', 'desc')->get();
 
@@ -282,5 +282,25 @@ class MenuController extends Controller
         // ]);
 
         // return back()->with('success','Cập nhật thành công');
+    }
+    
+    public function creatingMenu(Request $request){
+        $data = $request->data;
+        foreach($data as $item){
+           $check_menu = MenuModel::where('title',$item['title']);
+            if(!$check_menu->first()){
+                MenuModel::create([
+                    
+                    'title' => $item['title'],
+                    'url' => $item['link'],
+                    'type' => $item['type']
+                ]);
+            }
+        }
+       
+        return response()->json([
+            'status' => 200,
+            'data' => $request->all()
+        ]);
     }
 }

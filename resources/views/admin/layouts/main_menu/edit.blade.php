@@ -513,7 +513,8 @@
             update: function(event, ui) {
                 const itemPosition = ui.item.index();
                 const parent = ui.item.parent().parent();
-                const parentPosition = parent.attr('data-id-menu') ? parent.attr('data-id-menu') : 'undefined'; // Nếu parent nằm trong một sortable khác
+                const parentPosition = parent.attr('data-id-menu') ? parent.attr('data-id-menu') :
+                    'undefined'; // Nếu parent nằm trong một sortable khác
                 const option = {
                     id: ui.item.attr('data-id-menu'),
                     title: ui.item.attr('data-title'),
@@ -554,48 +555,96 @@
             e.preventDefault();
             let typeForm = $(this).attr('name');
             let item = '';
+            let option = {}
+            let array = [];
             switch (typeForm) {
                 case "page":
-
                     let checkbox = $(this).find('input[type="checkbox"]:checked');
                     for (let i = 0; i < checkbox.length; i++) {
                         let value = $(checkbox[i]).val();
                         let link = $(checkbox[i]).attr('data-link');
                         let title = $(checkbox[i]).parent().find('label').text();
-                        item += `
-                                <li style="position: relative" id="sortableId" data-position="" data-id-menu=""
-                                    data-parent-menu="">
-                                    <div class="block block-title">${title}</div>
-                                    <div class="type-page"><span>Page</span></div>
-                                    <div class="actions">
-                                        <span class="drop-down"><i class=" ri-arrow-down-s-line"></i></span>
-                                    </div>
-                                    <div class="form-show">
-                                        <button type="button" class="btn btn-outline-danger text-right m-2">Xoá bỏ</button>
-                                        <form action="" method="post">
-                                            @csrf
-                                            <div class="form-group">
-                                                <label for="url">URL</label>
-                                                <input type="text" id="url" name="url" placeholder="#" value="${link}">
+                        option = {
+                            id: value,
+                            title: title,
+                            link: link,
+                            type:"page"
+                        }
+                        if (array.length > 0) {
+                            console.log(option,array)
+                            // if (!array.find((val) => val.id === option.id )) {
+                            //     array.push(option);
+                            //     item += `
+                            //             <li style="position: relative" id="sortableId" data-position="" data-id-menu=""
+                            //                 data-parent-menu="">
+                            //                 <div class="block block-title">${title}</div>
+                            //                 <div class="type-page"><span>Page</span></div>
+                            //                 <div class="actions">
+                            //                     <span class="drop-down"><i class=" ri-arrow-down-s-line"></i></span>
+                            //                 </div>
+                            //                 <div class="form-show">
+                            //                     <button type="button" class="btn btn-outline-danger text-right m-2">Xoá bỏ</button>
+                            //                     <form action="" method="post">
+                            //                         @csrf
+                            //                         <div class="form-group">
+                            //                             <label for="url">URL</label>
+                            //                             <input type="text" id="url" name="url" placeholder="#" value="${link}">
+                            //                         </div>
+                            //                         <div class="form-group">
+                            //                             <label for="title">Nhãn Đều Hướng</label>
+                            //                             <input type="text" id="title" name="title" placeholder="Tiêu đề" value="${title}">
+                            //                         </div>
+                            //                         <div class="form-group">
+                            //                             <button type="submit" name="updateMenuForm" class="btn btn-primary">Save</button>
+                            //                             <button type="button" class="btn btn-outline-danger">Huỷ</button>
+                            //                         </div>
+                            //                     </form>
+                            //                 </div>
+                            //             </li>
+                            //     `
+                            // }
+                        } else {
+                            array.push(option);
+                            item += `
+                                        <li style="position: relative" id="sortableId" data-position="" data-id-menu=""
+                                            data-parent-menu="">
+                                            <div class="block block-title">${title}</div>
+                                            <div class="type-page"><span>Page</span></div>
+                                            <div class="actions">
+                                                <span class="drop-down"><i class=" ri-arrow-down-s-line"></i></span>
                                             </div>
-                                            <div class="form-group">
-                                                <label for="title">Nhãn Đều Hướng</label>
-                                                <input type="text" id="title" name="title" placeholder="Tiêu đề" value="${title}">
+                                            <div class="form-show">
+                                                <button type="button" class="btn btn-outline-danger text-right m-2">Xoá bỏ</button>
+                                                <form action="" method="post">
+                                                    @csrf
+                                                    <div class="form-group">
+                                                        <label for="url">URL</label>
+                                                        <input type="text" id="url" name="url" placeholder="#" value="${link}">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="title">Nhãn Đều Hướng</label>
+                                                        <input type="text" id="title" name="title" placeholder="Tiêu đề" value="${title}">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <button type="submit" name="updateMenuForm" class="btn btn-primary">Save</button>
+                                                        <button type="button" class="btn btn-outline-danger">Huỷ</button>
+                                                    </div>
+                                                </form>
                                             </div>
-                                            <div class="form-group">
-                                                <button type="submit" name="updateMenuForm" class="btn btn-primary">Save</button>
-                                                <button type="button" class="btn btn-outline-danger">Huỷ</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </li>
-                        `
+                                        </li>
+                                `
+                        }
                     }
+                    console.log(array)
                     break;
                 case "custom":
                     let title = $(this).find('input[name="title"]').val();
                     let link = $(this).find('input[name="link"]').val();
-
+                    option = {
+                        title: title,
+                        link: link
+                    }
+                    array.push(option)
                     item += `   <li class="dd-item" data-id="" data-position="1" data-title="${title}" data-parent="" data-link="${link}">
 
                                         <div class="dd-handle">${title}</div>
@@ -624,16 +673,24 @@
                                             </form>
                                         </div>
                                     </li>`
-
+                    break;
                 default:
                     break;
             }
-            
 
             $('.sortable').first().append(item);
-       
-        })
 
-        console.log( $('.sortable').sortable('toArray'))
+            $.ajax({
+                method: "POST",
+                url: "{{ route('admin.menu.creatingMenu') }}",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    data: array
+                },
+                success: function(res) {
+                    console.log(res);
+                }
+            })
+        })
     </script>
 @endpush
