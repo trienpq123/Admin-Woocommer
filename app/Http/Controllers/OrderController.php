@@ -12,4 +12,9 @@ class OrderController extends Controller
     public function orderDetail(Request $request){
         return view('admin.layouts.orders.detail');
     }
+
+    public function orderAdd(Request $request){
+        
+        return view('admin.layouts.orders.add');
+    }
 }

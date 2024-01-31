@@ -367,7 +367,15 @@
                 <i class="bi bi-question-circle"></i>
                 <span>F.A.Q</span>
             </a>
-        </li><!-- End F.A.Q Page Nav -->
+        </li>
+        <!-- End F.A.Q Page Nav -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{{route('admin.order.listOrder')}}">
+                <i class="bi bi-question-circle"></i>
+                <span>Đơn hàng</span>
+            </a>
+        </li>
+        <!-- End F.A.Q Page Nav -->
 
         <li class="nav-item">
             <a class="nav-link collapsed" href="pages-contact.html">

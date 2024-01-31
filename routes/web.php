@@ -90,7 +90,7 @@ Route::group([ 'middleware' => 'Localization'],function() {
             Route::get('/api/list',[OrderController::class,'apiListOrder'])->name('apiListOrder');
             Route::get('/order-detail',[OrderController::class,'orderDetail'])->name('orderDetail');
             // Route::get('/edit',[OrderController::class,'editBrand'])->name('editBrand');
-            // Route::post('/add',[OrderController::class,'postAddBrand'])->name('postAddBrand');
+            Route::get('/add',[OrderController::class,'orderAdd'])->name('orderAdd');
             // Route::post('/edit',[OrderController::class,'putEditBrand'])->name('putEditBrand');
             // Route::delete('/delete',[OrderController::class,'deleteBrand'])->name('deleteBrand');
         });

@@ -45,13 +45,13 @@ class CategoryController extends Controller
         $cate =  CategoryModel::find($request->id);
         $att_cat = $cate->with(['attribute_category'])->where('id_category', $request->id)->first();
         $att_option = FilterCategoryOption::where('id_filter_category', $att_cat->attribute_category->id_filter_category)->get();
-       
+
         // dd($attr->attribute_category->id_attr);
         // $childrend = $cate->childrendCategory();
         $listCategory = CategoryModel::whereNot('id_category', '=', $request->id)->get();
-        if($att_option){
-     
-            return view('admin.layouts.categories.edit', compact('cate', 'listCategory', 'att_cat','att_option'));
+        if ($att_option) {
+
+            return view('admin.layouts.categories.edit', compact('cate', 'listCategory', 'att_cat', 'att_option'));
         }
         return view('admin.layouts.categories.edit', compact('cate', 'listCategory', 'att_cat'));
     }
@@ -140,7 +140,6 @@ class CategoryController extends Controller
 
     public function putEditCategory(Request $request, $id)
     {
-        dd($request->all());
         $validator = Validator::make(
             $request->all(),
             [
@@ -151,7 +150,7 @@ class CategoryController extends Controller
         if ($validator->fails()) {
             return back()->with(['errors' => $validator->errors()]);
         };
-        $category =  CategoryModel::where('id_category', '=', $request->id)->first();
+        $category =  CategoryModel::where('id_category', '=', $id)->first();
         $category->name_category = $request->name;
         $category->slug = $request->slug;
         $category->desc_category = $request->desc;
@@ -185,6 +184,24 @@ class CategoryController extends Controller
         $category->tags = $request->tags;
         $category->desc_category = $request->desc_short;
         $category->save();
+        if ($request->attr && $request->attr['id_attr']) {
+    
+            if ($request->attr['id_attr']) {
+                $filterCategorys =  filterCategoryModel::find($request->attr['id_attr'])->first();
+                if ($filterCategorys) {
+                    if ($request->attr['option'] && count($request->attr['option']) > 0) {
+                        foreach ($request->attr['option'] as $item) {
+                            $filter = FilterCategoryOption::find('id_filter_category',$item->id_filter_category);
+                            $filter->id_category = $id;
+                            $filter->id_filter_category = $filterCategorys->id_filter_category;
+                            $filter->name = $item['name'];
+                            $filter->value = $item['value'];
+                            $filter->save();
+                        }
+                    }
+                }
+            }
+        }
         // if ($request->idFilter) {
         //     $filter = explode(',', $request->idFilter);
         //     $filderModel  = FilterModel::find($filter);
