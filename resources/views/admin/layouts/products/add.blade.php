@@ -138,12 +138,7 @@
                             <label for="">Chỉnh sửa bảng giá</label>
                             <table class="table">
                                 <thead>
-                                    <th></th>
-                                    <th>Tên thuộc tính</th>
-                                    <th>Mã sản phẩm</th>
-                                    <th>Giá</th>
-                                    <th>Giá giảm</th>
-                                    <th>Hàng tồn kho</th>
+
                                 </thead>
                                 <tbody>
                                 </tbody>
@@ -219,19 +214,78 @@
         $(document).ready(function() {
             // Render Image khi upload
             btn_option = 1;
-
             let option_value = [];
             addOptionAttribute()
+            removeOption()
+
+            function InnerTableAttr(optionValue = [], row = null) {
+                console.log(optionValue)
+                const table = $('.table-price table tbody');
+                const thead = $('.table-price table thead');
+                const rows = row.parents('tbody').find('tr');
+                let tr = '';
+                let row_html = '';
+                //  XỬ LÝ VARIANT IN RA TABLE
+                if (rows.length > 0) {
+
+                    row_html += `<tr><th>Mã sản phẩm</th>`
+                    rows.each(function() {
+                        let row_value = $(this).find('select option:selected').text();
+                        row_html += `<th>${row_value}</th>`;
+                    })
+                    row_html += `          <th>Giá</th>
+                                    <th>Giá giảm</th>
+                                    <th>Hàng tồn kho</th>
+                        </tr>
+                        `
+
+                }
+                // XỬ LÝ IN THUỘC TÍNH - VARIANT
+                console.log(optionValue)
+                if (optionValue.length > 0) {
+
+                    optionValue.forEach((item) => {
+
+                        tr += `<tr>
+                                        <td> <input type="checkbox" /> </td>
+                                    `
+
+                        if (typeof item === "string") {
+                            let b = item.replace(/[^a-zA-Z-0-9]/g, "");
+                            tr += `<td class="${b}">${item}</td>`
+                        } else {
+                            item.forEach((a) => {
+                                let b = a.replace(/[^a-zA-Z-0-9]/g, "");
+                                tr += `<td class="${b}">${a}</td>`
+                            })
+                        }
+
+
+                        tr += `                        
+                            <td>
+                                <input type="number" value="100000" class="product_price" />
+                            </td>
+                            <td>
+                                <input type="number" value="500000" class="product_price_old" />
+                            </td>
+                            <td>
+                                <input type="number" value="50" class="product_stock" />
+                            </td>
+                        </tr>`
+
+
+                    })
+
+
+
+                }
+                table.html(tr);
+                thead.html(row_html);
+            }
 
             function addOptionAttribute() {
                 let get_add_size = document.querySelector('.add-option');
-
-                // $('.add-option').on('keypress', function() {
-                //     let option = ''
-                // })
-
                 $(document).on('keydown', '.add-option', function(e) {
-                    // e.preventDefault();
                     let i = 1;
 
                     if (e.keyCode === 13 || e.keyCode === 32 || e.keyCode === 44) {
@@ -251,22 +305,12 @@
                         container_option.append(create_button);
                         let get_tr = $(this).parents('tr')
                         let getIdAttr = get_tr.find('.select_type').val();
-
-                        // if (!option_value[getIdAttr]) {
-                        //     option_value[getIdAttr] = [];
-                        //     option_value[getIdAttr].push(value);
-                        // } else {
-                        //     option_value[getIdAttr].push(value);
-                        // }
-                        // let attr_options = option_value.filter((array) => array.length > 0)
-                        // option_value[getIdAttr].push(value)
                         let tr = $(this).parents('tbody').find('tr');
                         let attribute = [];
                         let variants = [];
                         tr.each(function() {
                             let attribute_selected = $(this).find('.select_type option:selected')
                                 .val();
-                            console.log(attribute_selected)
                             let attribute_options = $(this).find('.container-option').find(
                                 '.badge-2');
                             let attr = [];
@@ -275,22 +319,46 @@
                                     let item = {};
                                     let data_value = $(attribute_options[i]).find('span.close')
                                         .attr("data-value");
-                                    console.log(data_value)
-                                    item[attribute_selected] = data_value;
-                                    attr.push(item);
+                                    item['title'] = attribute_selected;
+                                    item['label'] = [{
+                                        title: data_value
+                                    }];
+                                    if (attribute.length > 0) {
+                                        let check = false;
+                                        for (let j = 0; j < attribute.length; j++) {
+                                            if (attribute[j]['title'] == item['title']) {
+                                                attribute[j]['label'] = attribute[j]['label']
+                                                    .concat(item['label'])
+                                                check = true
+                                                break
+                                            }
+                                        }
+                                        if (!check) {
+                                            attribute.push(item)
+                                        }
+                                    } else {
+                                        attribute.push(item)
+                                    }
+
+                                    // attr.push(item)
                                 }
-                                attribute.push(attr);
                             }
+
+                            // attribute.push(attr);
                         })
-                        attribute = attribute.reduce((a, b) =>
-                            a.flatMap(c => b.map(d => ({
-                                ...c,
-                                ...d
-                            })))
-                        )
                         console.log(attribute);
 
-                        InnerTableAttr(attribute)
+                        function modifier(data) {
+                            return data.map(a => a.label.map(b => b.title));
+                        }
+                        // reducer - to convert the data into desired format
+                        function reducer(data) {
+                            return data.reduce((a, b) => a.reduce((r, v) => r.concat(b.map(w => [].concat(v,
+                                w))), []))
+                        }
+                        // output - resultant data
+                        output = reducer(modifier(attribute))
+                        InnerTableAttr(output, tr)
                         this.value = "";
 
                     }
@@ -300,6 +368,30 @@
                 })
 
             }
+
+            function removeOption() {
+                $(document).on('click', '.badge-2 span.close', function() {
+
+                    let value = $(this).attr('data-value');
+                
+                    value = value.replace(/[^a-zA-Z-0-9]/g, "")
+                   
+                    console.log(value.length);
+                    // if (value.length == 1) {
+                    //     for (let i = 0; i < value.length; i++) {
+                    //         $(this).parent().parent().remove();
+                    //     }
+                        
+                    // }
+                    $(`.${value}`).html('');
+                    // $(`.${value}`).parent().remove();
+                    $(this).parent().remove();
+                    // InnerTableAttr();
+
+                })
+
+            }
+
             $(".add-file").change(function(event) {
                 console.log(event.target.files);
                 if (event.target.files && event.target.files.length > 0) {
@@ -313,10 +405,10 @@
                             var imageURL = event.target.result;
                             console.log(imageURL);
                             image = ` <div class="form-group image-item" 
-                                    style="width:120px;height:120px; padding: 8px;background-color:#d9e1ef;">
-                                    <img src="${imageURL}" alt="" style="height:100%; object-fit:cover;"
-                                  
-                                </div>`
+                                            style="width:120px;height:120px; padding: 8px;background-color:#d9e1ef;">
+                                            <img src="${imageURL}" alt="" style="height:100%; object-fit:cover;"
+                                          
+                                        </div>`
                             show_image.append(image)
 
                         };
@@ -357,118 +449,63 @@
                 templateSelection: formatState
             });
 
-            function InnerTableAttr(optionValue = []) {
-
-                const table = $('.table-price table tbody');
-                let tr = '';
-                if (optionValue.length > 0) {
-                    for (let j = 0; j < optionValue.length; j++) {
-
-                        tr += `<tr>
-                                <td> <input type="checkbox" /> </td>
-                                <td>
-                                    `
-                        $.each(optionValue[j],function(index, item) {
-                            console.log(index);
-                            if(optionValue[j].length>1){
-                                tr+= ` - `
-                                tr += `<span>${item}</span>`
-                            }else{
-                                tr += `<span>${item}</span>`
-                            }
-                        
-                        })
-                       
-                        // $.each((optionValue[j]),function(j, item) {
-                        //     tr += `   <input type="text" hidden value="${item}" class="size" />`
-                        // })
-                        tr += `            
-                                 
-                                </td>
-                                <td>
-                                    <input type="number" value="100000" class="product_price" />
-                                </td>
-                                <td>
-                                    <input type="number" value="500000" class="product_price_old" />
-                                </td>
-                                <td>
-                                    <input type="number" value="50" class="product_stock" />
-                                </td>
-                            </tr>`
-
-                    }
 
 
+            // $('.category').change(function() {
+            //     let value = $(this).val();
+            //     $.ajax({
+            //         type: "GET",
+            //         url: "{{ route('admin.category.getChildCategory') }}",
+            //         data: {
+            //             id: value
+            //         },
+            //         success: (res) => {
+            //             if (res.status == 200) {
+            //                 console.log(res)
+            //                 let child_category = ''
+            //                 res.data.forEach(function(data, i) {
+            //                     child_category +=
+            //                         `<option value="${data.id_category}">${data.name_category}</option>`;
+            //                 });
+            //                 $('.child-category-1').html(child_category);
+            //                 let filter = ''
+            //                 let i = 1;
+            //                 res.filter.forEach(function(f, i) {
+            //                     f.filter.forEach(function(fp, i) {
+            //                         filter += `<div class="form-group">
+        //                                      <label>${fp.filter_name}</label>
+        //                                     <select data-id="${fp.filter_id}" name="${fp.slug}" class="select-option"  class="select-option-${i++}">
+        //                                 `
+            //                         f.child_filter.forEach(function(fc, l) {
+            //                             filter +=
+            //                                 `<option value="${fc.filter_id}">${fc.filter_name}</option>`
+            //                         })
+            //                         filter += `</select>
+        //                              </div>`
+            //                     })
+            //                 })
+            //                 console.log(filter)
+            //                 $('.product-option__inner').html(filter)
+            //             }
 
-                }
-                // if (check_size.length > 0) {
-                //     for (let i = 0; i < check_size.length; i++) {
-                //         let getValueSize = check_size[i].getAttribute("data-value")
-                //         let check_color = document.querySelectorAll(".container-color .badge-2 span");
-                //         if (check_color.length > 0) {
+            //         }
+            //     })
 
-                //             for (let c = 0; c < check_color.length; c++) {
-                //                 let getValueColor = check_color[c].getAttribute("data-value")
-                //                 tr += `<tr>
-
-            table.html(tr);
-        }
-
-        // $('.category').change(function() {
-        //     let value = $(this).val();
-        //     $.ajax({
-        //         type: "GET",
-        //         url: "{{ route('admin.category.getChildCategory') }}",
-        //         data: {
-        //             id: value
-        //         },
-        //         success: (res) => {
-        //             if (res.status == 200) {
-        //                 console.log(res)
-        //                 let child_category = ''
-        //                 res.data.forEach(function(data, i) {
-        //                     child_category +=
-        //                         `<option value="${data.id_category}">${data.name_category}</option>`;
-        //                 });
-        //                 $('.child-category-1').html(child_category);
-        //                 let filter = ''
-        //                 let i = 1;
-        //                 res.filter.forEach(function(f, i) {
-        //                     f.filter.forEach(function(fp, i) {
-        //                         filter += `<div class="form-group">
-            //                                      <label>${fp.filter_name}</label>
-            //                                     <select data-id="${fp.filter_id}" name="${fp.slug}" class="select-option"  class="select-option-${i++}">
-            //                                 `
-        //                         f.child_filter.forEach(function(fc, l) {
-        //                             filter +=
-        //                                 `<option value="${fc.filter_id}">${fc.filter_name}</option>`
-        //                         })
-        //                         filter += `</select>
-            //                              </div>`
-        //                     })
-        //                 })
-        //                 console.log(filter)
-        //                 $('.product-option__inner').html(filter)
-        //             }
-
-        //         }
-        //     })
-
-        // })
-        // $('.child-category-1').change(function() {
-        //     let value = $(this).val();
-        //     $.ajax({
-        //         type: "GET",
-        //         url: "{{ route('admin.category.getChildCategory') }}",
-        //         data: {
-        //             id: value
-        //         },
-        //         success: (res) => {
-        //             console.log(res)
-        //             let child_category = ''
-        //             res.data.forEach(function(data, i) {
-        //                 child_category +=
-        //                     `<option value="${data.id_category}">${data.name_category}</option>`;
+            // })
+            // $('.child-category-1').change(function() {
+            //     let value = $(this).val();
+            //     $.ajax({
+            //         type: "GET",
+            //         url: "{{ route('admin.category.getChildCategory') }}",
+            //         data: {
+            //             id: value
+            //         },
+            //         success: (res) => {
+            //             console.log(res)
+            //             let child_category = ''
+            //             res.data.forEach(function(data, i) {
+            //                 child_category +=
+            //                     `<option value="${data.id_category}">${data.name_category}</option>`;
             //             });
             //             $('.child-category-2').html(child_category);
             //         }
@@ -476,16 +513,7 @@
 
             // })
 
-            // $(document).on('click', '.badge-2 span.close', function() {
 
-            //     $(this).parent().remove();
-            //     InnerTableAttr();
-
-            // })
-
-            $('.btn.btn-modal').click(function() {
-
-            })
 
             // $('#form-add').submit(function(e) {
             //     e.preventDefault();
