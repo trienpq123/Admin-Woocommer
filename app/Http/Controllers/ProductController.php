@@ -10,6 +10,7 @@ use App\Models\FilterProduct;
 use App\Models\ProductDetailModel;
 use App\Models\ProductImageModel;
 use App\Models\ProductModel;
+use App\Models\SkuProductVariantOptions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
@@ -60,7 +61,7 @@ class ProductController extends Controller
 
     public function postAddProduct(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
         $validator = Validator::make(
             $request->all(),
             [
@@ -124,42 +125,43 @@ class ProductController extends Controller
                 }
             }
         }
-        if (!empty($request->product_detail)) {
-            $decoded = json_decode($request->product_detail);
-            if (!is_null($decoded) && count($decoded) > 0) {
-                foreach ($decoded as $item) {
-                    $PDetail = new ProductDetailModel();
-                    $PDetail->id_product = $get_last_product->id_product;
-                    $PDetail->size = isset($item->SizeOfProductValue) ? $item->SizeOfProductValue : null;
-                    $PDetail->color = isset($item->colorOfProductValue) ? $item->colorOfProductValue : null;
-                    $PDetail->price = isset($item->product_price) ? $item->product_price : null;
-                    $PDetail->price_sale = isset($item->product_price_old) ? $item->product_price_old : null;
-                    $PDetail->quanlity = isset($item->product_stock) ? $item->product_stock : null;
-                    $PDetail->product_sku = isset($item->product_type_sku) ? $item->product_type_sku : null;
-                    $PDetail->save();
+        // ADD VARIANTS
+        if($request->product){
+            $product = $request->product;
+            if($product['variants'] && is_array($product['variants']) && count($product['variants']) > 0){
+                foreach($product['variants'] as $variant){
+                    // REPLACE ATTRIBUTE TO STRING
+                    if(is_array($variant['title']) && count($variant['title']) > 0){
+                        $separator = "-";
+                        $joinedString = "";
+                        foreach($variant['title'] as $key => $value){
+                            if($key > 0){
+                                $joinedString .= $separator;
+                            }
+                            $joinedString .= $value;
+                        }
+                        $joinedString = rtrim($joinedString, $separator);
+                        $variant['title'] = $joinedString;
+                    }
+                    // ADD VARIANTS
+                    SkuProductVariantOptions::create([
+                        'id_product' => $get_last_product->id_product,
+                        'price' => $variant['price'],   
+                        'stock' => $variant['stock'],
+                        'discount' => $variant['price_old'],
+                        'attribute' => $variant['title']
+                    ]);
                 }
             }
         }
-
-        if ($request->option) {
-            if (!empty($request->option)) {
-                $explode_option = explode(',',$request->option);
-                foreach ($explode_option as $o) {
-                    $fp = new FilterProduct();
-                    $fp->id_product = $get_last_product->id_product;
-                    $fp->id_filter = $o;
-                    $fp->save();
-                }
-            }
-        }
-        $produc_Data = ProductModel::all();
-        return response()->json([
-            'status' => 200,
-            'request' => json_decode($request->product_detail),
-            'product_detail' => $request->all(),
-            // 'option' => $fp
-        ]);
-        // return back()->with(['message' => 'Thêm thành công']);
+        $product_Data = ProductModel::all();
+        // return response()->json([
+        //     'status' => 200,
+        //     'request' => json_decode($request->product_detail),
+        //     'product_detail' => $request->all(),
+        //     // 'option' => $fp
+        // ]);
+        return back()->with(['message' => 'Thêm thành công']);
     }
 
     public function putEditProduct(Request $request)

@@ -231,7 +231,6 @@
                                     <th>Hàng tồn kho</th>
                         </tr>
                         `
-
                 }
                 // XỬ LÝ IN THUỘC TÍNH - VARIANT
                 console.log(optionValue)
@@ -256,7 +255,7 @@
                                 let b = a.replace(/[^a-zA-Z-0-9]/g, "");
                                 tr += ` <td class="${b}">
                                             ${a}
-                                            <input type="text" name="product[variants][${index}][title]" value="${a}" />
+                                            <input type="text" name="product[variants][${index}][title][]" value="${a}" />
                                         </td>`
                             })
                         }
@@ -372,25 +371,12 @@
 
             function removeOption() {
                 $(document).on('click', '.badge-2 span.close', function() {
-
                     let value = $(this).attr('data-value');
-
                     value = value.replace(/[^a-zA-Z-0-9]/g, "")
-
                     console.log(value.length);
-                    // if (value.length == 1) {
-                    //     for (let i = 0; i < value.length; i++) {
-                    //         $(this).parent().parent().remove();
-                    //     }
-
-                    // }
                     $(`.${value}`).html('');
-                    // $(`.${value}`).parent().remove();
                     $(this).parent().remove();
-                    // InnerTableAttr();
-
                 })
-
             }
 
             $(".add-file").change(function(event) {
@@ -402,7 +388,6 @@
                         console.log(event.target.files);
                         var reader = new FileReader();
                         reader.onload = function(event) {
-
                             var imageURL = event.target.result;
                             console.log(imageURL);
                             image = ` <div class="form-group image-item" 
@@ -411,12 +396,9 @@
                                           
                                         </div>`
                             show_image.append(image)
-
                         };
                         reader.readAsDataURL(event.target.files[i]);
-
                     }
-
                 }
             });
             // SELECT 2
