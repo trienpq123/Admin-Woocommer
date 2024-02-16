@@ -47,7 +47,7 @@
                         </div>
                         <div class="form-group">
                             <label for="parent_category">Danh mục</label>
-                            <select class="category" id="parent_category" name="parent_category[]" multiple>
+                            <select class="category form-select" id="parent_category" name="parent_category[]">
                                 <option value="">Chưa có</option>
                                 @if (count($listCategory) > 0)
                                     @foreach ($listCategory as $item)
@@ -55,6 +55,7 @@
                                             {{ $item->name_category }}</option>
                                     @endforeach
                                 @endif
+
                             </select>
                         </div>
 
@@ -144,11 +145,7 @@
                                 </tbody>
                             </table>
                         </div>
-
-
-
                     </div>
-
                     <div class="form-right">
                         <div class="form-group">
                             <input type="radio" name="status" id="status" class="status" value="0"
@@ -184,15 +181,8 @@
                         </div>
                     </div>
                 </div>
-
                 <button type="submit" class="btn btn-submit">Xác nhận</button>
-
             </form>
-
-
-
-
-
         </div>
     </div>
 @endsection
@@ -213,6 +203,9 @@
     <script>
         $(document).ready(function() {
             // Render Image khi upload
+            //   $('.category').select2({
+            //     templateSelection: formatState
+            // });
             btn_option = 1;
             let option_value = [];
             addOptionAttribute()
@@ -229,11 +222,11 @@
                 if (rows.length > 0) {
 
                     row_html += `<tr><th>Mã sản phẩm</th>`
-                    rows.each(function() {
+                    rows.each(function(index) {
                         let row_value = $(this).find('select option:selected').text();
-                        row_html += `<th>${row_value}</th>`;
+                        row_html += `<th>${row_value} + ${index}</th>`;
                     })
-                    row_html += `          <th>Giá</th>
+                    row_html += `<th>Giá</th>
                                     <th>Giá giảm</th>
                                     <th>Hàng tồn kho</th>
                         </tr>
@@ -244,32 +237,40 @@
                 console.log(optionValue)
                 if (optionValue.length > 0) {
 
-                    optionValue.forEach((item) => {
+                    optionValue.forEach((item, index) => {
 
                         tr += `<tr>
-                                        <td> <input type="checkbox" /> </td>
+                                        <td> <input type="checkbox" /> 
+                                          
+                                        </td>
                                     `
 
                         if (typeof item === "string") {
                             let b = item.replace(/[^a-zA-Z-0-9]/g, "");
-                            tr += `<td class="${b}">${item}</td>`
+                            tr += ` <td class="${b}">
+                                        ${item}
+                                        <input type="text" name="product[variants][${index}][title]" value="${item}" />
+                                    </td>`
                         } else {
                             item.forEach((a) => {
                                 let b = a.replace(/[^a-zA-Z-0-9]/g, "");
-                                tr += `<td class="${b}">${a}</td>`
+                                tr += ` <td class="${b}">
+                                            ${a}
+                                            <input type="text" name="product[variants][${index}][title]" value="${a}" />
+                                        </td>`
                             })
                         }
 
 
                         tr += `                        
                             <td>
-                                <input type="number" value="100000" class="product_price" />
+                                <input type="number" name="product[variants][${index}][price]" value="100000" class="product_price" />
                             </td>
                             <td>
-                                <input type="number" value="500000" class="product_price_old" />
+                                <input type="number" name="product[variants][${index}][price_old]" value="500000" class="product_price_old" />
                             </td>
                             <td>
-                                <input type="number" value="50" class="product_stock" />
+                                <input type="number" value="50" name="product[variants][${index}][stock]" class="product_stock" />
                             </td>
                         </tr>`
 
@@ -373,15 +374,15 @@
                 $(document).on('click', '.badge-2 span.close', function() {
 
                     let value = $(this).attr('data-value');
-                
+
                     value = value.replace(/[^a-zA-Z-0-9]/g, "")
-                   
+
                     console.log(value.length);
                     // if (value.length == 1) {
                     //     for (let i = 0; i < value.length; i++) {
                     //         $(this).parent().parent().remove();
                     //     }
-                        
+
                     // }
                     $(`.${value}`).html('');
                     // $(`.${value}`).parent().remove();
@@ -445,53 +446,56 @@
             $('#brand').select2({
                 templateSelection: formatState
             });
-            $('.category').select2({
-                templateSelection: formatState
-            });
 
 
 
-            // $('.category').change(function() {
-            //     let value = $(this).val();
-            //     $.ajax({
-            //         type: "GET",
-            //         url: "{{ route('admin.category.getChildCategory') }}",
-            //         data: {
-            //             id: value
-            //         },
-            //         success: (res) => {
-            //             if (res.status == 200) {
-            //                 console.log(res)
-            //                 let child_category = ''
-            //                 res.data.forEach(function(data, i) {
-            //                     child_category +=
-            //                         `<option value="${data.id_category}">${data.name_category}</option>`;
-            //                 });
-            //                 $('.child-category-1').html(child_category);
-            //                 let filter = ''
-            //                 let i = 1;
-            //                 res.filter.forEach(function(f, i) {
-            //                     f.filter.forEach(function(fp, i) {
-            //                         filter += `<div class="form-group">
-        //                                      <label>${fp.filter_name}</label>
-        //                                     <select data-id="${fp.filter_id}" name="${fp.slug}" class="select-option"  class="select-option-${i++}">
-        //                                 `
-            //                         f.child_filter.forEach(function(fc, l) {
-            //                             filter +=
-            //                                 `<option value="${fc.filter_id}">${fc.filter_name}</option>`
-            //                         })
-            //                         filter += `</select>
-        //                              </div>`
-            //                     })
-            //                 })
-            //                 console.log(filter)
-            //                 $('.product-option__inner').html(filter)
-            //             }
 
-            //         }
-            //     })
+            $('.category').change(function() {
+                let value = $(this).val();
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('admin.category.getChildCategory') }}",
+                    data: {
+                        id: value
+                    },
+                    success: (res) => {
+                        if (res.status == 200) {
+                            console.log(res.data)
+                            filter = '';
+                            res.data.forEach(function(item, index) {
+                                let options = item.filter_category_option
 
-            // })
+                                if (options.length > 0) {
+                                    console.log(options)
+                                    options.forEach(function(option, counter) {
+                                        filter += `<div class="form-group">
+                                                    <label>${option.name}</label>
+                                                    <input type="text" hidden name="product[filters][${counter}][id_filter_category_option]" value="${option.id_filter_category_option}" />
+                                       `
+                                        // CHƯA TÁCH MẢNG
+
+                                        filter +=`<input type="text" class="form-control filter-${counter}" name="product[filters][${counter}][value]" value="${option.value}"  data-role="tagsinput"/>`
+                                        filter += `</div>`
+                                        $('input[data-role=tagsinput].filter-'+counter).tagsinput();
+                                    })
+                                }else{
+                                    filter='';
+                                }
+
+                            })
+                            $('.product-option__inner').html(filter)
+
+                        }
+                    },
+                    error: function(){
+                        let filter = '';
+                        $('.product-option__inner').html(filter)
+                        console.log('ERROR MESSAGE')
+                    }
+                    
+                })
+
+            })
             // $('.child-category-1').change(function() {
             //     let value = $(this).val();
             //     $.ajax({

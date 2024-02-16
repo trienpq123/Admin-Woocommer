@@ -185,19 +185,31 @@ class CategoryController extends Controller
         $category->desc_category = $request->desc_short;
         $category->save();
         if ($request->attr && $request->attr['id_attr']) {
-    
+           
             if ($request->attr['id_attr']) {
-                $filterCategorys =  filterCategoryModel::find($request->attr['id_attr'])->first();
+                $filterCategorys =  filterCategoryModel::where('id_category', '=', $id)->first();
                 if ($filterCategorys) {
                     if ($request->attr['option'] && count($request->attr['option']) > 0) {
+                        // dd($request->attr['option']);
                         foreach ($request->attr['option'] as $item) {
-                            $filter = FilterCategoryOption::find('id_filter_category',$item->id_filter_category);
-                            $filter->id_category = $id;
-                            $filter->id_filter_category = $filterCategorys->id_filter_category;
-                            $filter->name = $item['name'];
-                            $filter->value = $item['value'];
-                            $filter->save();
+                            $filter = FilterCategoryOption::where('id_filter_category', '=', $filterCategorys->id_filter_category)->where('name','regexp',$item['name'])->first();
+                            if($filter){
+                                $filter->value = $item['value'];
+                                $filter->save();
+                                continue;
+                            }else{
+                                $filter = new FilterCategoryOption();
+                                $filter->id_category = $id;
+                                $filter->id_filter_category = $filterCategorys->id_filter_category;
+                                $filter->name = $item['name'];
+                                $filter->value = $item['value'];
+                                $filter->save();
+                                continue;
+                            }
                         }
+                       
+                            
+                        
                     }
                 }
             }
@@ -239,12 +251,12 @@ class CategoryController extends Controller
     public function getChildCategory(Request $request)
     {
         if ($request->id) {
-            $childCategory = CategoryModel::where('parent_category', '=', $request->id)->get();
-            $filter = FilterCategory::where('id_category', '=', $request->id)->with('childFilter', 'category', 'filter')->get();
+            // $childCategory = CategoryModel::where('parent_category', '=', $request->id)->get();
+            // $filter = FilterCategory::where('id_category', '=', $request->id)->with('childFilter', 'category', 'filter')->get();
+            $filters = filterCategoryModel::where('id_category', '=', $request->id)->with('filterCategoryOption')->get();
             return response()->json([
                 'status' => 200,
-                'data' => $childCategory,
-                'filter' => $filter
+                'data' => $filters
             ]);
         }
     }
