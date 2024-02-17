@@ -258,6 +258,7 @@ class CategoryController extends Controller
                 'status' => 200,
                 'data' => $filters
             ]);
+    
         }
     }
 }
