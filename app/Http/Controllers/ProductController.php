@@ -61,7 +61,7 @@ class ProductController extends Controller
 
     public function postAddProduct(Request $request)
     {
-        // dd($request->all());
+      
         $validator = Validator::make(
             $request->all(),
             [
@@ -69,11 +69,11 @@ class ProductController extends Controller
             ],
             [
                 'name.required' => 'Tên sản phẩm không được bỏ trống',
-                'name.unique' => 'Tên sản phảm đã tồn tại'
+                'name.unique' => 'Tên sản phẩm đã tồn tại'
             ]
         );
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator);
+           return redirect()->back()->withErrors($validator)->withInput();
         }
         $p = new ProductModel();
         $p->name_product = $request->name;
@@ -115,18 +115,21 @@ class ProductController extends Controller
                     $p_image->name_img = $name_image;
                     $p_image->id_product = $get_last_product->id_product;
                     $p_image->save();
-                } else {
-                    return response()->json(
-                        [
-                            'status' => 404,
-                            'message' => ["image" =>  "Tệp phải là hình ảnh"]
-                        ]
-                    );
-                }
+                } 
+                // else {
+                //     return response()->json(
+                //         [
+                //             'status' => 404,
+                //             'message' => ["image" =>  "Tệp phải là hình ảnh"]
+                //         ]
+                //     );
+                // }
             }
         }
         // ADD VARIANTS
+        
         if($request->product){
+          
             $product = $request->product;
             if($product['variants'] && is_array($product['variants']) && count($product['variants']) > 0){
                 foreach($product['variants'] as $variant){
@@ -153,6 +156,7 @@ class ProductController extends Controller
                     ]);
                 }
             }
+          
         }
         $product_Data = ProductModel::all();
         // return response()->json([
@@ -161,7 +165,8 @@ class ProductController extends Controller
         //     'product_detail' => $request->all(),
         //     // 'option' => $fp
         // ]);
-        return back()->with(['message' => 'Thêm thành công']);
+        // return back()->with(['message' => 'Thêm thành công']);
+        dd($request->product);
     }
 
     public function putEditProduct(Request $request)

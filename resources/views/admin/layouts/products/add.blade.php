@@ -27,13 +27,16 @@
                         <div class="form-group">
                             <label for="">Tên sản phẩm</label>
                             <input type="text" placeholder="Nhập tên Sản phẩm" class="form-control name" id="slug"
-                                onchange="ChangeToSlug()" name="name">
-                            <p class="name-error alert-danger"></p>
+                                onchange="ChangeToSlug()" name="name" value="{{ old('name') }}">
+                            @if ($errors->has('name'))
+                                <p class="name-error alert-danger">{{ $errors->first('name') }}</p>
+                            @endif
+                            
                         </div>
                         <div class="form-group">
                             <label for="">Slug</label>
                             <input type="text" placeholder="Nhập tên Sản phẩm" class="form-control slug"
-                                id="convert_slug" name="slug">
+                                id="convert_slug" name="slug" value="{{ old('slug') }}">
                             @if ($errors->has('slug'))
                                 <span class="text alert-danger fs-6"
                                     style="font-size: 12px">{{ $errors->first('slug') }}</span>
@@ -42,16 +45,16 @@
                         <div class="form-group">
                             <label for="">Mã sản phẩm (SKU)</label>
                             <input type="text" placeholder="Nhập tên Sản phẩm" class="form-control product_sku"
-                                id="product_sku" name="product_sku">
+                                id="product_sku" name="product_sku" value="{{ old('product_sku') }}">
 
                         </div>
                         <div class="form-group">
                             <label for="parent_category">Danh mục</label>
-                            <select class="category form-select" id="parent_category" name="parent_category[]">
+                            <select class="category form-select" id="parent_category" name="parent_category[]" >
                                 <option value="">Chưa có</option>
                                 @if (count($listCategory) > 0)
                                     @foreach ($listCategory as $item)
-                                        <option data-img="{{ $item->image_category }}" value={{ $item->id_category }}>
+                                        <option {{old('parent_category') == $item->id_category ? 'selected' : ''}}  data-img="{{ $item->image_category }}" value={{ $item->id_category }}>
                                             {{ $item->name_category }}</option>
                                     @endforeach
                                 @endif
@@ -61,11 +64,11 @@
 
                         <div class="form-group">
                             <label for="">Mô tả</label>
-                            <textarea name="desc_short" class="desc_short" id="desc_short" cols="30" rows="10"></textarea>
+                            <textarea name="desc_short"  class="desc_short" id="desc_short" cols="30" rows="10">{{old('desc_short')}}</textarea>
                         </div>
                         <div class="form-group">
                             <label for="">Mô tả</label>
-                            <textarea name="desc" class="desc" id="desc" cols="30" rows="10"></textarea>
+                            <textarea name="desc" class="desc" id="desc" cols="30" rows="10">{{old('desc')}}</textarea>
                         </div>
 
                         <div class="form-group">
