@@ -41,24 +41,26 @@ class CategoryController extends Controller
     }
 
     public function editCategory(Request $request)
-    {
+    {   
         $cate =  CategoryModel::find($request->id);
-        $att_cat = $cate->with(['attribute_category'])->where('id_category', $request->id)->first();
-        $att_option = FilterCategoryOption::where('id_filter_category', $att_cat->attribute_category->id_filter_category)->get();
-
-        // dd($attr->attribute_category->id_attr);
-        // $childrend = $cate->childrendCategory();
         $listCategory = CategoryModel::whereNot('id_category', '=', $request->id)->get();
-        if ($att_option) {
-
-            return view('admin.layouts.categories.edit', compact('cate', 'listCategory', 'att_cat', 'att_option'));
+        if($cate){
+            $att_cat = $cate->with(['attribute_category'])->where('id_category', $request->id)->first();
+            if($att_cat){
+                $att_option = FilterCategoryOption::where('id_filter_category', $att_cat->attribute_category->id_filter_category)->get();
+                if ($att_option) {
+                    return view('admin.layouts.categories.edit', compact('cate', 'listCategory', 'att_cat', 'att_option'));
+                }
+            }
         }
+       
+       
         return view('admin.layouts.categories.edit', compact('cate', 'listCategory', 'att_cat'));
     }
 
     public function postAddCategory(Request $request)
     {
-
+      
         $validator = Validator::make(
 
             [
@@ -109,32 +111,32 @@ class CategoryController extends Controller
         $category->tags = $request->tags;
         $category->save();
         $lastCategory =  CategoryModel::orderBy('id_category', 'desc')->first();
-
-        if ($request->attr && $request->attr['id_attr']) {
-            // dd($request->attr);
-            if ($request->attr['id_attr']) {
+      
+        if ($request->attr) {
                 $filterCategory =  filterCategoryModel::create([
                     'id_category' => $lastCategory->id_category,
                     'id_attr' => $request->attr['id_attr']
                 ]);
+                
+                // $filterCategorys = filterCategoryModel::orderBy('id_filter_category', 'desc')->first();
 
-                $filterCategorys = filterCategoryModel::orderBy('id_filter_category', 'desc')->first();
-
-                if ($filterCategorys) {
+                if ($filterCategory) {
                     if ($request->attr['option'] && count($request->attr['option']) > 0) {
                         foreach ($request->attr['option'] as $item) {
                             $filter = new FilterCategoryOption();
                             $filter->id_category = $lastCategory->id_category;
-                            $filter->id_filter_category = $filterCategorys->id_filter_category;
+                            $filter->id_filter_category = $filterCategory->id_filter_category;
                             $filter->name = $item['name'];
                             $filter->value = $item['value'];
                             $filter->save();
                         }
                     }
                 }
-            }
+
+        
         }
 
+        dd($request->attr);
         return back()->with(['status' => 200, 'message' => 'Thêm thành công']);
     }
 
