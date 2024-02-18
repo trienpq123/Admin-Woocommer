@@ -39,4 +39,8 @@ class ProductModel extends Model
     public function product_detail(){
         return $this->hasMany(ProductDetailModel::class,'id_product','id_product');
     }
+
+    public function sku_product() {
+        return $this->hasMany(SkuProductVariantOptions::class, 'id_product','id_product');
+    }
 }

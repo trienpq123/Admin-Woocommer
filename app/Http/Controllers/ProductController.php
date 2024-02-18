@@ -47,21 +47,31 @@ class ProductController extends Controller
 
     public function editProduct(Request $request)
     {
-        if ($request->id) {
-            $a = ProductModel::where('id_product', '=', $request->id);
-            $b = $a->FirstOrFail();
-            $product = ProductModel::where('id_product', '=', $request->id)->with('brands', 'images', 'category', 'product_detail')->first();
-            return response()->json([
-                'status' => 200,
-                'data' => $product
-            ]);
+        // if ($request->id) {
+        //     $a = ProductModel::where('id_product', '=', $request->id);
+        //     $b = $a->FirstOrFail();
+        //     $product = ProductModel::where('id_product', '=', $request->id)->with('brands', 'images', 'category', 'product_detail')->first();
+        //     return response()->json([
+        //         'status' => 200,
+        //         'data' => $product
+        //     ]);
+        // }
+        $listProduct = ProductModel::orderBy('id_product', 'desc')->get();
+        $getBrands = BrandModel::orderBy('id_brand', 'desc')->get();
+        $listCategory = CategoryModel::whereNull('parent_category')->orderBy('id_category', 'desc')->get();
+        $listAttr = AttributeModel::orderBy('id_attr', 'desc')->get();
+        if($request->id){
+            $id= $request->id;
+            $product = ProductModel::find($id)->first();
+            return view('admin.layouts.products.edit',compact('getBrands', 'listCategory', 'listProduct','listAttr','product'));
         }
+        return view('admin.layouts.products.edit',compact('getBrands', 'listCategory', 'listProduct','listAttr'));
     }
 
 
     public function postAddProduct(Request $request)
     {
-      
+        dd($request->all());
         $validator = Validator::make(
             $request->all(),
             [
@@ -165,8 +175,8 @@ class ProductController extends Controller
         //     'product_detail' => $request->all(),
         //     // 'option' => $fp
         // ]);
-        // return back()->with(['message' => 'Thêm thành công']);
-        dd($request->product);
+        return back()->with(['message' => 'Thêm thành công']);
+        // dd($request->product);
     }
 
     public function putEditProduct(Request $request)
