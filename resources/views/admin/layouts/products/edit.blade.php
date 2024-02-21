@@ -12,7 +12,8 @@
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
                         <li class="breadcrumb-item">Sản phẩm</li>
-                        <li class="breadcrumb-item active">{{$product && $product->name_product ? $product->name_product : ''}}</li>
+                        <li class="breadcrumb-item active">
+                            {{ $product && $product->name_product ? $product->name_product : '' }}</li>
                     </ol>
                 </nav>
             </div>
@@ -27,16 +28,18 @@
                         <div class="form-group">
                             <label for="">Tên sản phẩm</label>
                             <input type="text" placeholder="Nhập tên Sản phẩm" class="form-control name" id="slug"
-                                onchange="ChangeToSlug()" name="name" value="{{ $product->name_product ? $product->name_product : old('name') }}">
+                                onchange="ChangeToSlug()" name="name"
+                                value="{{ $product->name_product ? $product->name_product : old('name') }}">
                             @if ($errors->has('name'))
                                 <p class="name-error alert-danger">{{ $errors->first('name') }}</p>
                             @endif
-                            
+
                         </div>
                         <div class="form-group">
                             <label for="">Slug</label>
                             <input type="text" placeholder="Nhập tên Sản phẩm" class="form-control slug"
-                                id="convert_slug" name="slug" value="{{ $product->slug ? $product->slug : old('slug') }}">
+                                id="convert_slug" name="slug"
+                                value="{{ $product->slug ? $product->slug : old('slug') }}">
                             @if ($errors->has('slug'))
                                 <span class="text alert-danger fs-6"
                                     style="font-size: 12px">{{ $errors->first('slug') }}</span>
@@ -45,16 +48,18 @@
                         <div class="form-group">
                             <label for="">Mã sản phẩm (SKU)</label>
                             <input type="text" placeholder="Nhập tên Sản phẩm" class="form-control product_sku"
-                                id="product_sku" name="product_sku" value="{{ $product->product_SKU ? $product->product_SKU : old('product_sku') }}">
+                                id="product_sku" name="product_sku"
+                                value="{{ $product->product_SKU ? $product->product_SKU : old('product_sku') }}">
 
                         </div>
                         <div class="form-group">
                             <label for="parent_category">Danh mục</label>
-                            <select class="category form-select" id="parent_category" name="parent_category[]" >
+                            <select class="category form-select" id="parent_category" name="parent_category[]">
                                 <option value="">Chưa có</option>
                                 @if (count($listCategory) > 0)
                                     @foreach ($listCategory as $item)
-                                        <option {{$product->id_category == $item->id_category ? 'selected' : ''}}  data-img="{{ $item->image_category }}" value={{ $item->id_category }}>
+                                        <option {{ $product->id_category == $item->id_category ? 'selected' : '' }}
+                                            data-img="{{ $item->image_category }}" value={{ $item->id_category }}>
                                             {{ $item->name_category }}</option>
                                     @endforeach
                                 @endif
@@ -64,11 +69,11 @@
 
                         <div class="form-group">
                             <label for="">Mô tả</label>
-                            <textarea name="desc_short"  class="desc_short" id="desc_short" cols="30" rows="10">{{ $product->p_desc_short ? $product->p_desc_short : old('desc_short')}}</textarea>
+                            <textarea name="desc_short" class="desc_short" id="desc_short" cols="30" rows="10">{{ $product->p_desc_short ? $product->p_desc_short : old('desc_short') }}</textarea>
                         </div>
                         <div class="form-group">
                             <label for="">Mô tả</label>
-                            <textarea name="desc" class="desc" id="desc" cols="30" rows="10">{{ $product->p_desc ? $product->p_desc : old('desc')}}</textarea>
+                            <textarea name="desc" class="desc" id="desc" cols="30" rows="10">{{ $product->p_desc ? $product->p_desc : old('desc') }}</textarea>
                         </div>
 
                         <div class="form-group">
@@ -82,34 +87,38 @@
                                     <th>Tên thuộc tính</th>
                                 </thead>
                                 <tbody>
-                                    @foreach ($product as $item)
-                                        
-                                    @endforeach
-                                    <tr>
-                                        <td class="d-flex gap-10">
-                                            <div class="type-attr me-2 col-lg-3">
-                                                <select name="attr[].name" class="select_type form-select">
-                                                    <option value="0">Chưa chọn</option>
-                                                    @foreach ($listAttr as $key => $item)
-                                                        <option value="{{ $item->id_attr }}">{{ $item->name }}</option>
-                                                    @endforeach
+                                    @foreach ($product->product_variants as $key => $p_variants)
+                                        <tr>
+                                            <td class="d-flex gap-10">
+                                                <div class="type-attr me-2 col-lg-3">
+                                                    <select name="attr[{{$key}}][name]" class="select_type form-select">
+                                                        <option value="0">Chưa chọn</option>
+                                                        @foreach ($listAttr as $count => $item)
+                                                            <option
+                                                                {{ $p_variants->id_attr == $item->id_attr ? 'selected' : 'disabled' }}
+                                                                value="{{ $item->id_attr }}">{{ $item->name }}
+                                                            </option>
+                                                        @endforeach
 
-                                                </select>
-                                            </div>
-                                            <div class="value-attr col-lg-7">
-                                                <input type="text" placeholder="Giá trị" class="add-option form-control">
-                                                <div class="container-option">
-                                                    {{-- <button class="badge-2" data-id="16gb">16GB <span class="close">x</span></button> --}}
-
+                                                    </select>
                                                 </div>
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <div class="btn btn-danger remove-attr" onclick="removeAttr(this)"><span><i
-                                                            class="ri-delete-bin-2-fill"></i></span></div>
-                                            </div>
-                                        </td>
+                                                <div class="value-attr col-lg-7">
+                                                    <input type="text" placeholder="Giá trị"
+                                                        class="add-option form-control">
+                                                    <div class="container-option">
+                                                        <div class="badge-2" id="btn-1">s<span class="close"
+                                                                data-value="s" data-id="btn-1">x</span>
+                                                        </div>
+                                                            <input
+                                                            hidden="" type="text" name="attr[{{$key}}][title][]"
+                                                            value="s">
+                                                        
+                                                    </div>
+                                            </td>
 
-                                    </tr>
+                                        </tr>
+                                    @endforeach
+
                                 </tbody>
                                 <tfoot class="t-foot">
                                     <tr>
@@ -441,12 +450,14 @@
                                        `
                                         // CHƯA TÁCH MẢNG
 
-                                        filter +=`<input type="text" class="form-control filter-${counter}" name="product[filters][${counter}][value]" value="${option.value}"  data-role="tagsinput"/>`
+                                        filter +=
+                                            `<input type="text" class="form-control filter-${counter}" name="product[filters][${counter}][value]" value="${option.value}"  data-role="tagsinput"/>`
                                         filter += `</div>`
-                                        $('input[data-role=tagsinput].filter-'+counter).tagsinput();
+                                        $('input[data-role=tagsinput].filter-' +
+                                            counter).tagsinput();
                                     })
-                                }else{
-                                    filter='';
+                                } else {
+                                    filter = '';
                                 }
 
                             })
@@ -454,12 +465,12 @@
 
                         }
                     },
-                    error: function(){
+                    error: function() {
                         let filter = '';
                         $('.product-option__inner').html(filter)
                         console.log('ERROR MESSAGE')
                     }
-                    
+
                 })
 
             })

@@ -64,8 +64,8 @@ class ProductController extends Controller
         $listAttr = AttributeModel::orderBy('id_attr', 'desc')->get();
         if ($request->id) {
             $id = $request->id;
-            $product = ProductModel::where('id_product',$id)->with('product_variants','skus_product_variant_options')->first();
-            // dd($product);
+            $product = ProductModel::where('id_product',$id)->with('product_variants','skus_product_variant_options','product_variants.optionAttribute')->first();
+            dd($product);
             return view('admin.layouts.products.edit', compact('getBrands', 'listCategory', 'listProduct', 'listAttr', 'product'));
         }
         return view('admin.layouts.products.edit', compact('getBrands', 'listCategory', 'listProduct', 'listAttr'));
