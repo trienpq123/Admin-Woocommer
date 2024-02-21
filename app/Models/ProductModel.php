@@ -36,11 +36,15 @@ class ProductModel extends Model
         return $this->belongsTo(CategoryModel::class,'id_category','id_category');
     }
     
-    public function product_detail(){
-        return $this->hasMany(ProductDetailModel::class,'id_product','id_product');
-    }
+
 
     public function sku_product() {
         return $this->hasMany(SkuProductVariantOptions::class, 'id_product','id_product');
+    }
+    public function product_variants(){
+        return $this->hasmany(ProductVariants::class,'id_product','id_product');
+    }
+    public function skus_product_variant_options(){
+        return $this->hasMany(SkuProductVariantOptions::class,'id_product','id_product');
     }
 }

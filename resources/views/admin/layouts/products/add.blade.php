@@ -106,7 +106,7 @@
                                     <tr>
                                         <td class="d-flex gap-10">
                                             <div class="type-attr me-2 col-lg-3">
-                                                <select name="attr[].name" class="select_type form-select">
+                                                <select name="attr[][name]" class="select_type form-select">
                                                     <option value="0">Chưa chọn</option>
                                                     @foreach ($listAttr as $key => $item)
                                                         <option value="{{ $item->id_attr }}">{{ $item->name }}</option>
@@ -159,7 +159,7 @@
                         <div class="form-group">
                             <label for="">Chọn thương hiệu</label>
                             <select class=" brand form-control" id="brand" name="idBrand">
-                                <option>Chưa chọn thương hiệu</option>
+                                <option value="">Chưa chọn thương hiệu</option>
                                 @if (count($getBrands) > 0)
                                     @foreach ($getBrands as $item)
                                         <option data-img="{{ $item->logo_brand }}" value={{ $item->id_brand }}>
@@ -307,6 +307,9 @@
                         let container_option = $(this).parent().find('.container-option');
                         container_option.append(create_button);
                         let get_tr = $(this).parents('tr')
+                        let indexTr = get_tr.index();
+                        let input = `<input hidden type="text" name="attr[${indexTr}][title][]" value="${value}" />`
+                        container_option.append(input);
                         let getIdAttr = get_tr.find('.select_type').val();
                         let tr = $(this).parents('tbody').find('tr');
                         let attribute = [];
@@ -685,7 +688,7 @@
                             html = `<tr>
                                         <td class="d-flex gap-10">
                                             <div class="type-attr me-2 col-lg-3">
-                                                <select name="attr[${i+1}].name" class="select_type form-select">
+                                                <select name="attr[${i+1}][name]" class="select_type form-select">
                                                     <option value="0">Chưa chọn</option>
                                             `
                             for (let index = 0; index < attr.length; index++) {

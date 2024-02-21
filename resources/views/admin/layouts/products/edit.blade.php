@@ -82,6 +82,9 @@
                                     <th>Tên thuộc tính</th>
                                 </thead>
                                 <tbody>
+                                    @foreach ($product as $item)
+                                        
+                                    @endforeach
                                     <tr>
                                         <td class="d-flex gap-10">
                                             <div class="type-attr me-2 col-lg-3">
