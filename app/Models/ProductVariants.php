@@ -24,4 +24,8 @@ class ProductVariants extends Model
     public function product(){
         return $this->belongsTo(ProductModel::class,'id_product','id_product');
     }
+
+    public function attribute(){
+        return $this->belongsTo(AttributeModel::class,'id_attr','id_attr');
+    }
 }

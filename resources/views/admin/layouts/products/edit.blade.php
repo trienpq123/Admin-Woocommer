@@ -91,7 +91,8 @@
                                         <tr>
                                             <td class="d-flex gap-10">
                                                 <div class="type-attr me-2 col-lg-3">
-                                                    <select name="attr[{{$key}}][name]" class="select_type form-select">
+                                                    <select name="attr[{{ $key }}][name]"
+                                                        class="select_type form-select">
                                                         <option value="0">Chưa chọn</option>
                                                         @foreach ($listAttr as $count => $item)
                                                             <option
@@ -106,13 +107,24 @@
                                                     <input type="text" placeholder="Giá trị"
                                                         class="add-option form-control">
                                                     <div class="container-option">
-                                                        <div class="badge-2" id="btn-1">s<span class="close"
-                                                                data-value="s" data-id="btn-1">x</span>
-                                                        </div>
-                                                            <input
-                                                            hidden="" type="text" name="attr[{{$key}}][title][]"
-                                                            value="s">
-                                                        
+                                                        @if ($p_variants->optionAttribute)
+                                                            @foreach ($p_variants->optionAttribute as $p_option)
+                                                                @php
+                                                                    $options = explode(' - ', $p_option->name);
+                                                                @endphp
+                                                                @foreach ($options as $option)
+                                                                    <div class="badge-2" id="btn-1">
+                                                                        {{ $option }}<span class="close"
+                                                                            data-value="{{ $option }}"
+                                                                            data-id="btn-1">x</span>
+                                                                    </div>
+                                                                    <input hidden="" type="text"
+                                                                        name="attr[{{ $key }}][title][]"
+                                                                        value=" {{ $option }} ">
+                                                                @endforeach
+                                                            @endforeach
+                                                        @endif
+
                                                     </div>
                                             </td>
 
@@ -133,9 +145,56 @@
                             <label for="">Chỉnh sửa bảng giá</label>
                             <table class="table">
                                 <thead>
-
+                                    <tr>
+                                        <th>Mã sản phẩm</th>
+                                        @foreach ($product->product_variants as $item)
+                                            <th>{{ $item->attribute->name }}</th>
+                                        @endforeach
+                                        <th>Giá</th>
+                                        <th>Giá giảm</th>
+                                        <th>Hàng tồn kho</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
+
+                                    @if ($product->skus_product_variant_options)
+                                        @foreach ($product->skus_product_variant_options as $key => $item)
+                                            @php
+                                                $options = explode('-', $item->attribute);
+                                                // dd($options);
+                                            @endphp
+                                            <tr>
+                                                <td> <input type="checkbox">
+                                                </td>
+                                                @foreach ($options as $option)
+                                                    <td class="{{ $option }}">
+                                                        {{ $option }}
+                                                        <input type="text"
+                                                            name="product[variants][{{ $key }}][title][]"
+                                                            value="{{ $option }}">
+                                                    </td>
+                                                @endforeach
+                                             
+                                                <td>
+                                                    <input type="number"
+                                                        name="product[variants][{{ $key }}][price]"
+                                                        value="100000" class="product_price">
+                                                </td>
+                                                <td>
+                                                    <input type="number"
+                                                        name="product[variants][{{ $key }}][price_old]"
+                                                        value="500000" class="product_price_old">
+                                                </td>
+                                                <td>
+                                                    <input type="number" value="50"
+                                                        name="product[variants][{{ $key++ }}][stock]"
+                                                        class="product_stock">
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
+
+
                                 </tbody>
                             </table>
                         </div>

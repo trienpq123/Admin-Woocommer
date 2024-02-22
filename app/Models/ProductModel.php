@@ -36,7 +36,9 @@ class ProductModel extends Model
         return $this->belongsTo(CategoryModel::class,'id_category','id_category');
     }
     
-
+    public function attribute(){
+        return $this->belongsTo(AttributeModel::class,'id_attr','id_attr');
+    }
 
     public function sku_product() {
         return $this->hasMany(SkuProductVariantOptions::class, 'id_product','id_product');
