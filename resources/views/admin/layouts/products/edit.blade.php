@@ -179,7 +179,7 @@
                                                     <input type="number"
                                                         name="product[variants][{{ $key }}][price]"
                                                         value="100000" class="product_price">
-                                                </td>
+                                                 </td>
                                                 <td>
                                                     <input type="number"
                                                         name="product[variants][{{ $key }}][price_old]"

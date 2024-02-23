@@ -206,20 +206,18 @@ class ProductController extends Controller
 
     public function putEditProduct(Request $request)
     {
+        // dd($request->all());
         $validator = Validator::make(
             $request->all(),
             [
-                'name' => "required|"
+                'name' => "required"
             ],
             [
                 'name.required' => 'Tên sản phẩm không được bỏ trống',
             ]
         );
         if ($validator->fails()) {
-            return response()->json([
-                'status' => 404,
-                'message' => $validator->messages()
-            ]);
+            return redirect()->back()->withErrors($validator)->withInput();
         }
         $p = ProductModel::where('id_product', '=', $request->id)->first();
         $p->name_product = $request->name;
@@ -259,45 +257,10 @@ class ProductController extends Controller
                     );
                 }
             }
-        }
-        $a = [];
-        if (!empty($request->product_detail)) {
-            $decoded = json_decode($request->product_detail);
-            if (!is_null($decoded) && count($decoded) > 0) {
-
-                foreach ($decoded as $item) {
-                    if (!empty($item->idProductDetail)) {
-
-                        $PDetail = ProductDetailModel::where('id_product_detail', '=', $item->idProductDetail)->first();
-                        // $PDetail->id_product = $request;
-                        $PDetail->price = 3;
-                        $PDetail->price_sale = $item->product_price_old;
-                        $PDetail->quanlity = $item->product_stock;
-                        $PDetail->product_sku = $item->product_type_sku;
-                        $PDetail->save();
-                    } else {
-
-                        $PDetail = new ProductDetailModel();
-                        $PDetail->id_product = $request->id;
-                        $PDetail->size = $item->colorOfProductValue;
-                        $PDetail->color = $item->colorOfProductValue;
-                        $PDetail->price = $item->product_price;
-                        $PDetail->price_sale = $item->product_price_old;
-                        $PDetail->quanlity = $item->product_stock;
-                        $PDetail->product_sku = $item->product_type_sku;
-
-                        $PDetail->save();
-                    }
-                }
-            }
-        }
+        };
+        $p->skus_product_variant_options()->hash_updated();
         $produc_Data = ProductModel::all();
-        return response()->json([
-            'status' => 200,
-            'product_detail' => $request->all(),
-            'data' =>  json_decode($request->product_detail),
-            'a' => $a
-        ]);
+        return redirect()->back()->with(['success' => 'Cập nhật thành công']);
     }
 
     public function deleteProduct(Request $request)

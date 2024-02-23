@@ -240,13 +240,12 @@
                 if (optionValue.length > 0) {
 
                     optionValue.forEach((item, index) => {
-
+                        console.log(item)
                         tr += `<tr>
                                         <td> <input type="checkbox" /> 
-                                          
                                         </td>
                                     `
-
+                        console.log(item)
                         if (typeof item === "string") {
                             let b = item.replace(/[^a-zA-Z-0-9]/g, "");
                             tr += ` <td class="${b}">
@@ -263,26 +262,20 @@
                             })
                         }
 
-
                         tr += `                        
                             <td>
-                                <input type="number" name="product[variants][${index}][price]" value="100000" class="product_price" />
+                                <input type="number" name="product[variants][${index}][price]" value="0" class="product_price" />
                             </td>
                             <td>
-                                <input type="number" name="product[variants][${index}][price_old]" value="500000" class="product_price_old" />
+                                <input type="number" name="product[variants][${index}][price_old]" value="0" class="product_price_old" />
                             </td>
                             <td>
                                 <input type="number" value="50" name="product[variants][${index}][stock]" class="product_stock" />
                             </td>
                         </tr>`
-
-
                     })
-
-
-
                 }
-                table.html(tr);
+                table.append(tr);
                 thead.html(row_html);
             }
 
@@ -333,8 +326,7 @@
                                         let check = false;
                                         for (let j = 0; j < attribute.length; j++) {
                                             if (attribute[j]['title'] == item['title']) {
-                                                attribute[j]['label'] = attribute[j]['label']
-                                                    .concat(item['label'])
+                                                attribute[j]['label'] = attribute[j]['label'].concat(item['label'])
                                                 check = true
                                                 break
                                             }

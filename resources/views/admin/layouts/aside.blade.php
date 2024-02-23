@@ -86,7 +86,15 @@
                 <i class="bi bi-grid"></i>
                 <span>Dashboard</span>
             </a>
-        </li><!-- End Dashboard Nav -->
+        </li>
+        <!-- End Dashboard Nav -->
+        <li class="nav-item">
+            <a class="nav-link " href="">
+                <i class="bi bi-grid"></i>
+                <span>Quản lý khuyến mãi</span>
+            </a>
+        </li>
+        <!-- End Khuyến mãi -->
 
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#category" data-bs-toggle="collapse" href="#">
@@ -203,13 +211,18 @@
                 <span>Bình luận</span>
             </a>
         </li>
-  
-
-
-       
-
-  
-
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{{route('admin.order.listOrder')}}">
+                <i class="bi bi-question-circle"></i>
+                <span>Đánh giá</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{{route('admin.order.listOrder')}}">
+                <i class="bi bi-question-circle"></i>
+                <span>Ticket/Hỗ trợ</span>
+            </a>
+        </li>
         <li class="nav-item">
             <a class="nav-link collapsed" href="pages-error-404.html">
                 <i class="bi bi-dash-circle"></i>
