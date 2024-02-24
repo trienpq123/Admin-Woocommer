@@ -258,7 +258,7 @@ class ProductController extends Controller
                 }
             }
         };
-        $p->skus_product_variant_options()->hash_updated();
+        // $p->skus_product_variant_options()->hash_updated();
         $produc_Data = ProductModel::all();
         return redirect()->back()->with(['success' => 'Cập nhật thành công']);
     }

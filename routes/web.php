@@ -16,6 +16,7 @@ use App\Http\Controllers\PagesController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PromotionProduct;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SystemController;
 use App\Http\Controllers\UserController;
@@ -75,6 +76,10 @@ Route::group([ 'middleware' => 'Localization'],function() {
             Route::post('/delete',[ProductController::class,'deleteProduct'])->name('deleteProduct');
             Route::delete('/delete-product-delete',[ProductController::class,'deleteDetailProduct'])->name('deleteProductDetail');
             Route::delete('/delete-product-image',[ProductController::class,'deleteImageProduct'])->name('deleteImageProduct');
+        });
+        Route::prefix('promotion')->name('promotion.')->group(function(){
+            Route::get('/',[PromotionProduct::class,'index'])->name('index');
+           
         });
         Route::prefix('brand')->name('brand.')->group(function() {
             Route::get('/',[BrandController::class,'listBrand'])->name('listBrand');
