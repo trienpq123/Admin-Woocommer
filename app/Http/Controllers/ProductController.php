@@ -278,7 +278,7 @@ class ProductController extends Controller
                     $image->delete();
                 }
 
-                $productDetail = ProductDetailModel::where('id_product', '=', $id);
+                $productDetail = ProductModel::where('id_product', '=', $id);
                 if (count($productDetail->get()) > 0) {
                     foreach ($productDetail as $PD) {
                         if (File::exists('public/uploads/images/products/' . $PD->name_img)) {
@@ -300,7 +300,7 @@ class ProductController extends Controller
     public function deleteDetailProduct(Request $request)
     {
         if ($request->id) {
-            $check_productDetail = ProductDetailModel::where('id_product_detail', '=', $request->id);
+            $check_productDetail = ProductModel::where('id_product_detail', '=', $request->id);
             if (count($check_productDetail->get()) > 0) {
                 $check_productDetail->delete();
             }

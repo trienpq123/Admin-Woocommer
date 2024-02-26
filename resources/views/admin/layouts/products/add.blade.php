@@ -213,7 +213,6 @@
             let option_value = [];
             addOptionAttribute()
             removeOption()
-
             function InnerTableAttr(optionValue = [], row = null) {
                 console.log(optionValue)
                 const table = $('.table-price table tbody');
@@ -278,7 +277,6 @@
                 table.append(tr);
                 thead.html(row_html);
             }
-
             function addOptionAttribute() {
                 let get_add_size = document.querySelector('.add-option');
                 $(document).on('keydown', '.add-option', function(e) {
@@ -356,6 +354,8 @@
                         }
                         // output - resultant data
                         output = reducer(modifier(attribute))
+                        // console.log(output)
+                        console.log(output)
                         InnerTableAttr(output, tr)
                         this.value = "";
 
@@ -366,7 +366,6 @@
                 })
 
             }
-
             function removeOption() {
                 $(document).on('click', '.badge-2 span.close', function() {
                     let value = $(this).attr('data-value');
@@ -403,8 +402,6 @@
             $('.js-example-basic-multiple-1').select2();
             $('.js-example-basic-multiple-2').select2();
             // Element Show Brand
-
-
             function formatState(state) {
                 console.log(state.element.attributes[0].value);
                 if (!state.id) {
@@ -422,14 +419,9 @@
 
                 return $state;
             };
-
             $('#brand').select2({
                 templateSelection: formatState
             });
-
-
-
-
             $('.category').change(function() {
                 let value = $(this).val();
                 $.ajax({
@@ -476,179 +468,6 @@
                 })
 
             })
-            // $('.child-category-1').change(function() {
-            //     let value = $(this).val();
-            //     $.ajax({
-            //         type: "GET",
-            //         url: "{{ route('admin.category.getChildCategory') }}",
-            //         data: {
-            //             id: value
-            //         },
-            //         success: (res) => {
-            //             console.log(res)
-            //             let child_category = ''
-            //             res.data.forEach(function(data, i) {
-            //                 child_category +=
-            //                     `<option value="${data.id_category}">${data.name_category}</option>`;
-            //             });
-            //             $('.child-category-2').html(child_category);
-            //         }
-            //     })
-
-            // })
-
-
-
-            // $('#form-add').submit(function(e) {
-            //     e.preventDefault();
-            //     let product_detail = [];
-            //     $('.table-price table tbody tr').each(function(i, tr) {
-            //         let SizeOfProductValue = '';
-            //         let colorOfProductValue = '';
-            //         let product_stock = '';
-            //         let product_type_sku = '';
-            //         let product_price = '';
-            //         let product_price_old = '';
-            //         let sizeOfProduct = tr.querySelector('.size')
-            //         if (sizeOfProduct) {
-            //             SizeOfProductValue = sizeOfProduct.value
-            //         }
-
-            //         let colorOfP = tr.querySelector('input[type=text].color')
-            //         if (colorOfP) {
-            //             colorOfProductValue = colorOfP.value;
-            //         }
-            //         let StockofProduct = tr.querySelector('input[type=number].product_stock')
-            //         if (StockofProduct) {
-            //             product_stock = StockofProduct.value
-            //         }
-            //         let TypeSkuOfProduct = tr.querySelector('input[type=text].product_type_sku');
-            //         if (TypeSkuOfProduct) {
-            //             product_type_sku = TypeSkuOfProduct.value;
-            //         }
-            //         let productPrice = tr.querySelector('input[type=number].product_price');
-            //         if (productPrice) {
-            //             product_price = productPrice.value;
-            //         }
-            //         let productPriceOld = tr.querySelector('input[type=number].product_price_old');
-            //         if (productPriceOld) {
-            //             product_price_old = productPriceOld.value;
-            //         }
-
-            //         let option = {
-            //             SizeOfProductValue: SizeOfProductValue,
-            //             colorOfProductValue: colorOfProductValue,
-            //             product_stock: product_stock,
-            //             product_type_sku: product_type_sku,
-            //             product_price: product_price,
-            //             product_price_old: product_price_old
-            //         }
-            //         product_detail.push(option)
-
-            //     })
-
-            //     let name_product = $('.form-control.name').val();
-            //     let idBrand = [];
-            //     $('.brand option:checked').each(function(i, item) {
-            //         return idBrand.push(item.value)
-            //     })
-            //     let slug_product = $('.slug').val();
-            //     let desc_product = CKEDITOR.instances.desc.getData();
-            //     let desc_short_product = CKEDITOR.instances.desc_short.getData();
-            //     let product_sku = $('.product_sku').val();
-            //     let id_category = $('.category').val();
-            //     let status_product = $('.status:checked').val();
-            //     var formData = new FormData();
-
-            //     for (let i = 0; i < $('input[type=file].add-file')[0].files.length; i++) {
-            //         formData.append('image[]', $('input[type=file].add-file')[0].files[i]);
-            //     }
-            //     $('.table-price table tbody tr').each(function(i, tr) {
-            //         let SizeOfProductValue = '';
-            //         let colorOfProductValue = '';
-            //         let product_stock = '';
-            //         let product_type_sku = '';
-            //         let product_price = '';
-            //         let product_price_old = '';
-            //         let sizeOfProduct = tr.querySelector('.size')
-
-            //         if (sizeOfProduct) {
-            //             SizeOfProductValue = sizeOfProduct.value
-            //         }
-
-            //         let colorOfP = tr.querySelector('input[type=text].color')
-            //         if (colorOfP) {
-            //             colorOfProductValue = colorOfP.value;
-            //         }
-            //         let StockofProduct = tr.querySelector('input[type=number].product_stock')
-            //         console.log(StockofProduct)
-            //         if (StockofProduct) {
-            //             product_stock = StockofProduct.value
-            //         }
-            //         let TypeSkuOfProduct = tr.querySelector('input[type=text].product_type_sku');
-            //         if (TypeSkuOfProduct) {
-            //             product_type_sku = TypeSkuOfProduct.value;
-            //         }
-            //         let productPrice = tr.querySelector('input[type=number].product_price');
-            //         if (productPrice) {
-            //             product_price = productPrice.value;
-            //         }
-            //         let productPriceOld = tr.querySelector('input[type=number].product_price_old');
-            //         if (productPriceOld) {
-            //             product_price_old = productPriceOld.value;
-            //         }
-
-            //         let option = {
-            //             SizeOfProductValue: SizeOfProductValue,
-            //             colorOfProductValue: colorOfProductValue,
-            //             product_stock: product_stock,
-            //             product_type_sku: product_type_sku,
-            //             product_price: product_price,
-            //             product_price_old: product_price_old
-            //         }
-            //         product_detail.push(option)
-
-            //     })
-            //     let option = [];
-            //     $('body .select-option').each(function(i, data) {
-            //         option.push(data.value);
-            //     })
-            //     console.log(product_detail);
-            //     formData.append('product_detail', JSON.stringify(product_detail))
-            //     formData.append('desc', desc_product)
-            //     formData.append('desc_short', desc_short_product)
-            //     formData.append('name', name_product)
-            //     formData.append('slug', slug_product)
-            //     formData.append('status', status_product)
-            //     formData.append('idBrand', idBrand)
-            //     formData.append('product_sku', product_sku)
-            //     formData.append('parent_category[]', id_category)
-            //     formData.append('option', option)
-            //     formData.append('_token', "{{ csrf_token() }}")
-            //     $.ajax({
-            //         type: "POST",
-            //         url: "{{ route('admin.product.postAddProduct') }}",
-            //         data: formData,
-            //         success: (res) => {
-
-            //             validator(res.status, res.message)
-            //             if (res.status == 404) {
-            //                 console.log(res)
-
-            //             } else {
-            //                 console.log(res.request)
-            //                 // $('#table').DataTable().destroy()
-            //                 // getDataTable();
-            //                 // $('.alert').toggleClass('active')
-            //                 // $('.popup-modal').removeClass('active');
-            //             }
-            //         },
-            //         cache: false,
-            //         contentType: false,
-            //         processData: false
-
-            //     })
-            // })
         });
     </script>
 

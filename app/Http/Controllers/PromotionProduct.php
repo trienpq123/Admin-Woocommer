@@ -32,4 +32,9 @@ class PromotionProduct extends Controller
     public function destroy(){
 
     }
+
+    public function find()
+    {
+        
+    }
 }
