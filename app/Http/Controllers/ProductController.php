@@ -148,13 +148,12 @@ class ProductController extends Controller
                 ]);
                 if ($ProductVariants) {
                     // ADD OPTIONS
-                
                     if (is_array($value['title'])) {
                         $title = '';
                         foreach ($value['title'] as $count => $item) {
-                            $title .= $item . " - ";
+                            $title .= $item . "-";
                         }
-                        $title = rtrim($title, " - ");
+                        $title = rtrim($title, "-");
                      
                         $ProductVariants->optionAttribute()->createMany([
                             ['name' => $title],
