@@ -74,7 +74,7 @@ class ProductController extends Controller
 
     public function postAddProduct(Request $request)
     {
-        // dd($request->all());
+       
         // $validator = Validator::make(
         //     $request->all(),
         //     [
@@ -148,7 +148,7 @@ class ProductController extends Controller
                 ]);
                 if ($ProductVariants) {
                     // ADD OPTIONS
-                    // dd($request->all());
+                
                     if (is_array($value['title'])) {
                         $title = '';
                         foreach ($value['title'] as $count => $item) {
@@ -157,13 +157,14 @@ class ProductController extends Controller
                         $title = rtrim($title, " - ");
                      
                         $ProductVariants->optionAttribute()->createMany([
-                            ['title' => $title],
-                            ['id_product_variants' => $ProductVariants->id_product_variants]
+                            ['name' => $title],
+                            ['id_product_variants' => $ProductVariants->id_product_variants],
                         ]);
                     }
                 }
             }
         }
+       
         if ($request->product) {
 
             $product = $request->product;
@@ -193,6 +194,7 @@ class ProductController extends Controller
                 }
             }
         }
+        dd($request->all());
         $product_Data = ProductModel::all();
         // return response()->json([
         //     'status' => 200,

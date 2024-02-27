@@ -31,7 +31,7 @@
                             @if ($errors->has('name'))
                                 <p class="name-error alert-danger">{{ $errors->first('name') }}</p>
                             @endif
-                            
+
                         </div>
                         <div class="form-group">
                             <label for="">Slug</label>
@@ -50,11 +50,12 @@
                         </div>
                         <div class="form-group">
                             <label for="parent_category">Danh mục</label>
-                            <select class="category form-select" id="parent_category" name="parent_category[]" >
+                            <select class="category form-select" id="parent_category" name="parent_category[]">
                                 <option value="">Chưa có</option>
                                 @if (count($listCategory) > 0)
                                     @foreach ($listCategory as $item)
-                                        <option {{old('parent_category') == $item->id_category ? 'selected' : ''}}  data-img="{{ $item->image_category }}" value={{ $item->id_category }}>
+                                        <option {{ old('parent_category') == $item->id_category ? 'selected' : '' }}
+                                            data-img="{{ $item->image_category }}" value={{ $item->id_category }}>
                                             {{ $item->name_category }}</option>
                                     @endforeach
                                 @endif
@@ -64,11 +65,11 @@
 
                         <div class="form-group">
                             <label for="">Mô tả</label>
-                            <textarea name="desc_short"  class="desc_short" id="desc_short" cols="30" rows="10">{{old('desc_short')}}</textarea>
+                            <textarea name="desc_short" class="desc_short" id="desc_short" cols="30" rows="10">{{ old('desc_short') }}</textarea>
                         </div>
                         <div class="form-group">
                             <label for="">Mô tả</label>
-                            <textarea name="desc" class="desc" id="desc" cols="30" rows="10">{{old('desc')}}</textarea>
+                            <textarea name="desc" class="desc" id="desc" cols="30" rows="10">{{ old('desc') }}</textarea>
                         </div>
 
                         <div class="form-group">
@@ -213,8 +214,9 @@
             let option_value = [];
             addOptionAttribute()
             removeOption()
+
             function InnerTableAttr(optionValue = [], row = null) {
-                console.log(optionValue)
+   
                 const table = $('.table-price table tbody');
                 const thead = $('.table-price table thead');
                 const rows = row.parents('tbody').find('tr');
@@ -235,48 +237,67 @@
                         `
                 }
                 // XỬ LÝ IN THUỘC TÍNH - VARIANT
-                console.log(optionValue)
+            
                 if (optionValue.length > 0) {
-
                     optionValue.forEach((item, index) => {
-                        console.log(item)
-                        tr += `<tr>
-                                        <td> <input type="checkbox" /> 
-                                        </td>
-                                    `
-                        console.log(item)
+                        console.log(item[index]);
+                        let modifer_class = '';
                         if (typeof item === "string") {
                             let b = item.replace(/[^a-zA-Z-0-9]/g, "");
-                            tr += ` <td class="${b}">
-                                        ${item}
-                                        <input type="text" name="product[variants][${index}][title]" value="${item}" />
-                                    </td>`
+                            modifer_class = 'td-variant-'+item;
                         } else {
-                            item.forEach((a) => {
+                            item.forEach((a, count) => {
                                 let b = a.replace(/[^a-zA-Z-0-9]/g, "");
-                                tr += ` <td class="${b}">
-                                            ${a}
-                                            <input type="text" name="product[variants][${index}][title][]" value="${a}" />
-                                        </td>`
+                             
+                              
+                                console.log(item.length, modifer_class, b);
+                                if (count+1 === item.length) {
+                                    modifer_class = modifer_class + '-' + b;
+                                }else{
+                                    modifer_class = 'td-variant-'+b;  
+                                }
                             })
                         }
+                        // console.log(item, modifer_class)
+                        if (!table.find(`.${modifer_class}`).length > 0) {
+                                tr += `<tr class="${modifer_class}">
+                                            <td> <input type="checkbox" /> 
+                                            </td>
+                                        `
+                                if (typeof item === "string") {
+                                    let b = item.replace(/[^a-zA-Z-0-9]/g, "");
+                                    tr += ` <td class="${b}">
+                                            ${item}
+                                            <input type="text" name="product[variants][${index}][title]" value="${item}" />
+                                        </td>`
+                                } else {
+                                    item.forEach((a) => {
+                                        let b = a.replace(/[^a-zA-Z-0-9]/g, "");
+                                        tr += ` <td class="${b}">
+                                                ${a}
+                                                <input type="text" name="product[variants][${index}][title][]" value="${a}" />
+                                            </td>`
+                                    })
+                                }
+                                tr += `                        
+                                <td>
+                                    <input type="number" name="product[variants][${index}][price]" value="0" class="product_price" />
+                                </td>
+                                <td>
+                                    <input type="number" name="product[variants][${index}][price_old]" value="0" class="product_price_old" />
+                                </td>
+                                <td>
+                                    <input type="number" value="50" name="product[variants][${index}][stock]" class="product_stock" />
+                                </td>
+                            </tr>`
+                        }
 
-                        tr += `                        
-                            <td>
-                                <input type="number" name="product[variants][${index}][price]" value="0" class="product_price" />
-                            </td>
-                            <td>
-                                <input type="number" name="product[variants][${index}][price_old]" value="0" class="product_price_old" />
-                            </td>
-                            <td>
-                                <input type="number" value="50" name="product[variants][${index}][stock]" class="product_stock" />
-                            </td>
-                        </tr>`
                     })
                 }
                 table.append(tr);
                 thead.html(row_html);
             }
+
             function addOptionAttribute() {
                 let get_add_size = document.querySelector('.add-option');
                 $(document).on('keydown', '.add-option', function(e) {
@@ -299,7 +320,8 @@
                         container_option.append(create_button);
                         let get_tr = $(this).parents('tr')
                         let indexTr = get_tr.index();
-                        let input = `<input hidden type="text" name="attr[${indexTr}][title][]" value="${value}" />`
+                        let input =
+                            `<input hidden type="text" name="attr[${indexTr}][title][]" value="${value}" />`
                         container_option.append(input);
                         let getIdAttr = get_tr.find('.select_type').val();
                         let tr = $(this).parents('tbody').find('tr');
@@ -324,7 +346,8 @@
                                         let check = false;
                                         for (let j = 0; j < attribute.length; j++) {
                                             if (attribute[j]['title'] == item['title']) {
-                                                attribute[j]['label'] = attribute[j]['label'].concat(item['label'])
+                                                attribute[j]['label'] = attribute[j]['label']
+                                                    .concat(item['label'])
                                                 check = true
                                                 break
                                             }
@@ -354,7 +377,6 @@
                         }
                         // output - resultant data
                         output = reducer(modifier(attribute))
-                        // console.log(output)
                         console.log(output)
                         InnerTableAttr(output, tr)
                         this.value = "";
@@ -366,6 +388,7 @@
                 })
 
             }
+
             function removeOption() {
                 $(document).on('click', '.badge-2 span.close', function() {
                     let value = $(this).attr('data-value');
@@ -446,12 +469,14 @@
                                        `
                                         // CHƯA TÁCH MẢNG
 
-                                        filter +=`<input type="text" class="form-control filter-${counter}" name="product[filters][${counter}][value]" value="${option.value}"  data-role="tagsinput"/>`
+                                        filter +=
+                                            `<input type="text" class="form-control filter-${counter}" name="product[filters][${counter}][value]" value="${option.value}"  data-role="tagsinput"/>`
                                         filter += `</div>`
-                                        $('input[data-role=tagsinput].filter-'+counter).tagsinput();
+                                        $('input[data-role=tagsinput].filter-' +
+                                            counter).tagsinput();
                                     })
-                                }else{
-                                    filter='';
+                                } else {
+                                    filter = '';
                                 }
 
                             })
@@ -459,12 +484,12 @@
 
                         }
                     },
-                    error: function(){
+                    error: function() {
                         let filter = '';
                         $('.product-option__inner').html(filter)
                         console.log('ERROR MESSAGE')
                     }
-                    
+
                 })
 
             })
@@ -534,7 +559,7 @@
                                     </tr>`;
                         }
                         $(this).parent().parent().parent().parent().find('tbody').append(html);
-
+                        $('.table-price table tbody').html('');
                     }
                 })
             })
