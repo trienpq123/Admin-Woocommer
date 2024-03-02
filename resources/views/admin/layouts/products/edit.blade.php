@@ -162,9 +162,13 @@
                                             @php
                                                 $options = explode('-', $item->attribute);
                                                 // dd($options);
+                                                $modifer_class = str_replace(' ', '', $item->attribute);
+                                               
                                             @endphp
-                                            <tr>
+
+                                            <tr class="td-variant-{{$modifer_class}}">
                                                 <td> <input type="checkbox">
+                                                    {{-- {{dd($item->attribute)}} --}}
                                                 </td>
                                                 @foreach ($options as $option)
                                                     <td class="{{ $option }}">

@@ -74,7 +74,7 @@ class ProductController extends Controller
 
     public function postAddProduct(Request $request)
     {
-       
+        dd($request->all());
         // $validator = Validator::make(
         //     $request->all(),
         //     [

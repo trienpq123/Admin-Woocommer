@@ -510,7 +510,6 @@
                         _token: "{{ csrf_token() }}"
                     },
                     success: (res) => {
-                        // console.log(res.data)
                         let attr = res.data;
                         let tr = $(this).parent().parent().parent().parent().find('tbody tr');
                         if (tr.length == attr.length) {

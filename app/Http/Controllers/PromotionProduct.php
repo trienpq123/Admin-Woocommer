@@ -11,7 +11,7 @@ class PromotionProduct extends Controller
     }
 
     public function create(){
-
+        
     }
 
     public function store(){

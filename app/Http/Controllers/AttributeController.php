@@ -6,6 +6,7 @@ use App\Models\AttributeModel;
 use App\Models\AttributeValue;
 use App\Models\attributeValueModel;
 use App\Models\CategoryModel;
+use Attribute;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Exists;
@@ -260,5 +261,21 @@ class AttributeController extends Controller
         }
         return back()->with(['message' => 'Xóa thành công']);
        
+    }
+
+    public function ajaxAttribute(Request $request){
+        if ($request->id) {
+            $id = $request->id;
+            $data = AttributeValue::where('attribute_id', '=', $id)->get(['id','value']);
+
+            return response()->json([
+                'data' => $data,
+                'status' => 200
+            ],200);
+        }
+        return response()->json([
+            'status' => 404
+        ],404);
+
     }
 }

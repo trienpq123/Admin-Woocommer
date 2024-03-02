@@ -154,6 +154,8 @@ Route::group([ 'middleware' => 'Localization'],function() {
             Route::delete('/delete',[AttributeController::class,'deleteAttr'])->name('deleteAttr');
             Route::get('/delete-attribute-set',[AttributeController::class,'deleteAttrSet'])->name('deleteAttrSet');
             Route::get('/delete-more',[AttributeController::class,'deleteMore'])->name('deleteMore');
+            // AJAX
+            Route::post('/ajax/attribute',[AttributeController::class,'ajaxAttribute'])->name('ajaxAttribute');
         });
    
         Route::prefix('attr-cat')->name('attr-cat.')->group(function() {
