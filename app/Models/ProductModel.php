@@ -11,6 +11,10 @@ class ProductModel extends Model
     use HasFactory;
     protected $table = "product";
     protected $primaryKey = "id_product";
+    protected $casts = [
+        'attribute' => 'array',
+        'variants' => 'array'
+    ];
     protected $fillable = [
         'name_product',
         'slug',
@@ -19,7 +23,9 @@ class ProductModel extends Model
         'p_desc',
         'product_SKU',
         'status',
-        'id_category'
+        'id_category',
+        'attribute',
+        'variants'
     ];
     CONST CREATED_AT = NULL;
     CONST UPDATED_AT = NULL;

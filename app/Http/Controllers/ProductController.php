@@ -25,6 +25,8 @@ class ProductController extends Controller
         $getBrands = BrandModel::orderBy('id_brand', 'desc')->get();
         $listCategory = CategoryModel::whereNull('parent_category')->orderBy('id_category', 'desc')->get();
         $listAttr = AttributeModel::orderBy('id_attr', 'desc')->get();
+
+        
         return view('admin.layouts.products.list', compact('getBrands', 'listCategory', 'listProduct', 'listAttr'));
     }
 
@@ -65,6 +67,9 @@ class ProductController extends Controller
         if ($request->id) {
             $id = $request->id;
             $product = ProductModel::where('id_product',$id)->with('product_variants','skus_product_variant_options','product_variants.optionAttribute', 'product_variants.attribute')->first();
+            dd($product->variants);
+            $attribute = $product->attribute;
+            $skus = $product->variants;
             // dd($product);
             return view('admin.layouts.products.edit', compact('getBrands', 'listCategory', 'listProduct', 'listAttr', 'product'));
         }
@@ -74,7 +79,7 @@ class ProductController extends Controller
 
     public function postAddProduct(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
         // $validator = Validator::make(
         //     $request->all(),
         //     [
@@ -99,6 +104,12 @@ class ProductController extends Controller
 
         $p->product_SKU = $request->product_sku;
         $p->status = $request->status;
+        if($request->attr){
+            $p->attribute = $request->attr;
+        }
+        if($request->product['variants']){
+            $p->variants = $request->product['variants'];
+        }
         $p->save();
         if ($request->parent_category) {
             $cateProduct = new CategoryProductModel();
@@ -193,7 +204,7 @@ class ProductController extends Controller
                 }
             }
         }
-        dd($request->all());
+        // dd($request->all());
         $product_Data = ProductModel::all();
         // return response()->json([
         //     'status' => 200,

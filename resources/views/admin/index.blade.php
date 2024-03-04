@@ -10,8 +10,6 @@
     <link rel="stylesheet" href="{{ asset('./admin/assets/css/responsive.css') }}">
     <link rel="stylesheet" href="{{ asset('./admin/assets/css/animation.css') }}">
     <link rel="stylesheet" href="{{ asset('./admin/assets/css/css.css') }}">
-    <!-- LINK CDN -->
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> -->
     <!-- CDN FONT-AWESOME -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     {{-- <link rel="stylesheet" href="//cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css"> --}}
@@ -38,15 +36,10 @@
 
     <!-- Template Main CSS File -->
     <link href="{{ asset('./admin/assets/css/style.css') }}" rel="stylesheet">
-
-
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
     <link href="{{ asset('admin/assets/js/boostrap-tagsinput/bootstrap-tagsinput.css') }}" rel="stylesheet" />
     {{-- <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" /> --}}
-
-
-
     @yield('css')
 
 </head>
@@ -153,18 +146,11 @@
     //     let PopChart = new Chart(myChart,config)
 </script>
  --}}
-
-
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-
 {{-- <script src="{{ asset('admin/assets/js/ckeditor/ckeditor.js') }}"></script> --}}
-
 <script src="//cdn.ckeditor.com/4.20.2/standard/ckeditor.js"></script>
 
 @stack('javascript')
-
-
 {{-- <script type="text/javascript" src="{{ asset('admin/assets/js/ckfinder/ckfinder.js') }}"></script> --}}
 
 <script>
@@ -237,9 +223,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/js/bootstrap.min.js"></script>
 <script src="{{ asset('admin/assets/js/boostrap-tagsinput/bootstrap-tagsinput.js') }}"></script>
 <script src="{{ asset('admin/assets/js/boostrap-tagsinput/bootstrap-tagsinput-angular.js') }}"></script>
-//
+
 <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
-//
+
 <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
 {{-- SELECT 2 --}}
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
