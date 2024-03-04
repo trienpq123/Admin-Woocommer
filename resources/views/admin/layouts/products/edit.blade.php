@@ -100,7 +100,6 @@
                                                                 value="{{ $item->id_attr }}">{{ $item->name }}
                                                             </option>
                                                         @endforeach
-
                                                     </select>
                                                 </div>
                                                 <div class="value-attr col-lg-7">
@@ -110,7 +109,7 @@
                                                         @if ($p_variants->optionAttribute)
                                                             @foreach ($p_variants->optionAttribute as $p_option)
                                                                 @php
-                                                                    $options = explode(' - ', $p_option->name);
+                                                                    $options = explode('-', $p_option->name);
                                                                 @endphp
                                                                 @foreach ($options as $option)
                                                                     <div class="badge-2" id="btn-1">
@@ -157,47 +156,56 @@
                                 </thead>
                                 <tbody>
 
-                                    @if ($product->skus_product_variant_options)
-                                        @foreach ($product->skus_product_variant_options as $key => $item)
+                                    @if (count($product->variants) > 0)
+                                        @foreach ($product->variants as $variants)
                                             @php
-                                                $options = explode('-', $item->attribute);
-                                                // dd($options);
-                                                $modifer_class = str_replace(' ', '', $item->attribute);
-                                               
+                                                $modifer_class = '';
+                                                if(is_array($variants['title'])){
+                                                    foreach($variants['title'] as $key => $value){
+                                                        if($key >= 1){
+                                                            $modifer_class = $modifer_class . '-'.$value;
+                                                        }else{
+                                                            $modifer_class = $modifer_class . $value;
+                                                        }
+                                                    }
+                                                }                                           
                                             @endphp
+                                       
+                                        <tr class="td-variant-{{ $modifer_class }}">
+                                            <td> <input type="checkbox">
 
-                                            <tr class="td-variant-{{$modifer_class}}">
-                                                <td> <input type="checkbox">
-                                                    {{-- {{dd($item->attribute)}} --}}
-                                                </td>
-                                                @foreach ($options as $option)
-                                                    <td class="{{ $option }}">
-                                                        {{ $option }}
+                                            </td>
+                                           
+                                            @if(is_array($variants['title'])){
+                                                @foreach($variants['title'] as $key => $value){
+                                                    <td class="{{ $value }}">
+                                                        {{ $value }}
                                                         <input type="text"
                                                             name="product[variants][{{ $key }}][title][]"
-                                                            value="{{ $option }}">
+                                                            value="{{ $value }}">
                                                     </td>
-                                                @endforeach
+                                                }@endforeach
+                                            }@endif                                           
 
-                                                <td>
-                                                    <input type="number"
-                                                        name="product[variants][{{ $key }}][price]"
-                                                        value="100000" class="product_price">
-                                                </td>
-                                                <td>
-                                                    <input type="number"
-                                                        name="product[variants][{{ $key }}][price_old]"
-                                                        value="500000" class="product_price_old">
-                                                </td>
-                                                <td>
-                                                    <input type="number" value="50"
-                                                        name="product[variants][{{ $key++ }}][stock]"
-                                                        class="product_stock">
-                                                </td>
-                                            </tr>
+
+                                            <td>
+                                                <input type="number"
+                                                    name="product[variants][{{ $key }}][price]" value="{{$variants['price']}}"
+                                                    class="product_price">
+                                            </td>
+                                            <td>
+                                                <input type="number"
+                                                    name="product[variants][{{ $key }}][price_old]"
+                                                    value="{{$variants['price_old']}}" class="product_price_old">
+                                            </td>
+                                            <td>
+                                                <input type="number" value="{{$variants['stock']}}"
+                                                    name="product[variants][{{ $key++ }}][stock]"
+                                                    class="product_stock">
+                                            </td>
+                                        </tr>
                                         @endforeach
                                     @endif
-
 
                                 </tbody>
                             </table>
@@ -267,6 +275,7 @@
             let option_value = [];
             addOptionAttribute()
             removeOption()
+
             function InnerTableAttr(optionValue = [], row = null) {
 
                 const table = $('.table-price table tbody');
@@ -287,51 +296,51 @@
                        <th>Hàng tồn kho</th>
                     </tr>
                     `
-                            }
-                            // XỬ LÝ IN THUỘC TÍNH - VARIANT
+                }
+                // XỬ LÝ IN THUỘC TÍNH - VARIANT
 
-                            if (optionValue.length > 0) {
-                                optionValue.forEach((item, index) => {
-                                    console.log(item[index]);
-                                    let modifer_class = '';
-                                    if (typeof item === "string") {
-                                        let b = item.replace(/[^a-zA-Z-0-9]/g, "");
-                                        modifer_class = 'td-variant-' + item;
-                                    } else {
-                                        item.forEach((a, count) => {
-                                            let b = a.replace(/[^a-zA-Z-0-9]/g, "");
+                if (optionValue.length > 0) {
+                    optionValue.forEach((item, index) => {
+                        console.log(item[index]);
+                        let modifer_class = '';
+                        if (typeof item === "string") {
+                            let b = item.replace(/[^a-zA-Z-0-9]/g, "");
+                            modifer_class = 'td-variant-' + item;
+                        } else {
+                            item.forEach((a, count) => {
+                                let b = a.replace(/[^a-zA-Z-0-9]/g, "");
 
 
-                                            console.log(item.length, modifer_class, b);
-                                            if (count + 1 === item.length) {
-                                                modifer_class = modifer_class + '-' + b;
-                                            } else {
-                                                modifer_class = 'td-variant-' + b;
-                                            }
-                                        })
-                                    }
-                                    // console.log(item, modifer_class)
-                                    if (!table.find(`.${modifer_class}`).length > 0) {
-                                        tr += `<tr class="${modifer_class}">
+                                console.log(item.length, modifer_class, b);
+                                if (count + 1 === item.length) {
+                                    modifer_class = modifer_class + '-' + b;
+                                } else {
+                                    modifer_class = 'td-variant-' + b;
+                                }
+                            })
+                        }
+                        // console.log(item, modifer_class)
+                        if (!table.find(`.${modifer_class}`).length > 0) {
+                            tr += `<tr class="${modifer_class}">
                                         <td> <input type="checkbox" /> 
                                         </td>
                                     `
-                                        if (typeof item === "string") {
-                                            let b = item.replace(/[^a-zA-Z-0-9]/g, "");
-                                            tr += ` <td class="${b}">
+                            if (typeof item === "string") {
+                                let b = item.replace(/[^a-zA-Z-0-9]/g, "");
+                                tr += ` <td class="${b}">
                                         ${item}
                                         <input type="text" name="product[variants][${index}][title]" value="${item}" />
                                     </td>`
-                                        } else {
-                                            item.forEach((a) => {
-                                                let b = a.replace(/[^a-zA-Z-0-9]/g, "");
-                                                tr += ` <td class="${b}">
+                            } else {
+                                item.forEach((a) => {
+                                    let b = a.replace(/[^a-zA-Z-0-9]/g, "");
+                                    tr += ` <td class="${b}">
                                             ${a}
                                             <input type="text" name="product[variants][${index}][title][]" value="${a}" />
                                         </td>`
-                                            })
-                                        }
-                                        tr += `                        
+                                })
+                            }
+                            tr += `                        
                             <td>
                                 <input type="number" name="product[variants][${index}][price]" value="0" class="product_price" />
                             </td>
@@ -342,13 +351,14 @@
                                 <input type="number" value="50" name="product[variants][${index}][stock]" class="product_stock" />
                             </td>
                         </tr>`
-                                    }
+                        }
 
-                                })
-                            }
+                    })
+                }
                 table.append(tr);
                 thead.html(row_html);
             }
+
             function addOptionAttribute() {
                 let get_add_size = document.querySelector('.add-option');
                 $(document).on('keydown', '.add-option', function(e) {
@@ -439,6 +449,7 @@
                 })
 
             }
+
             function removeOption() {
                 $(document).on('click', '.badge-2 span.close', function() {
                     let value = $(this).attr('data-value');
@@ -543,7 +554,7 @@
                 })
 
             })
-           
+
         });
     </script>
 
@@ -614,6 +625,7 @@
                 })
             })
         })
+
         function removeAttr(tr) {
             console.log($(tr).parent().parent().parent().parent().find('tr').length)
             $(tr).parents('tr').remove()

@@ -67,7 +67,7 @@ class ProductController extends Controller
         if ($request->id) {
             $id = $request->id;
             $product = ProductModel::where('id_product',$id)->with('product_variants','skus_product_variant_options','product_variants.optionAttribute', 'product_variants.attribute')->first();
-            dd($product->variants);
+            // dd($product);
             $attribute = $product->attribute;
             $skus = $product->variants;
             // dd($product);
@@ -79,7 +79,7 @@ class ProductController extends Controller
 
     public function postAddProduct(Request $request)
     {
-        // dd($request->all());
+        dd($request->all());
         // $validator = Validator::make(
         //     $request->all(),
         //     [

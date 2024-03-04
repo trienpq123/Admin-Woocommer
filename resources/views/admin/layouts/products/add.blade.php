@@ -237,10 +237,10 @@
                         `
                 }
                 // XỬ LÝ IN THUỘC TÍNH - VARIANT
-            
+                console.log(optionValue)
                 if (optionValue.length > 0) {
-                    optionValue.forEach((item, index) => {
-                        console.log(item[index]);
+                    optionValue.forEach((item, indexs) => {
+                  
                         let modifer_class = '';
                         if (typeof item === "string") {
                             let b = item.replace(/[^a-zA-Z-0-9]/g, "");
@@ -248,9 +248,6 @@
                         } else {
                             item.forEach((a, count) => {
                                 let b = a.replace(/[^a-zA-Z-0-9]/g, "");
-                             
-                              
-                                console.log(item.length, modifer_class, b);
                                 if (count+1 === item.length) {
                                     modifer_class = modifer_class + '-' + b;
                                 }else{
@@ -258,7 +255,6 @@
                                 }
                             })
                         }
-                        // console.log(item, modifer_class)
                         if (!table.find(`.${modifer_class}`).length > 0) {
                                 tr += `<tr class="${modifer_class}">
                                             <td> <input type="checkbox" /> 
@@ -268,26 +264,26 @@
                                     let b = item.replace(/[^a-zA-Z-0-9]/g, "");
                                     tr += ` <td class="${b}">
                                             ${item}
-                                            <input type="text" name="product[variants][${index}][title]" value="${item}" />
+                                            <input type="text" name="product[variants][${indexs}][title]" value="${item}" />
                                         </td>`
                                 } else {
                                     item.forEach((a) => {
                                         let b = a.replace(/[^a-zA-Z-0-9]/g, "");
                                         tr += ` <td class="${b}">
                                                 ${a}
-                                                <input type="text" name="product[variants][${index}][title][]" value="${a}" />
+                                                <input type="text" name="product[variants][${indexs}][title][]" value="${a}" />
                                             </td>`
                                     })
                                 }
                                 tr += `                        
                                 <td>
-                                    <input type="number" name="product[variants][${index}][price]" value="0" class="product_price" />
+                                    <input type="number" name="product[variants][${indexs}][price]" value="0" class="product_price" />
                                 </td>
                                 <td>
-                                    <input type="number" name="product[variants][${index}][price_old]" value="0" class="product_price_old" />
+                                    <input type="number" name="product[variants][${indexs}][price_old]" value="0" class="product_price_old" />
                                 </td>
                                 <td>
-                                    <input type="number" value="50" name="product[variants][${index}][stock]" class="product_stock" />
+                                    <input type="number" value="50" name="product[variants][${indexs}][stock]" class="product_stock" />
                                 </td>
                             </tr>`
                         }
