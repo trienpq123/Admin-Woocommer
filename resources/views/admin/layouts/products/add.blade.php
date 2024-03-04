@@ -266,14 +266,16 @@
                                             ${item}
                                             <input type="text" name="product[variants][${indexs}][title]" value="${item}" />
                                         </td>`
+                                    console.log(indexs)
                                 } else {
-                                    item.forEach((a) => {
+                                    item.forEach((a,counters) => {
                                         let b = a.replace(/[^a-zA-Z-0-9]/g, "");
                                         tr += ` <td class="${b}">
                                                 ${a}
                                                 <input type="text" name="product[variants][${indexs}][title][]" value="${a}" />
                                             </td>`
                                     })
+                                    console.log(indexs)
                                 }
                                 tr += `                        
                                 <td>
