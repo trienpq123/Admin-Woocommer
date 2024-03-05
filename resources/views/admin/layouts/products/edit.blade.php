@@ -161,7 +161,7 @@
                                     @foreach ($product->variants as $key =>  $variants)
                                   
                                         @php
-                                            $modifer_class = '';
+                                            $modifer_class = ''; 
                                             if (is_array($variants['title'])) {
                                                 foreach ($variants['title'] as  $value) {
                                                     if ($key >= 1) {
@@ -178,9 +178,9 @@
                                             </td>
 
                                             @if (is_array($variants['title']))
-                                                {
+                                                
                                                 @foreach ($variants['title']  as $value)
-                                                    {
+                                                    
                                                   
                                                     <td class="{{ $value }}">
                                                         {{ $value }}
@@ -188,9 +188,9 @@
                                                             name="product[variants][{{ $key }}][title][]"
                                                             value="{{ $value }}">
                                                     </td>
-                                                    }
+                                                    
                                                 @endforeach
-                                                }
+                                                
                                             @endif
 
 
