@@ -79,6 +79,8 @@ Route::group([ 'middleware' => 'Localization'],function() {
         });
         Route::prefix('promotion')->name('promotion.')->group(function(){
             Route::get('/',[PromotionProduct::class,'index'])->name('index');
+            Route::get('/create',[PromotionProduct::class,'create'])->name('create');
+            Route::post('/store',[PromotionProduct::class,'store'])->name('store');
            
         });
         Route::prefix('brand')->name('brand.')->group(function() {

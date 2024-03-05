@@ -1,53 +1,61 @@
 @extends('admin.index')
 @section('articles')
-<div class="main" id="main">
-    <div class="list-table">
-        <div class="wrap-container">
+    <div class="main" id="main">
+        <div class="list-table">
+            <div class="wrap-container">
 
-            <a href="{{route('admin.product.addProduct')}}" class="btn btn-add" data-name="add-product">Thêm mới</a>
-            {{-- <a href="{{route('admin.product.addProduct')}}" class="btn btn-add">Thêm mới</a> --}}
-            <button class="btn btn-delete delete-checkbox" id="delete-checkbox" disabled data-name="popup-delete-checkbox">Xoá</button>
+                <a href="{{ route('admin.promotion.create') }}" class="btn btn-add" data-name="add-product">Thêm mới</a>
+                {{-- <a href="{{route('admin.product.addProduct')}}" class="btn btn-add">Thêm mới</a> --}}
+                <button class="btn btn-delete delete-checkbox" id="delete-checkbox" disabled
+                    data-name="popup-delete-checkbox">Xoá</button>
 
-            <div class="table">
+                <div class="table">
 
-                <table id="table">
+                    <table id="table">
 
-                    <thead>
-                        <tr>
-                            <th>STT</th>
-                            <th>Tiêu Đề</th>
-                            <th>Tình trạng</th>
-                            <th>Ẩn/Hiện</th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Chạy đợt 1</td>
-                            <td>Đang áp dụng</td>
-                            <td>Chấp nhận</td>
-                            <td><button class="btn-edit" data-name="edit-product" data-id="1">Chỉnh sửa</button></td>
-                            <td><button class="btn-delete">Xoá</button></td>
-                        </tr>
-                    </tbody>
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Tiêu Đề</th>
+                                <th>Tình trạng</th>
+                                <th>Ẩn/Hiện</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Chạy đợt 1</td>
+                                <td>Đang áp dụng</td>
+                                <td>Chấp nhận</td>
+                                <td>
+                                    <div class="d-flex align-items-center justify-content-center btn-action">
+                                        <span><a href="" class="btn-edit"><i
+                                                    class="ri-edit-box-line"></i></a></span>
+                                        <span><button class="btn btn-delete" id="action-delete" data-id="19"><i
+                                                    class="ri-delete-bin-5-line"></i></button></span>
+                                    </div>
+                                </td>
 
-                    <tfoot>
+                            </tr>
+                        </tbody>
 
-                        <tr>
-                            <td><input type="checkbox" name="" id="" class="check-all"></td>
-                        </tr>
+                        <tfoot>
+
+                            <tr>
+                                <td><input type="checkbox" name="" id="" class="check-all"></td>
+                            </tr>
 
 
-                    </tfoot>
+                        </tfoot>
 
-                </table>
+                    </table>
+                </div>
+
             </div>
-
         </div>
     </div>
-</div>
 @endsection
 
 @push('scripts')

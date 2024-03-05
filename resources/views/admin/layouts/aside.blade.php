@@ -89,7 +89,7 @@
         </li>
         <!-- End Dashboard Nav -->
         <li class="nav-item">
-            <a class="nav-link " href="">
+            <a class="nav-link " href="{{route('admin.promotion.index')}}">
                 <i class="bi bi-grid"></i>
                 <span>Quản lý khuyến mãi</span>
             </a>

@@ -15,7 +15,8 @@ class PromotionModel extends Model
         'discount',
         'from',
         'to',
-        'status'
+        'status',
+        'type'
     ];
     public $timestamps = false;
 
