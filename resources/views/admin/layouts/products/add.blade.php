@@ -255,7 +255,7 @@
                                 }
                             })
                         }
-                        if (!table.find(`.${modifer_class}`).length > 0) {
+                        // if (!table.find(`.${modifer_class}`).length > 0) {
                                 tr += `<tr class="${modifer_class}">
                                             <td> <input type="checkbox" /> 
                                             </td>
@@ -288,11 +288,11 @@
                                     <input type="number" value="50" name="product[variants][${indexs}][stock]" class="product_stock" />
                                 </td>
                             </tr>`
-                        }
+                        // }
 
                     })
                 }
-                table.append(tr);
+                table.html(tr);
                 thead.html(row_html);
             }
 

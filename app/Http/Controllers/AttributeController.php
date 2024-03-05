@@ -122,7 +122,6 @@ class AttributeController extends Controller
                 $getAttribute = AttributeModel::where('id_attr', '=', $request->id)->with('attributevalue')->first();
                 $getAttribute->name = $option['name'];
                 foreach (explode(',', $option['position']) as $p) {
-
                     // $attVal = new attributeValueModel();
                     $attVal = attributeValueModel::where('value', 'like', '%' . $p . '%')->where('attribute_id', '=', $request->id)->first();
                     if (empty($attVal)) {

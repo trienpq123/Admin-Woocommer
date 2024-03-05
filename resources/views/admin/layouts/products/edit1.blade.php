@@ -87,7 +87,7 @@
                                     <th>Tên thuộc tính</th>
                                 </thead>
                                 <tbody>
-                                    @foreach ($product->attribute as $key => $p_variants)
+                                    @foreach ($product->product_variants as $key => $p_variants)
                                         <tr>
                                             <td class="d-flex gap-10">
                                                 <div class="type-attr me-2 col-lg-3">
@@ -96,7 +96,7 @@
                                                         <option value="0">Chưa chọn</option>
                                                         @foreach ($listAttr as $count => $item)
                                                             <option
-                                                                {{ $p_variants['name'] == $item->id_attr ? 'selected' : 'disabled' }}
+                                                                {{ $p_variants->id_attr == $item->id_attr ? 'selected' : 'disabled' }}
                                                                 value="{{ $item->id_attr }}">{{ $item->name }}
                                                             </option>
                                                         @endforeach
@@ -106,155 +106,155 @@
                                                     <input type="text" placeholder="Giá trị"
                                                         class="add-option form-control">
                                                     <div class="container-option">
-                                                        @if (count($p_variants['title']) > 0)
-                                                            @foreach ($p_variants['title'] as $p_option)
+                                                        @if ($p_variants->optionAttribute)
+                                                            @foreach ($p_variants->optionAttribute as $p_option)
                                                                 
+                                                                @php
+                                                                // dd($p_option->name);
+                                                                    $options = explode('-', $p_option->name);
+                                                                @endphp
+                                                                @foreach ($options as $option)
                                                                     <div class="badge-2" id="btn-1">
-                                                                        {{ $p_option }}<span class="close"
-                                                                            data-value="{{ $p_option }}"
+                                                                        {{ $option }}<span class="close"
+                                                                            data-value="{{ $option }}"
                                                                             data-id="btn-1">x</span>
                                                                     </div>
                                                                     <input hidden="" type="text"
                                                                         name="attr[{{ $key }}][title][]"
-                                                                        value=" {{ $p_option }} ">
-                                                      
-                                                          
-                                                        @endforeach
-                                    @endif
-                                    @php
-                                        // dd($p_variants['title']);
-                                    @endphp
+                                                                        value=" {{ $option }} ">
+                                                                @endforeach
+                                                            @endforeach
+                                                        @endif
 
-                        </div>
-                        </td>
-
-                        </tr>
-                        @endforeach
-
-                        </tbody>
-                        <tfoot class="t-foot">
-                            <tr>
-                                <td colspan="3">
-                                    <button type="button" class="btn btn-create">Thêm thuộc tính</button>
-                                </td>
-                            </tr>
-                        </tfoot>
-                        </table>
-                    </div>
-                    <div class="form-group table-price">
-                        <label for="">Chỉnh sửa bảng giá</label>
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Mã sản phẩm</th>
-                                    @foreach ($product->product_variants as $item)
-                                        <th>{{ $item->attribute->name }}</th>
-                                    @endforeach
-                                    <th>Giá</th>
-                                    <th>Giá giảm</th>
-                                    <th>Hàng tồn kho</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                                @if (count($product->variants) > 0)
-                                    @foreach ($product->variants as $key =>  $variants)
-                                  
-                                        @php
-                                            $modifer_class = '';
-                                            if (is_array($variants['title'])) {
-                                                foreach ($variants['title'] as  $value) {
-                                                    if ($key >= 1) {
-                                                        $modifer_class = $modifer_class . '-' . $value;
-                                                    } else {
-                                                        $modifer_class = $modifer_class . $value;
-                                                    }
-                                                }
-                                            }
-                                        @endphp
-
-                                        <tr class="td-variant-{{ $modifer_class }}">
-                                            <td> <input type="checkbox">
+                                                    </div>
                                             </td>
 
-                                            @if (is_array($variants['title']))
-                                                {
-                                                @foreach ($variants['title']  as $value)
-                                                    {
-                                                  
-                                                    <td class="{{ $value }}">
-                                                        {{ $value }}
-                                                        <input type="text"
-                                                            name="product[variants][{{ $key }}][title][]"
-                                                            value="{{ $value }}">
-                                                    </td>
-                                                    }
-                                                @endforeach
-                                                }
-                                            @endif
-
-
-                                            <td>
-                                                <input type="number"
-                                                    name="product[variants][{{ $key }}][price]"
-                                                    value="{{ $variants['price'] }}" class="product_price">
-                                            </td>
-                                            <td>
-                                                <input type="number"
-                                                    name="product[variants][{{ $key }}][price_old]"
-                                                    value="{{ $variants['price_old'] }}" class="product_price_old">
-                                            </td>
-                                            <td>
-                                                <input type="number" value="{{ $variants['stock'] }}"
-                                                    name="product[variants][{{ $key++ }}][stock]"
-                                                    class="product_stock">
-                                            </td>
                                         </tr>
                                     @endforeach
-                                @endif
 
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="form-right">
-                    <div class="form-group">
-                        <input type="radio" name="status" id="status" class="status" value="0"
-                            style="width:auto;"><label for="">Ẩn</label>
-                        <input type="radio" name="status" checked id="status" class="status" value="1"
-                            style="width:auto;"> <label for="">Hiện</label>
-                    </div>
-                    <div class="form-group">
-                        <label for="">Chọn thương hiệu</label>
-                        <select class=" brand form-control" id="brand" name="idBrand">
-                            <option>Chưa chọn thương hiệu</option>
-                            @if (count($getBrands) > 0)
-                                @foreach ($getBrands as $item)
-                                    <option data-img="{{ $item->logo_brand }}" value={{ $item->id_brand }}>
-                                        {{ $item->name_brand }}</option>
-                                @endforeach
-                            @endif
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="">Hình ảnh</label>
-                        <input type="file" name="image" id="" class="add-file" id="upload-file"
-                            accept="image/*" multiple>
-                        <p class="image-error text text-danger"></p>
-                        <div id="show-image" style="display:flex;align-items:center;flex-wrap: wrap; gap:10px;">
-                            {{-- RENDER IMAGE --> JAVASCRIPT -- Line 202 --}}
+                                </tbody>
+                                <tfoot class="t-foot">
+                                    <tr>
+                                        <td colspan="3">
+                                            <button type="button" class="btn btn-create">Thêm thuộc tính</button>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
                         </div>
+                        <div class="form-group table-price">
+                            <label for="">Chỉnh sửa bảng giá</label>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Mã sản phẩm</th>
+                                        @foreach ($product->product_variants as $item)
+                                            <th>{{ $item->attribute->name }}</th>
+                                        @endforeach
+                                        <th>Giá</th>
+                                        <th>Giá giảm</th>
+                                        <th>Hàng tồn kho</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
 
+                                    @if (count($product->variants) > 0)
+                                        @foreach ($product->variants as $variants)
+                                            @php
+                                                $modifer_class = '';
+                                                if (is_array($variants['title'])) {
+                                                    foreach ($variants['title'] as $key => $value) {
+                                                        if ($key >= 1) {
+                                                            $modifer_class = $modifer_class . '-' . $value;
+                                                        } else {
+                                                            $modifer_class = $modifer_class . $value;
+                                                        }
+                                                    }
+                                                }
+                                            @endphp
+
+                                            <tr class="td-variant-{{ $modifer_class }}">
+                                                <td> <input type="checkbox">
+
+                                                </td>
+
+                                                @if (is_array($variants['title']))
+                                                    {
+                                                    @foreach ($variants['title'] as $key => $value)
+                                                        {
+                                                        <td class="{{ $value }}">
+                                                            {{ $value }}
+                                                            <input type="text"
+                                                                name="product[variants][{{ $key }}][title][]"
+                                                                value="{{ $value }}">
+                                                        </td>
+                                                        }
+                                                    @endforeach
+                                                    }
+                                                @endif
+
+
+                                                <td>
+                                                    <input type="number"
+                                                        name="product[variants][{{ $key }}][price]"
+                                                        value="{{ $variants['price'] }}" class="product_price">
+                                                </td>
+                                                <td>
+                                                    <input type="number"
+                                                        name="product[variants][{{ $key }}][price_old]"
+                                                        value="{{ $variants['price_old'] }}" class="product_price_old">
+                                                </td>
+                                                <td>
+                                                    <input type="number" value="{{ $variants['stock'] }}"
+                                                        name="product[variants][{{ $key++ }}][stock]"
+                                                        class="product_stock">
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
+
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <div class="product-option">
-                        <label for="">Chọn Thông số kỹ thuật</label>
-                        <div class="product-option__inner"></div>
+                    <div class="form-right">
+                        <div class="form-group">
+                            <input type="radio" name="status" id="status" class="status" value="0"
+                                style="width:auto;"><label for="">Ẩn</label>
+                            <input type="radio" name="status" checked id="status" class="status" value="1"
+                                style="width:auto;"> <label for="">Hiện</label>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Chọn thương hiệu</label>
+                            <select class=" brand form-control" id="brand" name="idBrand">
+                                <option>Chưa chọn thương hiệu</option>
+                                @if (count($getBrands) > 0)
+                                    @foreach ($getBrands as $item)
+                                        <option data-img="{{ $item->logo_brand }}" value={{ $item->id_brand }}>
+                                            {{ $item->name_brand }}</option>
+                                    @endforeach
+                                @endif
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Hình ảnh</label>
+                            <input type="file" name="image" id="" class="add-file" id="upload-file"
+                                accept="image/*" multiple>
+                            <p class="image-error text text-danger"></p>
+                            <div id="show-image" style="display:flex;align-items:center;flex-wrap: wrap; gap:10px;">
+                                {{-- RENDER IMAGE --> JAVASCRIPT -- Line 202 --}}
+                            </div>
+
+                        </div>
+                        <div class="product-option">
+                            <label for="">Chọn Thông số kỹ thuật</label>
+                            <div class="product-option__inner"></div>
+                        </div>
                     </div>
                 </div>
+                <button type="submit" class="btn btn-submit">Xác nhận</button>
+            </form>
         </div>
-        <button type="submit" class="btn btn-submit">Xác nhận</button>
-        </form>
-    </div>
     </div>
 @endsection
 
@@ -273,7 +273,7 @@
     </script>
     <script>
         $(document).ready(function() {
-
+         
             btn_option = 1;
             let option_value = [];
             addOptionAttribute()

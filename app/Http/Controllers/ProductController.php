@@ -26,7 +26,7 @@ class ProductController extends Controller
         $listCategory = CategoryModel::whereNull('parent_category')->orderBy('id_category', 'desc')->get();
         $listAttr = AttributeModel::orderBy('id_attr', 'desc')->get();
 
-        
+
         return view('admin.layouts.products.list', compact('getBrands', 'listCategory', 'listProduct', 'listAttr'));
     }
 
@@ -66,8 +66,7 @@ class ProductController extends Controller
         $listAttr = AttributeModel::orderBy('id_attr', 'desc')->get();
         if ($request->id) {
             $id = $request->id;
-            $product = ProductModel::where('id_product',$id)->with('product_variants','skus_product_variant_options','product_variants.optionAttribute', 'product_variants.attribute')->first();
-            // dd($product);
+            $product = ProductModel::where('id_product', $id)->with('product_variants', 'skus_product_variant_options', 'product_variants.optionAttribute', 'product_variants.attribute')->first();
             $attribute = $product->attribute;
             $skus = $product->variants;
             // dd($product);
@@ -79,7 +78,7 @@ class ProductController extends Controller
 
     public function postAddProduct(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
         // $validator = Validator::make(
         //     $request->all(),
         //     [
@@ -99,15 +98,13 @@ class ProductController extends Controller
         $p->p_desc_short = $request->desc_short;
         $p->p_desc = $request->desc;
         $p->id_brand = $request->idBrand;
-
         $id_category = '';
-
         $p->product_SKU = $request->product_sku;
         $p->status = $request->status;
-        if($request->attr){
+        if ($request->attr) {
             $p->attribute = $request->attr;
         }
-        if($request->product['variants']){
+        if ($request->product['variants']) {
             $p->variants = $request->product['variants'];
         }
         $p->save();
@@ -165,7 +162,7 @@ class ProductController extends Controller
                             $title .= $item . "-";
                         }
                         $title = rtrim($title, "-");
-                     
+
                         $ProductVariants->optionAttribute()->createMany([
                             ['name' => $title],
                             ['id_product_variants' => $ProductVariants->id_product_variants],
@@ -174,7 +171,7 @@ class ProductController extends Controller
                 }
             }
         }
-       
+
         if ($request->product) {
 
             $product = $request->product;
@@ -240,10 +237,14 @@ class ProductController extends Controller
         $p->id_category = $request->id_category;
         $p->product_SKU = $request->product_sku;
         $p->status = $request->status;
-
+        if($request->attr){
+            $p->attribute = $request->attr;
+        }
+        if($request->product['variants']){
+            $p->variants = $request->product['variants'];
+        }
         $p->save();
         if ($request->image) {
-
             foreach ($request->image as $image) {
 
                 $imageName = $image;
