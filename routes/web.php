@@ -81,6 +81,9 @@ Route::group([ 'middleware' => 'Localization'],function() {
             Route::get('/',[PromotionProduct::class,'index'])->name('index');
             Route::get('/create',[PromotionProduct::class,'create'])->name('create');
             Route::post('/store',[PromotionProduct::class,'store'])->name('store');
+            Route::get('/edit/{id}',[PromotionProduct::class,'edit'])->name('edit');
+            Route::post('/update/{id}',[PromotionProduct::class,'update'])->name('update');
+            // Route::post('/delete/{id}',[PromotionProduct::class,'delete'])->name('delete');
            
         });
         Route::prefix('brand')->name('brand.')->group(function() {
