@@ -23,7 +23,7 @@
                         <div class="form-group">
                             <label for="">Tên Mã Khuyến Mãi</label>
                             <input type="text" placeholder="Nhập tên Mã Khuyến Mãi" class="form-control name"
-                                name="name" value="{{ old('name') }}">
+                                name="name" value="{{ $product->title ?? old('name') }}">
                         </div>
                         <div class="form-group">
                             <label for="">Code</label>
