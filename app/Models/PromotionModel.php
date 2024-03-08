@@ -22,7 +22,7 @@ class PromotionModel extends Model
 
     public function products()
     {
-        return $this->belongsToMany(ProductModel::class, 'promotion_product', 'promotion_id', 'product_id');
+        return $this->belongsToMany(ProductModel::class,  'promotion_id', 'product_id');
     }
     public function product_promotion(){
         return $this->hasMany(ProductPromotionModel::class, 'promotion_id', 'id');

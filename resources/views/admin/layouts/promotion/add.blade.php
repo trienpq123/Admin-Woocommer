@@ -41,12 +41,13 @@
 
                         <div class="form-group">
                             <label for="discount">Gía giảm</label>
-                            <input type="text" class="form-control" name="discount" id="discount">
+                            <input type="text" class="form-control CurrencyInput" name="discount" id="discount">
                         </div>
 
                         <div class="form-group">
                             <label for="id_product">Sản phẩm</label>
-                            <select class="id_product form-select" id="id_product[]" name="id_product[]" multiple="multiple">
+                            <select class="id_product form-select" id="id_product[]" name="id_product[]"
+                                multiple="multiple">
                                 <option value="">Chưa có</option>
                                 @if (count($product) > 0)
                                     @foreach ($product as $item)
@@ -54,7 +55,7 @@
                                     @endforeach
                                 @endif
                             </select>
-                     
+
                         </div>
 
 
@@ -90,9 +91,27 @@
 @endsection
 
 @push('script-action')
-<script>
-    $(document).ready(function() {
-        $('.form-select').select2();
-    });
-</script>
+    {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> --}}
+
+    <script>
+        $(document).ready(function() {
+            let a = $('.id_product.form-select').select2();
+            
+        
+            // $('#type.form-select').change(function(){
+
+            // })
+        });
+        // Convert Number Pricing
+        // $('input.CurrencyInput').on('blur', function() {
+        //     const value = this.value.replace(/,/g, '');
+        //     this.value = parseFloat(value).toLocaleString('vi', {
+        //         style: 'currency',
+        //         currency: 'VND',
+        //         maximumFractionDigits: 0,
+        //         minimumFractionDigits: 0,
+                
+        //     });
+        // });
+    </script>
 @endpush

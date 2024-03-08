@@ -10,19 +10,24 @@ use Illuminate\Http\Request;
 class PromotionProduct extends Controller
 {
     protected $product;
-    public function __contruct()
+    public function __contruct(ProductModel $product)
     {
-        $this->product = new ProductModel();
+        $this->product = $product;
     }
     public function index()
-    {
-        return view('admin.layouts.promotion.list');
+    {   
+        $promotion = PromotionModel::all();
+        $timeNow = Carbon::now();
+        $timeNow = $timeNow->toDateTimeString();
+        
+        // $product = $this->product::all('id_product', 'name_product');;
+        return view('admin.layouts.promotion.list',compact('promotion','timeNow'));
     }
 
     public function create(Request $request)
     {
-        $product = $this->product::all('id_product', 'name_product');
-        // dd($product);
+
+        $product = ProductModel::all();
         return view('admin.layouts.promotion.add', compact('product'));
     }
 
@@ -38,7 +43,7 @@ class PromotionProduct extends Controller
         if ($request->date_end) {
             $date_end = Carbon::parse($request->date_end)->toDateTimeString();
         }
-        $promotion = $this->product::create([
+        $promotion = PromotionModel::create([
             'title' => $request->name,
             'discount' => $request->discount,
             'from' => $date_start,
@@ -56,10 +61,18 @@ class PromotionProduct extends Controller
         return back();
     }
 
-    public function edit()
+    public function edit(Request $request,$id)
     {
-        $product = $this->product::all('id_product', 'name_product');;
-        return view('admin.layouts.promotion.edit',compact('product'));
+        $promotion = PromotionModel::find($id);
+        $product_promotion = $promotion->product_promotion->first();
+
+        dd($product_promotion->product->whereIn('id_product',$product_promotion->id_product)->get());
+        
+        if($promotion) {
+            dd($promotion);
+            return view('admin.layouts.promotion.edit', compact('product','promotion'));
+        }
+        return view('admin.layouts.promotion.edit', compact('product'));
     }
 
     public function update()
