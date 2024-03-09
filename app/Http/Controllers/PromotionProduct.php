@@ -63,24 +63,57 @@ class PromotionProduct extends Controller
 
     public function edit(Request $request,$id)
     {
+       
         $promotion = PromotionModel::find($id);
+        dd($promotion);
         $product_promotion = $promotion->product_promotion->first();
-
-        dd($product_promotion->product->whereIn('id_product',$product_promotion->id_product)->get());
-        
-        if($promotion) {
-            dd($promotion);
-            return view('admin.layouts.promotion.edit', compact('product','promotion'));
+        $product = ProductModel::all('id_product', 'name_product');
+        if($product_promotion) {
+            $product_selected = $product_promotion->product->whereIn('id_product',$product_promotion->id_product)->get('id_product');
+            // dd($product_selected);
+            return view('admin.layouts.promotion.edit', compact('product','promotion','product','product_selected'));
         }
-        return view('admin.layouts.promotion.edit', compact('product'));
+        return view('admin.layouts.promotion.edit', compact('promotion','product'));
     }
 
-    public function update()
-    {
+    public function update(Request $request,$id)
+    {    
+        // dd($request->all());
+        $date_start = '';
+        $date_end = '';
+        if ($request->date_start) {
+            $date_start = Carbon::parse($request->date_start)->toDateTimeString();
+        }
+        if ($request->date_end) {
+            $date_end = Carbon::parse($request->date_end)->toDateTimeString();
+        }
+        $promotion = PromotionModel::updateOrCreate(['id' => $id],[
+            'title' => $request->name,
+            'discount' => $request->discount,
+            'from' => $date_start,
+            'to' => $date_end,
+            'status' => $request->status,
+            'type' => $request->type,
+        ]);
+        if ($promotion) {
+
+            $promotion->product_promotion()->updateOrCreate( ['promotion_id' => $promotion->id],[
+                'promotion_id' => $promotion->id,
+                'id_product' => $request->id_product
+            ]);
+        }
+        return back()->with(['success', 'Cập nhật thành công']);
     }
 
-    public function delete()
+    public function delete(Request $request,$id)
     {
+        $promotion =   PromotionModel::find($id);
+        if($promotion){
+            $promotion->product_promotion()->delete();
+            $promotion->delete();
+            return back()->with(['success', 'Xóa thanh cong']);
+        }
+        return back()->with(['error', 'Xóa that bai']);
     }
     public function destroy()
     {

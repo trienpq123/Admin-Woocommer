@@ -83,7 +83,7 @@ Route::group([ 'middleware' => 'Localization'],function() {
             Route::post('/store',[PromotionProduct::class,'store'])->name('store');
             Route::get('/edit/{id}',[PromotionProduct::class,'edit'])->name('edit');
             Route::post('/update/{id}',[PromotionProduct::class,'update'])->name('update');
-            // Route::post('/delete/{id}',[PromotionProduct::class,'delete'])->name('delete');
+            Route::get('/delete/{id}',[PromotionProduct::class,'delete'])->name('delete');
            
         });
         Route::prefix('brand')->name('brand.')->group(function() {
@@ -200,10 +200,12 @@ Route::group([ 'middleware' => 'Localization'],function() {
         });
         Route::middleware(['role:Administrator'])->prefix('User')->name('User.')->group(function(){
             Route::get('/',[UserController::class,'index'])->name('User.index') ;
-            Route::get('/add',[UserController::class,'UserFormAdd'])->name('User.create')->middleware(['permission:add_user']);
+            // Route::get('/add',[UserController::class,'UserFormAdd'])->name('User.create')->middleware(['permission:add_user']);
+            Route::get('/add',[UserController::class,'UserFormAdd'])->name('User.create');
             Route::get('/edit-user/{id}',[UserController::class,'UserFormEdit'])->name('User.edit')->middleware(['permission:edit user']);
             Route::put('/edit-user/{id}',[UserController::class,'UserFormUpdate'])->name('User.update')->middleware(['permission:edit user']);
-            Route::post('/add',[UserController::class,'UserFormPostAdd'])->name('User.store')->middleware(['permission:add_user']);
+            // Route::post('/add',[UserController::class,'UserFormPostAdd'])->name('User.store')->middleware(['permission:add_user']);
+            Route::post('/add',[UserController::class,'UserFormPostAdd'])->name('User.store');
             Route::get('/delete/{id}',[UserController::class,'UserDelete'])->name('User.delete')->middleware(['permission:delete user']);
             Route::get('/get-permission-role',[UserController::class,'getPermissionRole'])->name('user.getPermissionRole');
         });

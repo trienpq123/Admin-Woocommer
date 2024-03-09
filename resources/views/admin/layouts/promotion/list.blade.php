@@ -24,7 +24,7 @@
                                 <th>Tình trạng</th>
                                 <th>Ẩn/Hiện</th>
                                 <th></th>
-                                <th></th>
+                                {{-- <th></th> --}}
                             </tr>
                         </thead>
                         <tbody>
@@ -75,8 +75,7 @@
                                             <div class="d-flex align-items-center justify-content-center btn-action">
                                                 <span><a href="{{route('admin.promotion.edit',['id' => $item->id])}}" class="btn-edit"><i
                                                             class="ri-edit-box-line"></i></a></span>
-                                                <span><button class="btn btn-delete" id="action-delete" data-id="19"><i
-                                                            class="ri-delete-bin-5-line"></i></button></span>
+                                                <span><a href="{{route('admin.promotion.delete',['id' => $item->id])}}"><i class="ri-delete-bin-5-line"></i></a></span>
                                             </div>
                                         </td>
                                     </tr>
@@ -85,14 +84,14 @@
 
                         </tbody>
 
-                        <tfoot>
+                        {{-- <tfoot>
 
                             <tr>
                                 <td><input type="checkbox" name="" id="" class="check-all"></td>
                             </tr>
 
 
-                        </tfoot>
+                        </tfoot> --}}
 
                     </table>
                 </div>
@@ -105,8 +104,8 @@
 
 @push('script-action')
     {{-- <script src="https://code.jquery.com/jquery-3.7.1.js"></script> --}}
-    {{-- <script src="https://cdn.datatables.net/2.0.2/js/dataTables.js"></script> --}}
-    <script defer>
+    <script src="https://cdn.datatables.net/2.0.2/js/dataTables.js"></script>
+    <script>
         $(document).ready(function() {
 
             $('#table').dataTable({
