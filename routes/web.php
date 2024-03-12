@@ -5,6 +5,7 @@ use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\FilterController;
@@ -84,7 +85,14 @@ Route::group([ 'middleware' => 'Localization'],function() {
             Route::get('/edit/{id}',[PromotionProduct::class,'edit'])->name('edit');
             Route::post('/update/{id}',[PromotionProduct::class,'update'])->name('update');
             Route::get('/delete/{id}',[PromotionProduct::class,'delete'])->name('delete');
-           
+        });
+        Route::prefix('comment')->name('comment.')->group(function(){
+            Route::get('/',[CommentController::class,'index'])->name('index');
+            Route::get('/create',[CommentController::class,'create'])->name('create');
+            Route::get('/store',[CommentController::class,'store'])->name('store');
+            Route::get('/edit/{id}',[CommentController::class,'edit'])->name('edit');
+            Route::post('/update/{id}',[CommentController::class,'update'])->name('update');
+            Route::get('/delete/{id}',[CommentController::class,'delete'])->name('delete');
         });
         Route::prefix('brand')->name('brand.')->group(function() {
             Route::get('/',[BrandController::class,'listBrand'])->name('listBrand');

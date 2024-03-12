@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('product_promotion', function (Blueprint $table) {
-            $table->unsignedBigInteger('promotion_id')->nullable();
-            $table->unsignedBigInteger('id_product')->nullable();
-            $table->foreign('promotion_id')->references('id')->on('promotion')->onDelete('cascade');
+        Schema::create('comments', function (Blueprint $table) {
             $table->id();
+            $table->string('text');
+            $table->foreign('id_product')->references('id_product')->on('product')->onDelete('cascade'); 
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade'); 
+            $table->timestamps();
+
         });
     }
 
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_promotion');
+        //
     }
 };

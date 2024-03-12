@@ -65,12 +65,12 @@ class PromotionProduct extends Controller
     {
        
         $promotion = PromotionModel::find($id);
-        dd($promotion);
+       
         $product_promotion = $promotion->product_promotion->first();
         $product = ProductModel::all('id_product', 'name_product');
         if($product_promotion) {
             $product_selected = $product_promotion->product->whereIn('id_product',$product_promotion->id_product)->get('id_product');
-            // dd($product_selected);
+    
             return view('admin.layouts.promotion.edit', compact('product','promotion','product','product_selected'));
         }
         return view('admin.layouts.promotion.edit', compact('promotion','product'));
