@@ -42,7 +42,7 @@ class CommentController extends Controller
         return back()->with(['error' => 'Cập nhật thất bại']);
     }
 
-    public function delete(){
+    public function delete(Request $requet, $id){
         CommentModel::find($id)->delete();
         return back()->with(['success' => 'Xoá thành công']);
     }
