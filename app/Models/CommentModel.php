@@ -13,11 +13,15 @@ class CommentModel extends Model
     protected $fillable = [
         'id_product',
         'id_user',
-        'text'
+        'text',
+        'status',
+        'created_at',
+        '_parent',
+        'type'
     ];
 
     const UPDATED_AT = NULL;
-    const CREATED_AT = NULL;
+    // const CREATED_AT = NULL;
 
     public function product(){
         return $this->belongsTo(ProductModel::class,'id_product','id_product');

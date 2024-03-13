@@ -91,7 +91,7 @@ Route::group([ 'middleware' => 'Localization'],function() {
             Route::get('/create',[CommentController::class,'create'])->name('create');
             Route::get('/store',[CommentController::class,'store'])->name('store');
             Route::get('/edit/{id}',[CommentController::class,'edit'])->name('edit');
-            Route::post('/update/{id}',[CommentController::class,'update'])->name('update');
+            Route::put('/update/{id}',[CommentController::class,'update'])->name('update');
             Route::get('/delete/{id}',[CommentController::class,'delete'])->name('delete');
         });
         Route::prefix('brand')->name('brand.')->group(function() {

@@ -4,7 +4,7 @@
         <div class="list-table">
             <div class="wrap-container">
 
-                <a href="{{ route('admin.promotion.create') }}" class="btn btn-add" data-name="add-product">Tạo bình luận</a>
+                <a href="{{ route('admin.comment.create') }}" class="btn btn-add" data-name="add-product">Tạo bình luận</a>
                 <button class="btn btn-delete delete-checkbox" id="delete-checkbox" disabled
                     data-name="popup-delete-checkbox">Xoá</button>
 
@@ -16,33 +16,58 @@
                             <tr>
                                 <th>STT</th>
                                 <th>Tác giả</th>
-                                <th>Bình luận</th>
+                                {{-- <th>Bình luận</th> --}}
                                 <th>Nguồn</th>
+                                <th>Loại comment</th>
                                 <th>Thời gian</th>
-                                <th>Ẩn/Hiện</th>
+                                <th>Tình trạng</th>
+                             
                                 <th></th>
-                                {{-- <th></th> --}}
                             </tr>
                         </thead>
                         <tbody>
+                        @foreach ($comment as $cm)
                             <tr>
                                 <td><input type="checkbox" name="" id="" class="check-all"></td>
                                 <td>
-                                    <div class="d-flex">
-                                        <img src="https://w7.pngwing.com/pngs/340/946/png-transparent-avatar-user-computer-icons-software-developer-avatar-child-face-heroes-thumbnail.png" alt="">
+                                    <div class="d-flex align-items-center gap-10">
+                                        <img width="40px"
+                                            src="https://w7.pngwing.com/pngs/340/946/png-transparent-avatar-user-computer-icons-software-developer-avatar-child-face-heroes-thumbnail.png"
+                                            alt="">
                                         <span>Nguyễn Minh Triển</span>
                                     </div>
                                 </td>
-                                <td>Nội dung bình luận</td>
-                                <td><a href="#">ABC123</a></td>
-                                <td>01/01/2022 </td>
+                                {{-- <td>{{ $cm->text }}</td> --}}
+                                @php
+                                    $product = null;
+                                    if($cm->product()->first()) 
+                                        $product = $cm->product()->first()
+                                   
+                                       
+                                @endphp
+                                <td><a href="">
+                                        @if ($product)
+                                            {{ $product->name_product }}
+                                        @endif
+                                    </a></td>
+                                <td>Reply Comment</td>
+                                <td>{{ $cm->created_at }}</td>
                                 <td>
-                                    <a class="btn-edit" data-name="edit-product" data-id="1">Chỉnh sửa</a>
-                                    <a class="btn-edit" data-name="edit-product" data-id="1">Xoá</a>
+                                    @if ($cm->status == 0)
+                                        <span class="badge badge-warning">Chưa phê duyệt</span>
+                                    @else
+                                        <span class="badge badge-success">đã phê duyệt</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center justify-center">
+                                        <a href="{{route('admin.comment.edit', $cm->id_comment)}}" class="btn-edit" data-name="edit-product" data-id="1">Chỉnh sửa</a>
+                                        <a href="{{route('admin.comment.delete', $cm->id_comment)}}" class="btn-delete" data-name="edit-product" data-id="1">Xoá</a>
+                                    </div>
                                 </td>
 
                             </tr>
-
+                        @endforeach
                         </tbody>
 
                         {{-- <tfoot>
@@ -60,7 +85,6 @@
             </div>
         </div>
     </div>
-
 @endsection
 
 @push('script-action')

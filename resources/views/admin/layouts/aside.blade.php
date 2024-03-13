@@ -206,7 +206,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link collapsed" href="{{route('admin.order.listOrder')}}">
+            <a class="nav-link collapsed" href="{{route('admin.comment.index')}}">
                 <i class="bi bi-question-circle"></i>
                 <span>Bình luận</span>
             </a>
