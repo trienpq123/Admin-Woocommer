@@ -18,6 +18,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PromotionProduct;
+use App\Http\Controllers\RateController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SystemController;
 use App\Http\Controllers\UserController;
@@ -93,6 +94,14 @@ Route::group([ 'middleware' => 'Localization'],function() {
             Route::get('/edit/{id}',[CommentController::class,'edit'])->name('edit');
             Route::put('/update/{id}',[CommentController::class,'update'])->name('update');
             Route::get('/delete/{id}',[CommentController::class,'delete'])->name('delete');
+        });
+        Route::prefix('rate')->name('rate.')->group(function(){
+            Route::get('/',[RateController::class,'index'])->name('index');
+            Route::get('/create',[CommentController::class,'create'])->name('create');
+            Route::get('/store',[CommentController::class,'store'])->name('store');
+            Route::get('/edit/{id}',[CommentController::class,'edit'])->name('edit');
+            Route::put('/update/{id}',[CommentController::class,'update'])->name('update');
+            Route::get('/delete/{id}',[RateController::class,'delete'])->name('delete');
         });
         Route::prefix('brand')->name('brand.')->group(function() {
             Route::get('/',[BrandController::class,'listBrand'])->name('listBrand');

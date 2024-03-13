@@ -16,7 +16,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             PromotionSeeders::class,
-            CommentSeeders::class
+            CommentSeeders::class,
+            RateSeeders::class
         ]);
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
