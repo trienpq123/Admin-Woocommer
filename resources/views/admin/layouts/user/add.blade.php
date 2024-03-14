@@ -10,32 +10,32 @@
                     <form action="{{ route('admin.User.User.store') }}" method="POST">
                         @csrf
                         <div class="form-group">
-                            <label for="">Họ và tên</label>
+                            <label for="">{{__('auth.fullName')}}</label>
                             <input type="text" name="fullName" id="" class="form-control"
-                                placeholder="Nhập tên quyền">
+                                placeholder="Enter your {{__('auth.fullName')}}">
                         </div>
                         <div class="form-group">
-                            <label for="">Email</label>
+                            <label for="">{{__('auth.email')}}</label>
                             <input type="text" name="email" id="" class="form-control"
-                                placeholder="Nhập email. vd:abc@gmail.com">
+                                placeholder="enter your {{__('auth.fullName')}}. vd:abc@gmail.com">
                         </div>
                         <div class="form-group">
-                            <label for="">Sđt</label>
+                            <label for="">{{__('auth.phone')}}</label>
                             <input type="text" name="password" id="" class="form-control"
-                                placeholder="Nhập sdt. vd: 0123456789">
+                                placeholder="Nhập {{__('auth.phone')}}. vd: 0123456789">
                         </div>
                         <div class="form-group">
-                            <label for="">Mật khẩu</label>
+                            <label for="">{{__('auth.password')}}</label>
                             <input type="password" name="password" id="" class="form-control"
                                 placeholder="Nhập mật khẩu: trên 8 ký tự">
                         </div>
                         <div class="form-group">
-                            <label for="">Nhập lại mật khẩu</label>
+                            <label for="">{{__('auth.re_password')}}</label>
                             <input type="password" name="re_password" id="" class="form-control"
-                                placeholder="Nhập lại mật khẩu">
+                                placeholder="{{__('auth.re_password')}}">
                         </div>
                         <div class="form-group">
-                            <label for="">Chức vụ</label>
+                            <label for="">{{__('auth.role')}}</label>
                             <select class="js-example-basic-multiple-1" name="role" id="" multiple="multiple">
                                 @foreach ($role as $item)
                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -43,7 +43,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="">Cấp Quyền</label>
+                            <label for="">{{__('auth.permission')}}</label>
                             <select class="js-example-basic-multiple-2" name="permission" id=""
                                 multiple="multiple">
                                 @foreach ($permission as $item)

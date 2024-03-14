@@ -27,10 +27,6 @@ class UserController extends Controller
     }
     public function index(User $User)
     {   
-        // $User = $this->userRepository->all();
-        // $User = Cache::remember('users', 10, function () {
-        //     return $this->userRepository->all();
-        // });
         $User = $this->userRepository->all();
         return view('admin.layouts.user.list', compact('User'));
     }
@@ -70,7 +66,7 @@ class UserController extends Controller
     public function UserFormUpdate(User $User, Request $request, $id)
     {   
         // dd($request->all());
-    
+        
         $User = $User->findOrFail($id);
         $User->name = $request->fullName;
         $User->email = $request->email;

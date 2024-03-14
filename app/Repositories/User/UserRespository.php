@@ -23,19 +23,19 @@ class UserRespository extends BaseRepository implements UserRepositoryInterface
         return $this->_model->all();
     }
 
-    public function create($attribute = []){
+    public function create($request = []){
         $user = new  $this->_model;
-        $user->name = $attribute['fullName'];
-        $user->email = $attribute['email'];
-        $user->password = Hash::make($attribute['password']);
+        $user->name = $request['fullName'];
+        $user->email = $request['email'];
+        $user->password = Hash::make($request['password']);
         $user->save();
-        if ($attribute['role']) {
-            $user->assignRole($attribute['role']);
+        if ($request['role']) {
+            $user->assignRole($request['role']);
         }
-        if ($attribute['permission']) {
-
-            $user->givePermissionTo($attribute['permission']);
+        if ($request['permission']) {
+            $user->givePermissionTo($request['permission']);
         }
         return $user;
     }
+
 }
