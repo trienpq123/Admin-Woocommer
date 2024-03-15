@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\UserNotify;
 use App\Models\User;
 use App\Repositories\User\UserRespository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -41,6 +43,9 @@ class UserController extends Controller
     public function UserFormPostAdd(Request $request)
     {
         $user = $this->userRepository->create($request->all());
+        $mail = Mail::to($user->email)->send(new UserNotify($user));
+        // dd($mail);
+      
         return redirect()->route('admin.User.User.index')->back()->with(['message' => "Thêm thành công"]);
     }
 

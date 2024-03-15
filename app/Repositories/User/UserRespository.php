@@ -1,9 +1,11 @@
 <?php
 namespace App\Repositories\User;
 
+use App\Mail\UserNotify;
 use App\Repositories\BaseRepository;
 use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class UserRespository extends BaseRepository implements UserRepositoryInterface
 {
@@ -35,6 +37,8 @@ class UserRespository extends BaseRepository implements UserRepositoryInterface
         if ($request['permission']) {
             $user->givePermissionTo($request['permission']);
         }
+        
+    
         return $user;
     }
 
