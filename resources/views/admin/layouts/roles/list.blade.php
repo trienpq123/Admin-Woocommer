@@ -53,10 +53,7 @@
                             <tr>
                                 <td><input type="checkbox" name="" id="" class="check-all"></td>
                             </tr>
-
-
                         </tfoot>
-
                     </table>
                 </div>
                 <div class="popup-modal" id="popup-delete">
@@ -179,70 +176,7 @@
                     $('#delete-checkbox').attr('disabled', 'disabled');
                 }
             });
-            let array = [];
-            // getDataTable();
-
-            // function getDataTable() {
-            //     $('#table').DataTable({
-            //         "ajax": {
-            //             type: "GET",
-            //             url: "{{ route('admin.roles.role.list') }}",
-            //             dataSrc: 'data',
-            //             success: (res) => {
-            //                 console.log(res);
-            //             }
-            //         },
-            //         "columns": [{
-            //                 data: null,
-            //                 render: function(data, type, row, meta) {
-            //                     return `<input type="checkbox" class='item-check' id="item-check" name="item-check[]" value="${data.id_brand}">`
-            //                     // console.log(row)
-            //                 }
-            //             },
-            //             {
-            //                 data: null,
-            //                 render: function(data, type, row, meta) {
-            //                     return `<img src="${data.logo_brand}" alt="${data.name_band}" style="max-width:80px;max-height:60px;object-fit:cover"/>`
-            //                 }
-            //             },
-            //             {
-            //                 data: null,
-            //                 render: function(data, type, row, meta) {
-            //                     return `<span>${data.name_brand}</span>`
-            //                 }
-            //             },
-            //             {
-            //                 data: null,
-            //                 render: function(data, type, row, meta) {
-            //                     // return `<a class="btn-edit"  data-name="edit-product" data-id="${data.id_category}">Chỉnh sửa</a>`
-            //                     return data.status == 1 ? "Hiển Thị" : "Ẩn"
-            //                 }
-            //             },
-            //             {
-            //                 data: null,
-            //                 render: function(data, type, row, meta) {
-            //                     return `<a class="btn-edit"  data-name="edit-product" data-id="${data.id_brand}"><span><i class="ri-edit-box-line"></i></span></a>`
-            //                 }
-            //             },
-            //             {
-            //                 data: null,
-            //                 render: function(data, type, row, meta) {
-            //                     return `<td><a  class="btn-delete"  data-id="${data.id_brand}">Xoá</a></td>`
-            //                 }
-            //             }
-            //         ],
-            //         language: {
-            //             search: "Tìm kiếm",
-            //             Show: "Hiển thị"
-            //         },
-            //         paginate: {
-            //             first: "Trang Đầu",
-            //             previous: "Trang trước",
-            //             next: "Trang tiếp",
-            //             last: "Trang cuối"
-            //         }
-            //     })
-            // }
+            let array = [];     
             $('body').on('click', '.btn-edit', function() {
                 let name = $(this).attr('data-name');
                 let id = $(this).attr('data-id');
@@ -337,8 +271,7 @@
                             } else {
                                 validator(res.status, res.message)
                                 console.log(res)
-                                $('#table').DataTable().destroy()
-                                getDataTable();
+                          
                                 $('.alert').toggleClass('active')
                                 $('.popup-modal').removeClass('active');
                             }
@@ -369,8 +302,7 @@
                         success: (res) => {
                             if (res.status == 200) {
                                 console.log(res)
-                                $('#table').DataTable().destroy()
-                                getDataTable();
+                                window.reload();
                                 $('.alert').toggleClass('active')
                             }
                         }
@@ -409,14 +341,9 @@
             $('.delete-checkbox').click(function() {
                 let name = $(this).attr('data-name');
                 $('.popup-modal' + '.' + name).toggleClass('active');
-                // $('.popup-modal').click(function(){
-                //     $('.popup-modal').removeClass('active');
-                // });
                 $('.btn-close').click(function() {
                     $('.popup-modal').removeClass('active');
                 });
-
-
             })
 
             $('.action-delete').click(function() {
@@ -434,15 +361,15 @@
                 }
                 $.ajax({
                     type: "DELETE",
-                    url: "{{ route('admin.brand.deleteBrand') }}",
+                    url: "{{route('admin.roles.role.delete-checked')}}",
                     data: {
                         data: array,
                         _token: "{{ csrf_token() }}"
                     },
                     success: (res) => {
+                        console.log(res)
                         if (res.status == 200) {
-                            $('#table').DataTable().destroy()
-                            getDataTable();
+                           
                             $('.alert').toggleClass('active')
                             $('.popup-modal').removeClass('active');
                         }
@@ -479,7 +406,7 @@
                         } else {
                             console.log(res)
                             $('#table').DataTable().destroy()
-                            getDataTable();
+                        
                             $('.alert').toggleClass('active')
                             $('.popup-modal').removeClass('active');
                         }

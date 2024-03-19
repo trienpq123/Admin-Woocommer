@@ -45,8 +45,6 @@ Route::group([ 'middleware' => 'Localization'],function() {
   
     Route::get('logout',[DashboardController::class,'logout'])->name('logout');
     Route::middleware(['check_login'])->prefix('admin')->name('admin.')->group(function(){
-       
-
         Route::get('/dashboard',[IndexController::class,'index'])->name('DashboardAdmin');
         Route::prefix('filter')->name('filter.')->group(function() {
             Route::get('/',[FilterController::class,'listFilter'])->name('listFilter');
@@ -205,6 +203,7 @@ Route::group([ 'middleware' => 'Localization'],function() {
             Route::put('/edit-role/{id}',[RoleController::class,'RoleFormUpdate'])->name('role.update');
             Route::post('/add',[RoleController::class,'RoleFormPostAdd'])->name('role.store');
             Route::get('/delete/{id}',[RoleController::class,'RoleDelete'])->name('role.delete');
+            Route::delete('/delete-checked/',[RoleController::class,'RoleDeleteCheck'])->name('role.delete-checked');
         });
       
         Route::prefix('permisson')->name('permisson.')->group(function(){
@@ -219,12 +218,18 @@ Route::group([ 'middleware' => 'Localization'],function() {
             Route::get('/',[UserController::class,'index'])->name('User.index') ;
             // Route::get('/add',[UserController::class,'UserFormAdd'])->name('User.create')->middleware(['permission:add_user']);
             Route::get('/add',[UserController::class,'UserFormAdd'])->name('User.create');
-            Route::get('/edit-user/{id}',[UserController::class,'UserFormEdit'])->name('User.edit')->middleware(['permission:edit user']);
-            Route::put('/edit-user/{id}',[UserController::class,'UserFormUpdate'])->name('User.update')->middleware(['permission:edit user']);
+            Route::get('/edit-user/{id}',[UserController::class,'UserFormEdit'])->name('User.edit');
+            // ->middleware(['permission:edit user']);
+            Route::put('/edit-user/{id}',[UserController::class,'UserFormUpdate'])->name('User.update');
             // Route::post('/add',[UserController::class,'UserFormPostAdd'])->name('User.store')->middleware(['permission:add_user']);
             Route::post('/add',[UserController::class,'UserFormPostAdd'])->name('User.store');
-            Route::get('/delete/{id}',[UserController::class,'UserDelete'])->name('User.delete')->middleware(['permission:delete user']);
+            Route::get('/delete/{id}',[UserController::class,'UserDelete'])->name('User.delete');
             Route::get('/get-permission-role',[UserController::class,'getPermissionRole'])->name('user.getPermissionRole');
+        });
+
+        Route::prefix('profile')->name('profile.')->group(function(){
+            Route::get('/{id}',[ProfileController::class,'edit'])->name('edit');
+            Route::put('/{id}',[ProfileController::class,'update'])->name('update');
         });
         Route::get('ckeditor', [FileController::class,'index'])->name('indexCkeditor');
         Route::post('ckeditor/upload', [FileController::class,'uploadFile'])->name('uploadFile');

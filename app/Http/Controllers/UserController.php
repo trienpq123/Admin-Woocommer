@@ -44,9 +44,7 @@ class UserController extends Controller
     {
         $user = $this->userRepository->create($request->all());
         $mail = Mail::to($user->email)->send(new UserNotify($user));
-        // dd($mail);
-      
-        return redirect()->route('admin.User.User.index')->back()->with(['message' => "Thêm thành công"]);
+          return redirect()->route('admin.User.User.index')->back()->with(['message' => "Thêm thành công"]);
     }
 
     public function getDataForApi(User $User)

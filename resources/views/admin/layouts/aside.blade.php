@@ -182,17 +182,17 @@
         </li>
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#menu" data-bs-toggle="collapse" href="">
-                <i class="bi bi-gem"></i><span>Quản lý menu</span><i class="bi bi-chevron-down ms-auto"></i>
+                <i class="bi bi-gem"></i><span>{{__('menu.menu')}}</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="menu" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="{{route('admin.menu.listMenu')}}">
-                        <i class="bi bi-circle"></i><span>Xem menu</span>
+                        <i class="bi bi-circle"></i><span>{{__('menu.list_menu')}}</span>
                     </a>
                 </li>
                 <li>
                     <a href="{{route('admin.menu.addMenu')}}">
-                        <i class="bi bi-circle"></i><span>Thêm menu</span>
+                        <i class="bi bi-circle"></i><span>{{__('menu.new_menu')}}</span>
                     </a>
                 </li>
              
