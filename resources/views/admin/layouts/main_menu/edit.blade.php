@@ -502,9 +502,7 @@
                 default:
                     break;
             }
-
             $('.sortable').first().append(item);
-
             $.ajax({
                 method: "POST",
                 url: "{{ route('admin.menu.creatingMenu') }}",

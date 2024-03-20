@@ -1,6 +1,9 @@
 @extends('admin.index')
 @section('css')
     <style>
+        .bootstrap-tagsinput input{
+            border: unset !important;
+        }
         .bootstrap-tagsinput .tag {
             margin-right: 2px;
             color: #4154f1 !important;

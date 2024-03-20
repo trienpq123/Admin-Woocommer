@@ -6,6 +6,7 @@ use App\Models\AttributeModel;
 use App\Models\AttributeValue;
 use App\Models\attributeValueModel;
 use App\Models\CategoryModel;
+use App\Repositories\Attributes\AttributeRepositoryInterface;
 use Attribute;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -13,6 +14,10 @@ use Illuminate\Validation\Rules\Exists;
 
 class AttributeController extends Controller
 {
+    private $AttributeInterfaces;
+    public function __construct(AttributeRepositoryInterface $_repository){
+        $this->AttributeInterfaces = $_repository;
+    }
 
     public function listAttr(Request $request)
     {

@@ -173,6 +173,7 @@ return [
         Mckenziearts\Notify\LaravelNotifyServiceProvider::class,
         App\Providers\RepositoryServiceProvider::class,
         Illuminate\Redis\RedisServiceProvider::class,
+        
     ])->toArray(),
 
     /*
