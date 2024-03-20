@@ -7,7 +7,6 @@ use App\Repositories\BaseRepository;
 
 class Attributerepository extends BaseRepository implements AttributeRepositoryInterface
 {
- 
     public function getModel()
     {
         return AttributeModel::class;
