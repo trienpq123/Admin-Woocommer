@@ -36,9 +36,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});  
+Route::get('/', [IndexController::class, 'indexUser'])->name('index');  
+
 Route::get('login',[DashboardController::class,'login'])->name('login');
 Route::post('login',[DashboardController::class,'loginPost'])->name('loginPost');
 Route::group([ 'middleware' => 'Localization'],function() {

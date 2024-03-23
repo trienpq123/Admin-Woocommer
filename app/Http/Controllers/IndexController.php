@@ -13,6 +13,10 @@ class IndexController extends Controller
         return view('admin.dashboad');
     }
 
+    public function  indexUser(Request $request){
+        return view('users.index');
+    }
+
     public function checkLanguage(Request $request,$language){
 
             $lang = config('app.locale');

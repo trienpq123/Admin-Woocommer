@@ -181,6 +181,10 @@ textarea{
     grid-template-columns: 70% auto;;
 }
 
+.grid-template-colums-large-auto-8{
+    grid-template-columns: auto 80%;
+}
+
 /* FLEX */
 
 .flex {
@@ -197,9 +201,6 @@ textarea{
 .justify-content-space-betweent {
     justify-content: space-between;
 }
-
-
-
 .align-items-center{
     align-items: center;
 }

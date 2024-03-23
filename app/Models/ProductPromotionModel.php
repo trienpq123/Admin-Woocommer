@@ -27,6 +27,6 @@ class ProductPromotionModel extends Model
 
     public function product()
     {
-        return $this->belongsTo(ProductModel::class, 'id_product', 'id_product');
+        return   $this->belongsTo(ProductModel::class, 'id_product', 'id_product');
     }
 }
