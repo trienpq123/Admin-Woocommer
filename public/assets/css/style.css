@@ -5,6 +5,7 @@
     --background-head-top: #d70018;
     --background-head-white: #fff;
     --background-head-link-hover: #000;
+    --background-head-count-cart: #c7de44;
 }
 
 body {
@@ -87,7 +88,7 @@ body {
         font-weight: 500;
         font-size: 12px;
         color: #000;
-        background-color: yellow;
+        background-color: var(--background-head-count-cart);
         top: 0;
         right: 0;
         margin-top: -12px;
@@ -99,4 +100,160 @@ body {
         transform: translateY(-50%);
         right: 0;
         margin-right: -24px;
+    }
+
+    .navigation-btn ul li {
+        position: relative;
+    }
+
+    .navigation-btn ul li span.count {
+        position: absolute;
+        background: var(--background-head-count-cart);
+        padding: 2px 4px;
+        font-size: 10px;
+        border-radius: 100px;
+        top: -7px;
+        right: 0;
+        text-align: center;
+        font-weight: 700;
+    }
+
+    .pro-quantity-view {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        border: 1px solid #ccc;
+        justify-content: space-around;
+        border-radius: 100px;
+        align-items: center;
+    }
+
+    .pro-quantity-view .qty-btn,
+    .pro-quantity-view span {
+        width: 25px;
+        font-size: 18px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .pro-quantity-view .qty-value,
+    .pro-quantity-view .base-input-number__input {
+        display: inline-block;
+        width: 25px;
+        height: 25px;
+        line-height: 25px;
+        min-width: 25px;
+        padding: 0 3px;
+        text-align: center;
+        font-size: 13px;
+        font-weight: 500;
+        border: 0;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+
+    .pro-quantity-view .qty-btn,
+    .pro-quantity-view span {
+        width: 25px;
+        font-size: 18px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    .pro-quantity-view .qty-btn,
+    .pro-quantity-view span {
+        width: 25px;
+        font-size: 18px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .cart-views {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        background: #fff;
+        right: 0;
+        min-width: 425px;
+        z-index: 1;
+        padding: 8px;
+        right: -100%;
+        transition: right .3s ease-in-out;
+    }
+    
+    .cart-views.show{
+        right: 0;
+    }
+
+    .cart-views .cart-close {
+        position: absolute;
+        right: 0;
+        padding-right: 8px;
+        font-size: 28px;
+        top: 0;
+        cursor: pointer;
+        padding:2px;
+        border-radius: 100px;
+        background: #5f89d5;
+    }
+
+    .cart-views .cart-head {
+        padding-bottom: 15px;
+        padding-top: 15px;
+        position: relative;
+    }
+
+    .cart-view .list-cart{
+        display: flex;
+        flex-direction: column;
+        gap:10px
+    }
+
+    .cart-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        position: relative;
+        border-bottom: 1px solid #cdcdcd;
+        padding-top:8px;
+        padding-bottom:8px
+    }
+
+    .cart-item .cart-infor {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 14px;
+    }
+
+    .cart-infor .infor-row{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .infor-row h3.title{
+        font-size: 13px;
+    }
+
+    .infor-row .type{
+        font-size: 12px;
+        margin-top:4px
+    }
+
+    .cart-item .cart-infor .btn-remove {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding-right: 16px;
+        font-size: 18px;
+        padding-top: 8px;
+        cursor: pointer;
     }
