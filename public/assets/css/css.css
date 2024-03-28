@@ -32,9 +32,7 @@
     --color-text-link-white: #fff;
     --color-text-link-new: #096bab;
     --color-btn-more-new: #ed2224;
-
     /* Background */
-
     --background-main: #ebebef;
     --background-menu: #054062;
     --background-head-active-white: #fff;
@@ -44,7 +42,7 @@
     --background-btn: #054062;
     --background-paper: #e9faf0;
 
-
+    
     /* CONFIG */
     --width-all-main: 1920px;
     /* FONT SIZE */

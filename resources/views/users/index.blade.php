@@ -205,7 +205,7 @@
             </div>
         </div>
         <div id="main">
-            <section id=" category">
+            <section id="category">
                 <div class="grid category-list">
                     <div class="category-item">
                         <div class="category-image">
@@ -339,6 +339,118 @@
                             <a href="#">
                                 ĐẶT HÀNG
                             </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="ladi-section">
+                <div class="ladi-list">
+                    <div class="ladi-title">
+                        <h2>LADIPORT</h2>
+                        <div class="tag">
+                           <ul>
+                            <li>
+                                <a href="#">ABC</a>
+                                <a href="#">ABC</a>
+                                <a href="#">ABC</a>
+                                <a href="#">ABC</a>
+                            </li>
+                           </ul>
+                           <a href="">Xem thêm</a>
+                        </div>
+                    </div>
+                    <div class="grid list-product">
+                        <div class="product-item">
+                            <div class="product-image">
+                                <img src="https://hoanghapccdn.com/media/product/250_4429_hhpc_white_13900k_sky_two_ha1s.jpg"
+                                    alt="">
+                            </div>
+                            <div class="product-body">
+                                <div class="title">
+                                    <h3>HHPC BLACK WHITE CORE i5 13600K | 32G DDR5 | NVIDIA RTX 4070 Ti SUPER 16G</h3>
+                                </div>
+                                <div class="price">
+                                    <p><span class="new">52.990.000 đ</span></p>
+                                    <p><span class="old">(59.990.000 đ)</span></p>
+                                </div>
+                            </div>
+                            <div class="product-foot flex">
+                                <p>
+                                    <span style="color: #0DB866;"><i class="icons icon-check"></i> Còn hàng</span>
+                                </p>
+                                <a href="#">
+                                    ĐẶT HÀNG
+                                </a>
+                            </div>
+                        </div>
+                        <div class="product-item">
+                            <div class="product-image">
+                                <img src="https://hoanghapccdn.com/media/product/250_4429_hhpc_white_13900k_sky_two_ha1s.jpg"
+                                    alt="">
+                            </div>
+                            <div class="product-body">
+                                <div class="title">
+                                    <h3>HHPC BLACK WHITE CORE i5 13600K | 32G DDR5 | NVIDIA RTX 4070 Ti SUPER 16G</h3>
+                                </div>
+                                <div class="price">
+                                    <p><span class="new">52.990.000 đ</span></p>
+                                    <p><span class="old">(59.990.000 đ)</span></p>
+                                </div>
+                            </div>
+                            <div class="product-foot flex">
+                                <p>
+                                    <span style="color: #0DB866;"><i class="icons icon-check"></i> Còn hàng</span>
+                                </p>
+                                <a href="#">
+                                    ĐẶT HÀNG
+                                </a>
+                            </div>
+                        </div>
+                        <div class="product-item">
+                            <div class="product-image">
+                                <img src="https://hoanghapccdn.com/media/product/250_4429_hhpc_white_13900k_sky_two_ha1s.jpg"
+                                    alt="">
+                            </div>
+                            <div class="product-body">
+                                <div class="title">
+                                    <h3>HHPC BLACK WHITE CORE i5 13600K | 32G DDR5 | NVIDIA RTX 4070 Ti SUPER 16G</h3>
+                                </div>
+                                <div class="price">
+                                    <p><span class="new">52.990.000 đ</span></p>
+                                    <p><span class="old">(59.990.000 đ)</span></p>
+                                </div>
+                            </div>
+                            <div class="product-foot flex">
+                                <p>
+                                    <span style="color: #0DB866;"><i class="icons icon-check"></i> Còn hàng</span>
+                                </p>
+                                <a href="#">
+                                    ĐẶT HÀNG
+                                </a>
+                            </div>
+                        </div>
+                        <div class="product-item">
+                            <div class="product-image">
+                                <img src="https://hoanghapccdn.com/media/product/250_4429_hhpc_white_13900k_sky_two_ha1s.jpg"
+                                    alt="">
+                            </div>
+                            <div class="product-body">
+                                <div class="title">
+                                    <h3>HHPC BLACK WHITE CORE i5 13600K | 32G DDR5 | NVIDIA RTX 4070 Ti SUPER 16G</h3>
+                                </div>
+                                <div class="price">
+                                    <p><span class="new">52.990.000 đ</span></p>
+                                    <p><span class="old">(59.990.000 đ)</span></p>
+                                </div>
+                            </div>
+                            <div class="product-foot flex">
+                                <p>
+                                    <span style="color: #0DB866;"><i class="icons icon-check"></i> Còn hàng</span>
+                                </p>
+                                <a href="#">
+                                    ĐẶT HÀNG
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>

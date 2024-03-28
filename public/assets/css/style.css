@@ -457,3 +457,38 @@ section#flash-sale {
 .product-foot.flex a{
     font-size: 14px;
 }
+
+#ladi-section .ladi-title{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#ladi-section .ladi-title h2{
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--color-text-2)
+}
+#ladi-section .ladi-title .tag{
+    display: flex;
+    align-items: center;
+    gap:10px
+
+}
+#ladi-section .ladi-title .tag ul {
+    display: flex;
+    align-items: center;
+    gap:10px;
+}
+#ladi-section .ladi-title .tag ul li a {
+   padding: 4px 8px;
+   border-radius: 100px;
+   font-size: 12px;
+   font-weight: 700;
+   color: var(--color-text-2);
+   border: 1px solid  var(--color-text-2)
+}
+
+#ladi-section .ladi-title .tag a{
+    font-size: 12px;
+}
