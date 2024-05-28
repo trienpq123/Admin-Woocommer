@@ -98,7 +98,7 @@
 
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#category" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-menu-button-wide"></i><span>{{__('menu.category')}}</span><i class="bi bi-chevron-down ms-auto"></i>
+                <i class="bi bi-menu-button-wide"></i><span>{{__('menu.category')}} -- xong</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="category" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
@@ -108,7 +108,7 @@
                 </li>
                 <li>
                     <a href="{{ route('admin.category.addCategory') }}">
-                        <i class="bi bi-circle"></i>{{__('menu.list_category')}}</span>
+                        <i class="bi bi-circle"></i>{{__('menu.lists_category')}}</span>
                     </a>
                 </li>
 
@@ -120,13 +120,12 @@
             </a>
             <ul id="product" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
-<<<<<<< HEAD
                     <a href="{{ route('admin.product.listProduct') }}">
                         <i class="bi bi-circle"></i><span>Danh sách sản phẩm</span>
-=======
+
                     <a href="">
                         <i class="bi bi-circle"></i><span>{{__('menu.list_product')}}</span>
->>>>>>> 8e1876fcf84231fde7dd5229b2bfd64a7e06fced
+
                     </a>
                 </li>
                 <li>
@@ -139,13 +138,13 @@
         </li>
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#attribute" data-bs-toggle="collapse" href="#">
-                <i class="ri-sparkling-2-fill"></i><span>{{__('menu.attribute')}}</span><i
+                <i class="ri-sparkling-2-fill"></i><span>{{__('menu.attribute')}} -- xong</span><i
                     class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="attribute" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="{{ route('admin.attr.listAttr') }}">
-                        <i class="bi bi-circle"></i><span>{{__('menu.list_attribute')}}</span>
+                        <i class="bi bi-circle"></i><span>{{__('menu.list_attribute')}} </span>
                     </a>
                 </li>
                 <li>

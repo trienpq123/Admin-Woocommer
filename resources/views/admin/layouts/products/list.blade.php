@@ -1123,7 +1123,7 @@
                 $('.popup-modal').removeClass('active');
                 $.ajax({
                     url: "{{ route('admin.product.deleteProduct') }}",
-                    type: "delete",
+                    type: "post",
                     data: {
                         data: [id],
                         _token: "{{ csrf_token() }}"

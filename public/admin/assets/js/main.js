@@ -324,12 +324,12 @@ $(document).ready(function () {
   $(".file-change").change(function () {
     var file = this.files[0];
     var reader = new FileReader();
-    // reader.onload = function (e) {
-    //   console.log($(this).parent().find('.preview-image'));
+    reader.onload = function (e) {
+      // console.log($(this).parent().find('.preview-image'));
       
-    // };
-    console.log($(this))
-    $(this).parent().find('.preview-image img').attr("src", reader.result);
+      $('.preview-image img').attr("src", reader.result);
+    };
+    // console.log($(this))
     reader.readAsDataURL(file);
   });
 })
