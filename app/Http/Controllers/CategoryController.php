@@ -136,7 +136,7 @@ class CategoryController extends Controller
         
         }
 
-        dd($request->attr);
+        // dd($request->attr);
         return back()->with(['status' => 200, 'message' => 'Thêm thành công']);
     }
 
@@ -172,7 +172,9 @@ class CategoryController extends Controller
             $typeImage = end($explode);
             $imageExtensions = ['jpg', 'jpeg', 'gif', 'png', 'bmp', 'svg', 'svgz', 'cgm', 'djv', 'djvu', 'ico', 'ief', 'jpe', 'pbm', 'pgm', 'pnm', 'ppm', 'ras', 'rgb', 'tif', 'tiff', 'wbmp', 'xbm', 'xpm', 'xwd'];
             if (in_array($typeImage, $imageExtensions)) {
+
                 $path = 'public/uploads/images/';
+                // dd($imageName);
                 $imageName->move($path, $name_image);
                 $link_url = env('APP_URL') . '/' . $path . $name_image;
                 $category->image_category = $link_url;

@@ -159,32 +159,34 @@ class AttributeController extends Controller
             //     'data' => $request->all()
             // ]);
 
-            // if ($request->attr) {
-            //     if ($request->attr['option']) {
-            //         foreach ($request->attr['option'] as $option) {
+            if ($request->attr) {
+                if ($request->attr['option']) {
+                    foreach ($request->attr['option'] as $option) {
 
-            //             // dd($option);
+                        // dd($option);
 
-            //             $attr = new AttributeModel();
+                        $attr = new AttributeModel();
 
-            //             $attr->name = $option['name'];
-            //             if (key_exists('file', $option)) {
+                        $attr->name = $option['name'];
+                        if (key_exists('file', $option)) {
 
-            //                 $imageName = $option['file'];
-            //                 // dd($imageName);
-            //                 $name_image = time() . '_' . $imageName->getClientOriginalName();
-            //                 $explode = explode('.', $name_image);
-            //                 $typeImage = end($explode);
-            //                 $imageExtensions = ['jpg', 'jpeg', 'gif', 'png', 'bmp', 'svg', 'svgz', 'cgm', 'djv', 'djvu', 'ico', 'ief', 'jpe', 'pbm', 'pgm', 'pnm', 'ppm', 'ras', 'rgb', 'tif', 'tiff', 'wbmp', 'xbm', 'xpm', 'xwd', 'webp'];
-            //                 if (in_array($typeImage, $imageExtensions)) {
-            //                     $path = 'admin/uploads/images/attribute/';
-            //                     $imageName->move($path, $name_image);
-            //                     $link_url = env('APP_URL') . '/' . $path . $name_image;
+                            $imageName = $option['file'];
+                            // dd($imageName);
+                            $name_image = time() . '_' . $imageName->getClientOriginalName();
+                            $explode = explode('.', $name_image);
+                            $typeImage = end($explode);
+                            $imageExtensions = ['jpg', 'jpeg', 'gif', 'png', 'bmp', 'svg', 'svgz', 'cgm', 'djv', 'djvu', 'ico', 'ief', 'jpe', 'pbm', 'pgm', 'pnm', 'ppm', 'ras', 'rgb', 'tif', 'tiff', 'wbmp', 'xbm', 'xpm', 'xwd', 'webp'];
+                            if (in_array($typeImage, $imageExtensions)) {
+                                $path = 'admin/uploads/images/attribute/';
+                                $imageName->move($path, $name_image);
+                                $link_url = env('APP_URL') . '/' . $path . $name_image;
 
-            //                     $attr->image = $link_url;
-            //                 }
-            //             }
-            //             $attr->save();
+                                $attr->image = $link_url;
+                            }
+                        }
+                    }
+                }
+                        $attr->save();
             //             if ($option['position']) {
             //                 $positions = explode(',', $option['position']);
 
@@ -223,7 +225,7 @@ class AttributeController extends Controller
             ]);
         }
     }
-    
+
     public function deleteMore(Request $request)
     {
         // if ($request->id) {
@@ -233,14 +235,14 @@ class AttributeController extends Controller
         //     }
         // }
         // return back()->with(['message' => 'Xóa thành công']);
-        if($request->data){
-            foreach($request->data as $data){
+        if ($request->data) {
+            foreach ($request->data as $data) {
                 $getAttribute = AttributeValueModel::where('attribute_id', '=', $data)->first();
                 $keyAttr = AttributeModel::where('id_attr', '=', $data)->first();
                 if ($getAttribute) {
                     $getAttribute->delete();
                 }
-                if($keyAttr){
+                if ($keyAttr) {
                     $keyAttr->delete();
                 }
             }
@@ -259,22 +261,21 @@ class AttributeController extends Controller
             }
         }
         return back()->with(['message' => 'Xóa thành công']);
-       
     }
 
-    public function ajaxAttribute(Request $request){
+    public function ajaxAttribute(Request $request)
+    {
         if ($request->id) {
             $id = $request->id;
-            $data = AttributeValue::where('attribute_id', '=', $id)->get(['id','value']);
+            $data = AttributeValue::where('attribute_id', '=', $id)->get(['id', 'value']);
 
             return response()->json([
                 'data' => $data,
                 'status' => 200
-            ],200);
+            ], 200);
         }
         return response()->json([
             'status' => 404
-        ],404);
-
+        ], 404);
     }
 }

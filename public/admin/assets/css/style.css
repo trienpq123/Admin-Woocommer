@@ -2661,9 +2661,9 @@ h6 {
   display: block;
 }
 
-#show-file {
+/* #show-file {
   display: none;
-}
+} */
 
 /* PAGINATION */
 .dataTables_paginate {

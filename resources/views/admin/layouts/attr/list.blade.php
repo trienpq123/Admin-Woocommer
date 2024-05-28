@@ -1,6 +1,9 @@
 @extends('admin.index')
 @section('css')
     <style>
+        .bootstrap-tagsinput input{
+            border: none !important;
+        }
         .bootstrap-tagsinput .tag {
             margin-right: 2px;
             color: #4154f1 !important;
@@ -40,7 +43,7 @@
                                 aria-label="Close">X</button>
                         </div>
                         <div class="modal-body">
-                            <form action="{{ route('admin.attr.postAddAttr') }}" method="post"
+                            <form action="{{ route('admin.attr.putEditAttr') }}" method="post"
                                 enctype="multipart/form-data">
                                 @csrf
                                 <div class="list-attr">
@@ -72,8 +75,8 @@
 
                                         </div>
                                         <div class="form-group">
-                                            <label for="">Ảnh đaị diện</label>
-                                            <input type="file" name="attr[option][1][file]" class="file"
+                                            <label for="">Ảnh đại diện</label>
+                                            <input type="file" name="attr[option][1][file]" class="file-change"
                                                 id="file" />
                                             <div class="ladi-box">
                                                 <div class="preview-image">
@@ -196,7 +199,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="">Ảnh đaị diện</label>
-                                    <input type="file" name="attr[option][1][file]" class="file" id="file" />
+                                    <input type="file" name="attr[option][1][file]" class="file-change" id="file" />
                                     <div class="ladi-box">
                                         <div class="preview-image">
                                             <img src="https://www.apple.com/ac/structured-data/images/knowledge_graph_logo.png?202209082218"
@@ -292,7 +295,7 @@
                     "columns": [{
                             data: null,
                             render: function(data, type, row, meta) {
-                                console.log(data);
+                                // console.log(data);
 
                                 return `<input type="checkbox" class='item-check' id="item-check" name="item-check[]" value="${data.id_attr}">`
                             },
@@ -322,7 +325,7 @@
                         {
                             data: null,
                             render: function(data, type, row, meta) {
-                                console.log(data);
+                                // console.log(data);
                                 return `<div class="d-flex align-items-center btn-action">
                                             <button  data-bs-toggle="modal" data-bs-target="#form-edit" class="btn-edit"  data-name="edit-product" data-id="${data.id_attr}"><i class="ri-edit-box-line"></i></button>
                                             <a href="{{ route('admin.attr.deleteAttrSet') }}?id=${data.id_attr}" class="btn btn-delete" id="action-delete"  data-id="${data.id_attr}"><i class="ri-delete-bin-5-line"></i></a>
@@ -375,10 +378,13 @@
                         id: id
                     },
                     success: (res) => {
+                        // console.log(res);
                         $('#form-edit form').attr('action',
                             `{{ route('admin.attr.putEditAttr') }}?id=${id}`);
                         let name = $("#form-edit .name").val(res.data.name);
-                        console.log(res.data.attributevalue)
+                        console.log(res.data.image)
+                        $('.preview-image img').attr('src',res.data.image);
+                        // console.log(res.data.attributevalue)
                         $("#form-edit input[data-role=tagsinput]").tagsinput('removeAll')
                         let attr_array = res.data.attributevalue;
 
@@ -386,21 +392,18 @@
                             $("#form-edit input[data-role=tagsinput]").tagsinput('add',
                                 attr_array[i].value);
                         }
-                        // $("#form-edit input[data-role=tagsinput]").val(attr_value);
-                        // console.log($('#form-edit input[data-role=tagsinput]').tagsinput('items'))
-
                         $('#form-edit input[data-role=tagsinput]').on('beforeItemRemove',
                             function(event) {
                                 var tag = event.item;
                                 // Do some processing here
-                                console.log(tag);
+                                // console.log(tag);
                                 var ajaxData = {
                                     id_attr: id,
                                     value: tag,
                                     _token: "{{ csrf_token() }}"
                                 }
 
-                                console.log(ajaxData)
+                              
                                 if (!event.options || !event.options.preventPost) {
                                     $.ajax({
                                         url: "{{ route('admin.attr.deleteAttr') }}",
@@ -430,148 +433,17 @@
 
 
 
-                        // $(".edit_slug").val(res.data.slug);
-                        // // let link_img = `<img src="${res.data.image_category}"/>`
-                        // // $(".1").removeAttr("src");
-                        // $(".1").attr("src", `${res.data.image_category}`);
-                        // id_filter = [];
-                        // for (let i = 0; i < res.listFilter.length; i++) {
-                        //     id_filter.push(res.listFilter[i].id_filter)
-                        // }
-                        // $('.edit_filter').val(id_filter);
-                        // $('.edit_filter').trigger('change');
-                        // $('.edit_desc').val(res.data.desc_category);
-                        // $('.edit_status').each(function(i, item) {
-                        //     if (res.data.hide == item.value) {
-                        //         item.checked = true;
-                        //     }
-                        // })
-                        // $('.edit_parent_category option').each(function(i, item) {
-                        //     console.log(item.value, res.data.parent_category)
-                        //     if (parseInt(item.value) == res.data.parent_category) {
-                        //         item.selected = true
-                        //         console.log(item.value)
-                        //         $('.edit_parent_category').val(item.value);
-                        //         $('.edit_parent_category').trigger('change');
-                        //     }
-                        // })
+                       
 
                     }
                 })
 
 
-                //     // $('.form-edit').submit(function(e) {
-                //     //     //  ).val();
-                //     //     // let slug = $(".edit   // e.preventDefault();
-                //     //     // var token =  $('input[name="_token"]').attr('value');
-                //     //     // console.log(token);
-                //     //     // let name = $(".edit_names"_slug").val();
-                //     //     // let _parent = $(".edit_parent option:selected").val();
-                //     //     // $.ajax({
-                //     //     //     type:"POST",
-                //     //     //     dataType:"JSON",
-                //     //     //     url: "{{ route('admin.filter.putEditFilter') }}",
-                //     //     //     data: {id:id,_token:"{{ csrf_token() }}",name:name,slug:slug,_parent:_parent},
-                //     //     //     success: (res) => {
-                //     //     //         // window.location.reload();
-                //     //     //         // $('.table').html(res);
-                //     //     //        console.log(res)
-
-                //     //     //         if(res.status == 200 ){
-                //     //     //             $('#table').DataTable().destroy()
-                //     //     //             getDataTable();
-                //     //     //             $('.alert').toggleClass('active')
-                //     //     //             validator(res.status,res.message)
-                //     //     //         }
-                //     //     //         if(res.status == 404){
-                //     //     //             validator(res.status,res.message)
-                //     //     //         }
-                //     //     //     }
-                //     //     // })
-                //     //     e.preventDefault();
-                //     //     let filter = $('.edit_filter :selected');
-                //     //     let name_category = $('.form-control.edit_name').val();
-                //     //     console.log(name_category)
-                //     //     let slug_category = $('.edit_slug').val();
-                //     //     let desc_category = CKEDITOR.instances.desc.getData();
-                //     //     let image_category = $('input[type=file].edit_file')[0].files[0];
-                //     //     let parent_category = $('.edit_parent_category').val();
-                //     //     console.log(parent_category)
-                //     //     console.log(image_category)
-                //     //     console.log(desc_category)
-                //     //     let status_category = $('.edit_status:checked').val()
-                //     //     console.log(status_category)
-                //     //     var formData = new FormData();
-                //     //     formData.append('desc', desc_category)
-                //     //     formData.append('id', id)
-                //     //     formData.append('image', $('input[type=file]')[0].files[0]);
-                //     //     formData.append('name', name_category)
-                //     //     formData.append('slug', slug_category)
-                //     //     formData.append('status', status_category)
-                //     //     formData.append('parent_category', parent_category)
-                //     //     formData.append('_token', "{{ csrf_token() }}")
-                //     //     let status = $('.status').val();
-                //     //     idFilter = [];
-                //     //     filter.each(function(i, f) {
-                //     //         return idFilter.push(f.value)
-                //     //     })
-                //     //     console.log(idFilter)
-                //     //     formData.append('idFilter', idFilter)
-
-                //     //     $.ajax({
-                //     //         type: "POST",
-                //     //         url: "",
-                //     //         data: formData,
-                //     //         success: (res) => {
-                //     //             if (res.status == 404) {
-                //     //                 console.log(res)
-                //     //                 validator(res.status, res.message)
-
-                //     //             } else {
-                //     //                 console.log(res)
-                //     //                 $('#table').DataTable().destroy()
-                //     //                 getDataTable();
-                //     //                 $('.alert').toggleClass('active')
-                //     //                 $('.popup-modal').removeClass('active');
-                //     //             }
-                //     //         },
-                //     //         cache: false,
-                //     //         contentType: false,
-                //     //         processData: false
-
-                //     //     })
-                //     // })
+         
             })
 
 
 
-            // $('body').on('click', 'table .btn-delete', function() {
-            //     let id = $(this).attr('data-id');
-            //     console.log(id)
-            //     $('#popup-delete').toggleClass('active');
-            //     $('.btn-close').click(function() {
-            //         $('.popup-modal').removeClass('active');
-            //     });
-            //     $('.action-agree').click(function() {
-            //         $('.popup-modal').removeClass('active');
-            //         $.ajax({
-            //             url: "{{ route('admin.category.deleteCategory') }}",
-            //             type: "delete",
-            //             data: {
-            //                 data: [id],
-            //                 _token: "{{ csrf_token() }}"
-            //             },
-            //             success: (res) => {
-            //                 if (res.status == 200) {
-            //                     console.log(res)
-            //                     $('#table').DataTable().destroy()
-            //                     getDataTable();
-            //                     $('.alert').toggleClass('active')
-            //                 }
-            //             }
-            //         })
-            //     });
-            // })
             // Checkbox
             $('body').on('change', '#item-check', function(e) {
                 e.preventDefault();
@@ -786,15 +658,6 @@
         //         })
         //         .trigger('change');
         // });
-        $("#file").change(function() {
-            var file = this.files[0];
-            var reader = new FileReader();
-            console.log(file);
-            reader.onload = function() {
-
-                $(".preview-image img").attr("src", reader.result);
-            };
-            reader.readAsDataURL(file);
-        });
+       
     </script>
 @endpush

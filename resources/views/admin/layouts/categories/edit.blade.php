@@ -1,6 +1,9 @@
 @extends('admin.index')
 @section('css')
     <style>
+        .bootstrap-tagsinput input{
+            border: none !important;
+        }
         .bootstrap-tagsinput .tag {
             margin-right: 2px;
             color: #4154f1 !important;
@@ -150,7 +153,7 @@
                                 <input type="file" name="image" id="" class="add-file" id="upload-file"
                                     accept="image/*">
                                 <p class="image-error text text-danger"></p>
-                                <div class="form-group"
+                                <div class="form-group" id="show-file"
                                     style="width:120px;height:120px; padding: 8px;background-color:#d9e1ef;">
                                     <img src="{{ $cate->image_category }}" alt="{{ $cate->name_category }}">
                                 </div>
