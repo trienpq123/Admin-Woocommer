@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Repositories\Products\ProductRepositoryInterface;
 use App\Models\AttributeModel;
 use App\Models\BrandModel;
 use App\Models\CategoryModel;
@@ -19,20 +19,23 @@ use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
+    protected $_ProductInterface;
+    public function __construct(ProductRepositoryInterface $ProductInterface){
+        $this->_ProductInterface = $ProductInterface;
+    }
     public function listProduct(Request $request)
     {
-        $listProduct = ProductModel::orderBy('id_product', 'desc')->get();
-        $getBrands = BrandModel::orderBy('id_brand', 'desc')->get();
-        $listCategory = CategoryModel::whereNull('parent_category')->orderBy('id_category', 'desc')->get();
-        $listAttr = AttributeModel::orderBy('id_attr', 'desc')->get();
-
-
+        $Interface = $this->_ProductInterface->index();
+        $listProduct = $Interface['listProduct'];
+        $getBrands = $Interface['getBrands'];
+        $listCategory = $Interface['listCategory'];
+        $listAttr =   $Interface['listAttr'];
         return view('admin.layouts.products.list', compact('getBrands', 'listCategory', 'listProduct', 'listAttr'));
     }
 
     public function apiListProduct(Request $request)
     {
-        $listProduct = ProductModel::with('images')->get();
+        $listProduct = $this->_ProductInterface->GetImageProduct();
         return response()->json([
             'status' => 200,
             'data' => $listProduct
@@ -41,7 +44,6 @@ class ProductController extends Controller
 
     public function addProduct(Request $request)
     {
-
         $listProduct = ProductModel::orderBy('id_product', 'desc')->get();
         $getBrands = BrandModel::orderBy('id_brand', 'desc')->get();
         $listCategory = CategoryModel::whereNull('parent_category')->orderBy('id_category', 'desc')->get();
@@ -78,20 +80,6 @@ class ProductController extends Controller
 
     public function postAddProduct(Request $request)
     {
-        // dd($request->all());
-        // $validator = Validator::make(
-        //     $request->all(),
-        //     [
-        //         'name' => "required|unique:product,name_product"
-        //     ],
-        //     [
-        //         'name.required' => 'Tên sản phẩm không được bỏ trống',
-        //         'name.unique' => 'Tên sản phẩm đã tồn tại'
-        //     ]
-        // );
-        // if ($validator->fails()) {
-        //     return redirect()->back()->withErrors($validator)->withInput();
-        // }
         $p = new ProductModel();
         $p->name_product = $request->name;
         $p->slug = $request->slug;
@@ -171,7 +159,6 @@ class ProductController extends Controller
                 }
             }
         }
-
         if ($request->product) {
 
             $product = $request->product;
@@ -215,7 +202,6 @@ class ProductController extends Controller
 
     public function putEditProduct(Request $request)
     {
-        // dd($request->all());
         $validator = Validator::make(
             $request->all(),
             [
@@ -271,7 +257,6 @@ class ProductController extends Controller
                 }
             }
         };
-        // $p->skus_product_variant_options()->hash_updated();
         $produc_Data = ProductModel::all();
         return redirect()->back()->with(['success' => 'Cập nhật thành công']);
     }
@@ -290,7 +275,6 @@ class ProductController extends Controller
                     }
                     $image->delete();
                 }
-
                 $productDetail = ProductModel::where('id_product', '=', $id);
                 if (count($productDetail->get()) > 0) {
                     foreach ($productDetail as $PD) {
@@ -300,7 +284,6 @@ class ProductController extends Controller
                     }
                     $productDetail->delete();
                 }
-
                 ProductModel::where('id_product', '=', $id)->delete();
             }
             return response()->json([
@@ -309,7 +292,6 @@ class ProductController extends Controller
             ]);
         }
     }
-
     public function deleteDetailProduct(Request $request)
     {
         if ($request->id) {

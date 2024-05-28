@@ -84,6 +84,7 @@ return [
     */
 
     'locale' => 'en',
+    'locales' => ['en', 'vi'],
 
     /*
     |--------------------------------------------------------------------------
@@ -171,7 +172,12 @@ return [
         Spatie\Permission\PermissionServiceProvider::class,
         Mckenziearts\Notify\LaravelNotifyServiceProvider::class,
         App\Providers\RepositoryServiceProvider::class,
+<<<<<<< HEAD
         // Illuminate\Redis\RedisServiceProvider::class,
+=======
+        Illuminate\Redis\RedisServiceProvider::class,
+        
+>>>>>>> 8e1876fcf84231fde7dd5229b2bfd64a7e06fced
     ])->toArray(),
 
     /*

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\UserNotify;
 use App\Models\User;
 use App\Repositories\User\UserRespository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -27,10 +29,6 @@ class UserController extends Controller
     }
     public function index(User $User)
     {   
-        // $User = $this->userRepository->all();
-        // $User = Cache::remember('users', 10, function () {
-        //     return $this->userRepository->all();
-        // });
         $User = $this->userRepository->all();
         return view('admin.layouts.user.list', compact('User'));
     }
@@ -45,7 +43,8 @@ class UserController extends Controller
     public function UserFormPostAdd(Request $request)
     {
         $user = $this->userRepository->create($request->all());
-        return redirect()->route('admin.User.User.index')->back()->with(['message' => "Thêm thành công"]);
+        $mail = Mail::to($user->email)->send(new UserNotify($user));
+          return redirect()->route('admin.User.User.index')->back()->with(['message' => "Thêm thành công"]);
     }
 
     public function getDataForApi(User $User)
@@ -70,7 +69,7 @@ class UserController extends Controller
     public function UserFormUpdate(User $User, Request $request, $id)
     {   
         // dd($request->all());
-    
+        
         $User = $User->findOrFail($id);
         $User->name = $request->fullName;
         $User->email = $request->email;

@@ -6,6 +6,7 @@ use App\Models\AttributeModel;
 use App\Models\AttributeValue;
 use App\Models\attributeValueModel;
 use App\Models\CategoryModel;
+use App\Repositories\Attributes\AttributeRepositoryInterface;
 use Attribute;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -13,6 +14,10 @@ use Illuminate\Validation\Rules\Exists;
 
 class AttributeController extends Controller
 {
+    private $AttributeInterfaces;
+    public function __construct(AttributeRepositoryInterface $_repository){
+        $this->AttributeInterfaces = $_repository;
+    }
 
     public function listAttr(Request $request)
     {
@@ -23,7 +28,7 @@ class AttributeController extends Controller
 
     public function apiListAttr(Request $request)
     {
-        $listAttr = AttributeModel::with('attributevalue')->orderBy('id_attr', 'desc')->get();
+        $listAttr = $this->AttributeInterfaces->apiListAttr();
         return response()->json([
             'data' => $listAttr
         ]);
@@ -31,18 +36,14 @@ class AttributeController extends Controller
 
     public function addAttr(Request $request)
     {
-        $listAttr = AttributeModel::with('category')->orderBy('id_attr', 'desc')->get();
+        $listAttr = $this->AttributeInterfaces->addAttr();
         $listCategory = CategoryModel::whereNull('parent_category')->get();
-
         return view('admin.layouts.attr.add', compact('listAttr', 'listCategory'));
     }
 
     public function editAttr(Request $request)
     {
-
-        $listAttr = AttributeModel::where('id_attr', '=', $request->id)->with('attributevalue')->first();
-        // $listCategory = CategoryModel::whereNull('parent_category')->get();
-        // return view('admin.layouts.attr.edit', compact('listAttr', 'listCategory'));
+        $listAttr = $this->AttributeInterfaces->edit($request->id);
         return response()->json([
             'data' => $listAttr,
 
@@ -51,70 +52,17 @@ class AttributeController extends Controller
 
     public function postAddAttr(Request $request)
     {
-        // $validate = Validator::make($request->all(),[
-        //     'name' => 'required|max:50'
-        // ],
-        // [
-        //     'name.required' => 'Tên thuộc tính không được bỏ trống',
-        //     'name.max' => 'Tên thuộc tính không được vượt quá 50 ký tự'
-        // ]);
+       $save =  $this->AttributeInterfaces->store($request->all());
 
-        // if ($validate->fails()) {
-        //     return back()->withErrors($validate)->withInput();
-        // }
-
-        // dd($request->all());
-        if ($request->attr) {
-            if ($request->attr['option']) {
-                foreach ($request->attr['option'] as $option) {
-
-                    // dd($option);
-
-                    $attr = new AttributeModel();
-
-                    $attr->name = $option['name'];
-                    if (key_exists('file', $option)) {
-
-                        $imageName = $option['file'];
-                        // dd($imageName);
-                        $name_image = time() . '_' . $imageName->getClientOriginalName();
-                        $explode = explode('.', $name_image);
-                        $typeImage = end($explode);
-                        $imageExtensions = ['jpg', 'jpeg', 'gif', 'png', 'bmp', 'svg', 'svgz', 'cgm', 'djv', 'djvu', 'ico', 'ief', 'jpe', 'pbm', 'pgm', 'pnm', 'ppm', 'ras', 'rgb', 'tif', 'tiff', 'wbmp', 'xbm', 'xpm', 'xwd', 'webp'];
-                        if (in_array($typeImage, $imageExtensions)) {
-                            $path = 'admin/uploads/images/attribute/';
-                            $imageName->move($path, $name_image);
-                            $link_url = env('APP_URL') . '/' . $path . $name_image;
-
-                            $attr->image = $link_url;
-                        }
-                    }
-                    $attr->save();
-                    if ($option['position']) {
-                        $positions = explode(',', $option['position']);
-
-                        foreach ($positions as $o) {
-                            $attVal = new attributeValueModel();
-                            $attVal->attribute_id = $attr->id_attr;
-                            $attVal->value = $o;
-                            $attVal->save();
-                        }
-                        // $attVal = new attributeValueModel();
-                        // $attVal->attribute_id = $attr->id_attr;
-                        // $attVal->value = json_encode($option['position']);
-
-                        // $attVal->save();
-                    }
-                }
-            }
+        if($save){
+            return redirect(route('admin.attr.listAttr'))->with(['success' => 'Thêm thành công']);
+        }else{
+            return redirect(route('admin.attr.listAttr'))->with(['errors' => 'Thêm thất bại']);
         }
-
-
-        // return redirect(route('admin.attr.listAttr'))->with(['message' => 'Thêm thành công']);
     }
-
     public function putEditAttr(Request $request)
     {
+<<<<<<< HEAD
         // dd($request->attr['option']);
         if ($request->attr['option']) {
             foreach ($request->attr['option'] as $option) {
@@ -204,29 +152,34 @@ class AttributeController extends Controller
             //             }
             //         }
             //     }
+=======
+        $save = $this->AttributeInterfaces->update($request->id,$request->all());
+        if($save){
+            return back()->with(['success' => 'Cập nhật thành công']);
+        }else{
+            return back()->with(['errors' => 'Lỗi']);
+>>>>>>> 8e1876fcf84231fde7dd5229b2bfd64a7e06fced
         }
     }
 
     public function deleteAttr(Request $request)
     {
-        // if ($request->id) {
-        //     $c_attr = AttributeModel::find($request->id);
-        //     if ($c_attr) {
-        //         $c_attr->delete();
-        //     }
-        // }
-        // return back()->with(['message' => 'Xóa thành công']);
-        $getAttribute = AttributeValueModel::where('attribute_id', '=', $request->id_attr)->where('value', 'like', '%' . $request->value . '%')->first();
-        if ($getAttribute) {
-            $getAttribute->delete();
+        $save = $this->AttributeInterfaces->delete($request->id, $request->all());
+        if($save){
             return response()->json([
                 'alert' => 'Xoa thành công',
                 'status' => 200
+            ]);
+        }else{
+            return response()->json([
+                'alert' => 'Lỗi',
+                'status' => 404
             ]);
         }
     }
 
     public function deleteMore(Request $request)
+<<<<<<< HEAD
     {
         // if ($request->id) {
         //     $c_attr = AttributeModel::find($request->id);
@@ -237,6 +190,11 @@ class AttributeController extends Controller
         // return back()->with(['message' => 'Xóa thành công']);
         if ($request->data) {
             foreach ($request->data as $data) {
+=======
+    {    
+        if($request->data){
+            foreach($request->data as $data){
+>>>>>>> 8e1876fcf84231fde7dd5229b2bfd64a7e06fced
                 $getAttribute = AttributeValueModel::where('attribute_id', '=', $data)->first();
                 $keyAttr = AttributeModel::where('id_attr', '=', $data)->first();
                 if ($getAttribute) {

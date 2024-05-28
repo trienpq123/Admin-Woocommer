@@ -32,9 +32,7 @@
     --color-text-link-white: #fff;
     --color-text-link-new: #096bab;
     --color-btn-more-new: #ed2224;
-
     /* Background */
-
     --background-main: #ebebef;
     --background-menu: #054062;
     --background-head-active-white: #fff;
@@ -43,12 +41,12 @@
     --background-action-btn-active: #054062;
     --background-btn: #054062;
     --background-paper: #e9faf0;
-
+    
 
     /* CONFIG */
     --width-all-main: 1920px;
     /* FONT SIZE */
-    --font-size-p-tablet: 20px;
+    --font-size-p-tablet: 16px;
     --font-size-p-mobile-425: 15px;
     --font-size-p-mobile-375: 14px;
     --font-size-p-mobile-320: 14px;
@@ -61,7 +59,7 @@
     --font-size-h2-mobile-375: 1.2rem;
     --font-size-h2-mobile-325: 1.2rem;
     --font-size-h2-mobile-320: 1.3rem;
-    --font-size-h3-tablet: 1.2rem;
+    --font-size-h3-tablet: .9rem;
     --font-size-h3-mobile-375: 1rem;
     --font-size-h3-mobile-325: 1rem;
     --font-size-h3-mobile-425: 1rem
@@ -181,6 +179,10 @@ textarea{
     grid-template-columns: 70% auto;;
 }
 
+.grid-template-colums-large-auto-8{
+    grid-template-columns: auto 80%;
+}
+
 /* FLEX */
 
 .flex {
@@ -197,15 +199,11 @@ textarea{
 .justify-content-space-betweent {
     justify-content: space-between;
 }
-
-
-
 .align-items-center{
     align-items: center;
 }
 
 table {
-
     margin: 16px auto;
     border-collapse: collapse;
     border: 1px solid #ebebeb;
@@ -235,4 +233,12 @@ table th, table td {
 .text-success {
     color: #0f5132;
     background:#d1e7dd;
+}
+
+.wrap-container{
+    max-width: var(--width-all-main)
+}
+
+section{
+    margin: 12px 0;
 }

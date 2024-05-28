@@ -2,7 +2,11 @@
 @section('css')
     <style>
         .bootstrap-tagsinput input{
+<<<<<<< HEAD
             border: none !important;
+=======
+            border: unset !important;
+>>>>>>> 8e1876fcf84231fde7dd5229b2bfd64a7e06fced
         }
         .bootstrap-tagsinput .tag {
             margin-right: 2px;

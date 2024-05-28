@@ -84,31 +84,31 @@
         <li class="nav-item">
             <a class="nav-link " href="">
                 <i class="bi bi-grid"></i>
-                <span>Dashboard</span>
+                <span>{{__('menu.dashboard')}}</span>
             </a>
         </li>
         <!-- End Dashboard Nav -->
         <li class="nav-item">
             <a class="nav-link " href="{{route('admin.promotion.index')}}">
                 <i class="bi bi-grid"></i>
-                <span>Quản lý khuyến mãi</span>
+                <span>{{__('menu.promotion')}}</span>
             </a>
         </li>
         <!-- End Khuyến mãi -->
 
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#category" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-menu-button-wide"></i><span>Danh mục</span><i class="bi bi-chevron-down ms-auto"></i>
+                <i class="bi bi-menu-button-wide"></i><span>{{__('menu.category')}}</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="category" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="{{ route('admin.category.listCategory') }}">
-                        <i class="bi bi-circle"></i><span>Danh sách danh mục</span>
+                        <i class="bi bi-circle"></i><span>{{__('menu.list_category')}}</span>
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('admin.category.addCategory') }}">
-                        <i class="bi bi-circle"></i> Thêm danh mục mới</span>
+                        <i class="bi bi-circle"></i>{{__('menu.list_category')}}</span>
                     </a>
                 </li>
 
@@ -116,17 +116,22 @@
         </li>
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#product" data-bs-toggle="collapse" href="#">
-                <i class="ri-t-shirt-line"></i><span>Sản phẩm</span><i class="bi bi-chevron-down ms-auto"></i>
+                <i class="ri-t-shirt-line"></i><span>{{__('menu.product')}}</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="product" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
+<<<<<<< HEAD
                     <a href="{{ route('admin.product.listProduct') }}">
                         <i class="bi bi-circle"></i><span>Danh sách sản phẩm</span>
+=======
+                    <a href="">
+                        <i class="bi bi-circle"></i><span>{{__('menu.list_product')}}</span>
+>>>>>>> 8e1876fcf84231fde7dd5229b2bfd64a7e06fced
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('admin.product.addProduct') }}">
-                        <i class="bi bi-circle"></i><span>Thêm sản phẩm</span>
+                        <i class="bi bi-circle"></i><span>{{__('menu.add_new_product')}}</span>
                     </a>
                 </li>
 
@@ -134,18 +139,18 @@
         </li>
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#attribute" data-bs-toggle="collapse" href="#">
-                <i class="ri-sparkling-2-fill"></i><span>Quản lý thuộc tính</span><i
+                <i class="ri-sparkling-2-fill"></i><span>{{__('menu.attribute')}}</span><i
                     class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="attribute" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="{{ route('admin.attr.listAttr') }}">
-                        <i class="bi bi-circle"></i><span>Danh sách thuộc tính</span>
+                        <i class="bi bi-circle"></i><span>{{__('menu.list_attribute')}}</span>
                     </a>
                 </li>
                 <li>
                     <a href="">
-                        <i class="bi bi-circle"></i><span>Thêm thuộc tính</span>
+                        <i class="bi bi-circle"></i><span>{{__('menu.add_new_attribute')}}</span>
                     </a>
                 </li>
 
@@ -154,27 +159,27 @@
     
       
 
-        <li class="nav-heading">Quản lý trang</li>
+        <li class="nav-heading">Trang</li>
 
         <li class="nav-item">
             <a class="nav-link " href="{{ route('admin.pages.listPages') }}">
-                <i class="ri-pages-line"></i><span>Trang</span>
+                <i class="ri-pages-line"></i><span>{{__('menu.page')}}</span>
             </a>
 
         </li>
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#user" data-bs-toggle="collapse" href="">
-                <i class="bi bi-gem"></i><span>Quản lý người dùng</span><i class="bi bi-chevron-down ms-auto"></i>
+                <i class="bi bi-gem"></i><span>{{__('menu.user')}}</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="user" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="{{route('admin.roles.role.index')}}">
-                        <i class="bi bi-circle"></i><span>Phân quyền</span>
+                        <i class="bi bi-circle"></i><span>{{__('menu.decentralization')}}</span>
                     </a>
                 </li>
                 <li>
                     <a href="{{route('admin.User.User.index')}}">
-                        <i class="bi bi-circle"></i><span>Quản lý User</span>
+                        <i class="bi bi-circle"></i><span>{{__('menu.user')}}</span>
                     </a>
                 </li>
              
@@ -182,17 +187,17 @@
         </li>
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#menu" data-bs-toggle="collapse" href="">
-                <i class="bi bi-gem"></i><span>Quản lý menu</span><i class="bi bi-chevron-down ms-auto"></i>
+                <i class="bi bi-gem"></i><span>{{__('menu.menu')}}</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="menu" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="{{route('admin.menu.listMenu')}}">
-                        <i class="bi bi-circle"></i><span>Xem menu</span>
+                        <i class="bi bi-circle"></i><span>{{__('menu.list_menu')}}</span>
                     </a>
                 </li>
                 <li>
                     <a href="{{route('admin.menu.addMenu')}}">
-                        <i class="bi bi-circle"></i><span>Thêm menu</span>
+                        <i class="bi bi-circle"></i><span>{{__('menu.new_menu')}}</span>
                     </a>
                 </li>
              
@@ -206,7 +211,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link collapsed" href="{{route('admin.order.listOrder')}}">
+            <a class="nav-link collapsed" href="{{route('admin.comment.index')}}">
                 <i class="bi bi-question-circle"></i>
                 <span>Bình luận</span>
             </a>

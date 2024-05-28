@@ -45,50 +45,9 @@
     </style>
     <div id="main" class="main">
         <div class="wraper-container">
-            <div class="action-link">
-                <a href="{{ route('admin.menu.addMenu') }}" class="btn btn-add btn-success">Thêm menu</a>
-            </div>
-            <br>
-
-
             <div class="row">
-                <div class="col-lg-4 col-md-12 col-xs-12">
-                    <h3 class="ladi-title fs-18">Thêm liên kết</h3>
-
-                    <div class="accordion" id="accordionExample">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingOne">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                                    Trang
-                                </button>
-                            </h2>
-                            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
-                                data-bs-parent="#accordionExample" style="">
-                                <div class="accordion-body">
-
-                                    <ul class="list-group" id="menu-pages" data-bs-parent="#menu-toggle">
-                                        @if (count($pages) > 0)
-                                            @foreach ($pages as $page)
-                                                <li class="list-group-item">
-                                                    <input class="form-check-input me-1" type="checkbox" name="links[]"
-                                                        value="{{ $page->id_page }}" aria-label="...">
-                                                    <label for="">{{ $page->title }}</label>
-                                                </li>
-                                            @endforeach
-                                        @endif
-                                    </ul>
-                                    <div class="text-right m-1 ">
-                                        <button type="submit" name="Pagesubmit" class="btn btn-submit">Lưu</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-                    </div>
-                </div>
-                <div class="col-lg-8 col-md-12 col-xs-12">
+               
+                <div class="col-lg-12 col-md-12 col-xs-12">
                     <h3 class="ladi-title fs-18">Danh sách menu</h3>
                     <div class="table">
 
@@ -100,7 +59,6 @@
                                     <th>Tên Menu</th>
                                     <th>Ẩn/Hiện</th>
                                     <th></th>
-
                                 </tr>
                             </thead>
                             <tbody>

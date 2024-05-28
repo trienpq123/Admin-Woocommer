@@ -5,6 +5,7 @@ use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\FilterController;
@@ -17,6 +18,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PromotionProduct;
+use App\Http\Controllers\RateController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SystemController;
 use App\Http\Controllers\UserController;
@@ -34,17 +36,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});  
+Route::get('/', [IndexController::class, 'indexUser'])->name('index');  
+
 Route::get('login',[DashboardController::class,'login'])->name('login');
 Route::post('login',[DashboardController::class,'loginPost'])->name('loginPost');
 Route::group([ 'middleware' => 'Localization'],function() {
   
     Route::get('logout',[DashboardController::class,'logout'])->name('logout');
     Route::middleware(['check_login'])->prefix('admin')->name('admin.')->group(function(){
-       
-
         Route::get('/dashboard',[IndexController::class,'index'])->name('DashboardAdmin');
         Route::prefix('filter')->name('filter.')->group(function() {
             Route::get('/',[FilterController::class,'listFilter'])->name('listFilter');
@@ -81,7 +80,25 @@ Route::group([ 'middleware' => 'Localization'],function() {
             Route::get('/',[PromotionProduct::class,'index'])->name('index');
             Route::get('/create',[PromotionProduct::class,'create'])->name('create');
             Route::post('/store',[PromotionProduct::class,'store'])->name('store');
-           
+            Route::get('/edit/{id}',[PromotionProduct::class,'edit'])->name('edit');
+            Route::post('/update/{id}',[PromotionProduct::class,'update'])->name('update');
+            Route::get('/delete/{id}',[PromotionProduct::class,'delete'])->name('delete');
+        });
+        Route::prefix('comment')->name('comment.')->group(function(){
+            Route::get('/',[CommentController::class,'index'])->name('index');
+            Route::get('/create',[CommentController::class,'create'])->name('create');
+            Route::get('/store',[CommentController::class,'store'])->name('store');
+            Route::get('/edit/{id}',[CommentController::class,'edit'])->name('edit');
+            Route::put('/update/{id}',[CommentController::class,'update'])->name('update');
+            Route::get('/delete/{id}',[CommentController::class,'delete'])->name('delete');
+        });
+        Route::prefix('rate')->name('rate.')->group(function(){
+            Route::get('/',[RateController::class,'index'])->name('index');
+            Route::get('/create',[CommentController::class,'create'])->name('create');
+            Route::get('/store',[CommentController::class,'store'])->name('store');
+            Route::get('/edit/{id}',[CommentController::class,'edit'])->name('edit');
+            Route::put('/update/{id}',[CommentController::class,'update'])->name('update');
+            Route::get('/delete/{id}',[RateController::class,'delete'])->name('delete');
         });
         Route::prefix('brand')->name('brand.')->group(function() {
             Route::get('/',[BrandController::class,'listBrand'])->name('listBrand');
@@ -185,6 +202,7 @@ Route::group([ 'middleware' => 'Localization'],function() {
             Route::put('/edit-role/{id}',[RoleController::class,'RoleFormUpdate'])->name('role.update');
             Route::post('/add',[RoleController::class,'RoleFormPostAdd'])->name('role.store');
             Route::get('/delete/{id}',[RoleController::class,'RoleDelete'])->name('role.delete');
+            Route::delete('/delete-checked/',[RoleController::class,'RoleDeleteCheck'])->name('role.delete-checked');
         });
       
         Route::prefix('permisson')->name('permisson.')->group(function(){
@@ -197,12 +215,20 @@ Route::group([ 'middleware' => 'Localization'],function() {
         });
         Route::middleware(['role:Administrator'])->prefix('User')->name('User.')->group(function(){
             Route::get('/',[UserController::class,'index'])->name('User.index') ;
-            Route::get('/add',[UserController::class,'UserFormAdd'])->name('User.create')->middleware(['permission:add_user']);
-            Route::get('/edit-user/{id}',[UserController::class,'UserFormEdit'])->name('User.edit')->middleware(['permission:edit user']);
-            Route::put('/edit-user/{id}',[UserController::class,'UserFormUpdate'])->name('User.update')->middleware(['permission:edit user']);
-            Route::post('/add',[UserController::class,'UserFormPostAdd'])->name('User.store')->middleware(['permission:add_user']);
-            Route::get('/delete/{id}',[UserController::class,'UserDelete'])->name('User.delete')->middleware(['permission:delete user']);
+            // Route::get('/add',[UserController::class,'UserFormAdd'])->name('User.create')->middleware(['permission:add_user']);
+            Route::get('/add',[UserController::class,'UserFormAdd'])->name('User.create');
+            Route::get('/edit-user/{id}',[UserController::class,'UserFormEdit'])->name('User.edit');
+            // ->middleware(['permission:edit user']);
+            Route::put('/edit-user/{id}',[UserController::class,'UserFormUpdate'])->name('User.update');
+            // Route::post('/add',[UserController::class,'UserFormPostAdd'])->name('User.store')->middleware(['permission:add_user']);
+            Route::post('/add',[UserController::class,'UserFormPostAdd'])->name('User.store');
+            Route::get('/delete/{id}',[UserController::class,'UserDelete'])->name('User.delete');
             Route::get('/get-permission-role',[UserController::class,'getPermissionRole'])->name('user.getPermissionRole');
+        });
+
+        Route::prefix('profile')->name('profile.')->group(function(){
+            Route::get('/{id}',[ProfileController::class,'edit'])->name('edit');
+            Route::put('/{id}',[ProfileController::class,'update'])->name('update');
         });
         Route::get('ckeditor', [FileController::class,'index'])->name('indexCkeditor');
         Route::post('ckeditor/upload', [FileController::class,'uploadFile'])->name('uploadFile');
