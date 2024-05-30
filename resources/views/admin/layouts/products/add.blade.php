@@ -240,7 +240,7 @@
                 console.log(optionValue)
                 if (optionValue.length > 0) {
                     optionValue.forEach((item, indexs) => {
-                  
+                        console.log(item)
                         let modifer_class = '';
                         if (typeof item === "string") {
                             let b = item.replace(/[^a-zA-Z-0-9]/g, "");
@@ -391,8 +391,7 @@
                 $(document).on('click', '.badge-2 span.close', function() {
                     let value = $(this).attr('data-value');
                     value = value.replace(/[^a-zA-Z-0-9]/g, "")
-                    console.log(value.length);
-                    $(`.${value}`).html('');
+                    $(`.${value}`).parent().remove();
                     $(this).parent().remove();
                 })
             }
