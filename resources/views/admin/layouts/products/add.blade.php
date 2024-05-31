@@ -99,7 +99,7 @@
                                     </div>
                                 </div> --}}
                             </div>
-                            <table class="table">
+                            <table class="table" id="table-attribute">
                                 <thead>
                                     <th>Tên thuộc tính</th>
                                 </thead>
@@ -123,7 +123,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-lg-2">
-                                                <div class="btn btn-danger remove-attr" onclick="removeAttr(this)"><span><i
+                                                <div class="btn btn-danger remove-attr"><span><i
                                                             class="ri-delete-bin-2-fill"></i></span></div>
                                             </div>
                                         </td>
@@ -141,7 +141,7 @@
                         </div>
                         <div class="form-group table-price">
                             <label for="">Chỉnh sửa bảng giá</label>
-                            <table class="table">
+                            <table class="table" id="table-attribute-val">
                                 <thead>
 
                                 </thead>
@@ -216,7 +216,7 @@
             removeOption()
 
             function InnerTableAttr(optionValue = [], row = null) {
-   
+                console.log(123);
                 const table = $('.table-price table tbody');
                 const thead = $('.table-price table thead');
                 const rows = row.parents('tbody').find('tr');
@@ -244,40 +244,38 @@
                         let modifer_class = '';
                         if (typeof item === "string") {
                             let b = item.replace(/[^a-zA-Z-0-9]/g, "");
-                            modifer_class = 'td-variant-'+item;
+                            modifer_class = 'td-variant-' + item;
                         } else {
                             item.forEach((a, count) => {
                                 let b = a.replace(/[^a-zA-Z-0-9]/g, "");
-                                if (count+1 === item.length) {
+                                if (count + 1 === item.length) {
                                     modifer_class = modifer_class + '-' + b;
-                                }else{
-                                    modifer_class = 'td-variant-'+b;  
+                                } else {
+                                    modifer_class = 'td-variant-' + b;
                                 }
                             })
                         }
                         // if (!table.find(`.${modifer_class}`).length > 0) {
-                                tr += `<tr class="${modifer_class}">
+                        tr += `<tr class="${modifer_class}">
                                             <td> <input type="checkbox" /> 
                                             </td>
                                         `
-                                if (typeof item === "string") {
-                                    let b = item.replace(/[^a-zA-Z-0-9]/g, "");
-                                    tr += ` <td class="${b}">
+                        if (typeof item === "string") {
+                            let b = item.replace(/[^a-zA-Z-0-9]/g, "");
+                            tr += ` <td class="${b}">
                                             ${item}
                                             <input type="text" name="product[variants][${indexs}][title]" value="${item}" />
                                         </td>`
-                                    console.log(indexs)
-                                } else {
-                                    item.forEach((a,counters) => {
-                                        let b = a.replace(/[^a-zA-Z-0-9]/g, "");
-                                        tr += ` <td class="${b}">
+                        } else {
+                            item.forEach((a, counters) => {
+                                let b = a.replace(/[^a-zA-Z-0-9]/g, "");
+                                tr += ` <td class="${b}">
                                                 ${a}
                                                 <input type="text" name="product[variants][${indexs}][title][]" value="${a}" />
                                             </td>`
-                                    })
-                                    console.log(indexs)
-                                }
-                                tr += `                        
+                            })
+                        }
+                        tr += `                        
                                 <td>
                                     <input type="number" name="product[variants][${indexs}][price]" value="0" class="product_price" />
                                 </td>
@@ -291,6 +289,8 @@
                         // }
 
                     })
+                }else{
+                    table.html('');
                 }
                 table.html(tr);
                 thead.html(row_html);
@@ -323,6 +323,7 @@
                         container_option.append(input);
                         let getIdAttr = get_tr.find('.select_type').val();
                         let tr = $(this).parents('tbody').find('tr');
+
                         let attribute = [];
                         let variants = [];
                         tr.each(function() {
@@ -373,12 +374,12 @@
                             return data.reduce((a, b) => a.reduce((r, v) => r.concat(b.map(w => [].concat(v,
                                 w))), []))
                         }
+                        console.log(attribute)
                         // output - resultant data
                         output = reducer(modifier(attribute))
-                        console.log(output)
+
                         InnerTableAttr(output, tr)
                         this.value = "";
-
                     }
 
                     // console.log(attr)
@@ -396,6 +397,93 @@
                 })
             }
 
+            // function removeAttr(tr) {
+                
+
+
+
+            // }
+            $('body').on('click', '.remove-attr', function() {
+                $(this).parents('tr').remove()
+                console.log($(this) + 123)
+                let getIdAttr = $(this).parent().parent().find('.select_type').val();
+                row_tr = $(this).parent().parent().parent().parent().find('tr');
+                console.log(this);
+                let attribute = [];
+                let variants = [];
+                row_tr.each(function() {
+                    console.log($(this));
+                    let attribute_selected = $(this).find('.select_type option:selected')
+                        .val();
+                    let attribute_options = $(this).find('.container-option').find(
+                        '.badge-2');
+                    let attr = [];
+                    if (attribute_options.length > 0) {
+                        for (let i = 0; i < attribute_options.length; i++) {
+                            let item = {};
+                            let data_value = $(attribute_options[i]).find('span.close')
+                                .attr("data-value");
+                            item['title'] = attribute_selected;
+                            item['label'] = [{
+                                title: data_value
+                            }];
+                            if (attribute.length > 0) {
+                                let check = false;
+                                for (let j = 0; j < attribute.length; j++) {
+                                    if (attribute[j]['title'] == item['title']) {
+                                        attribute[j]['label'] = attribute[j]['label']
+                                            .concat(item['label'])
+                                        check = true
+                                        break
+                                    }
+                                }
+                                if (!check) {
+                                    attribute.push(item)
+                                }
+                            } else {
+                                attribute.push(item)
+                            }
+
+                            // attr.push(item)
+                        }
+                    }
+
+                    // attribute.push(attr);
+                })
+                console.log(attribute);
+
+                function modifier(data) {
+                    return data.map(a => a.label.map(b => b.title));
+                }
+                // reducer - to convert the data into desired format
+                function reducer(data) {
+                    return data.reduce((a, b) => a.reduce((r, v) => r.concat(b.map(w => [].concat(v,
+                        w))), []))
+                }
+
+                // output - resultant data
+                output = reducer(modifier(attribute))
+
+                InnerTableAttr(output, $(this))
+                // $.ajax({
+                //     type: "get",
+                //     url: "{{ route('admin.attr.apiListAttr') }}",
+                //     data: {
+                //         _token: "{{ csrf_token() }}"
+                //     },
+                //     success: (res) => {
+                //         console.log(res.data)
+                //         let attr = res.data;
+                //         let c_tr = $(tr).parent().parent().parent();
+                //         console.log(c_tr)
+                //         if (c_tr.length == attr.length) {
+                //             $('.btn.btn-create').attr('disabled', true);
+                //         } else {
+                //             $('.btn.btn-create').attr('disabled', false)
+                //         }
+                //     }
+                // })
+            })
             $(".add-file").change(function(event) {
                 console.log(event.target.files);
                 if (event.target.files && event.target.files.length > 0) {
@@ -547,7 +635,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-lg-2">
-                                                <div class="btn btn-danger" onclick="removeAttr(this)"><span><i class="ri-delete-bin-2-fill"></i></span></div>
+                                                <div class="btn btn-danger" "><span><i class="ri-delete-bin-2-fill"></i></span></div>
                                             </div>
                                             
                                         </td>
@@ -560,29 +648,5 @@
                 })
             })
         })
-
-        function removeAttr(tr) {
-            console.log($(tr).parent().parent().parent().parent().find('tr').length)
-            $(tr).parents('tr').remove()
-            $.ajax({
-                type: "get",
-                url: "{{ route('admin.attr.apiListAttr') }}",
-                data: {
-                    _token: "{{ csrf_token() }}"
-                },
-                success: (res) => {
-                    console.log(res.data)
-                    let attr = res.data;
-                    let c_tr = $(tr).parent().parent().parent();
-                    console.log(c_tr)
-                    if (c_tr.length == attr.length) {
-                        $('.btn.btn-create').attr('disabled', true);
-                    } else {
-                        $('.btn.btn-create').attr('disabled', false)
-                    }
-                }
-            })
-
-        }
     </script>
 @endpush
