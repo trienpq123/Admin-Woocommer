@@ -23,7 +23,7 @@ class AttributeController extends Controller
 
     public function apiListAttr(Request $request)
     {
-        $listAttr = AttributeModel::with('attributevalue')->orderBy('id_attr', 'desc')->get();
+        $listAttr = AttributeModel::where('active', AttributeModel::ACTIVE)->orderBy('id_attr', 'desc')->get();
         return response()->json([
             'data' => $listAttr
         ]);
@@ -286,7 +286,7 @@ class AttributeController extends Controller
     {
         if ($request->id) {
             $id = $request->id;
-            $data = AttributeValue::where('attribute_id', '=', $id)->get(['id', 'value']);
+            $data = AttributeValue::where('attribute_id', '=', $id)->get(['id', 'value as text']);
 
             return response()->json([
                 'data' => $data,

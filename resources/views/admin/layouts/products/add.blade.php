@@ -7,7 +7,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
             <div class="pagetitle">
-                <h1>Sản phẩm</h1>
+                <h1>{{__('product.title')}}</h1>
                 <nav>
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
@@ -16,26 +16,21 @@
                     </ol>
                 </nav>
             </div>
-
-
-
-
             <form id="form-add" enctype="multipart/form-data" method="post">
                 @csrf
                 <div class="grid grid-tempalte-colum-7-3 gap-16">
                     <div class="form-left">
                         <div class="form-group">
-                            <label for="">Tên sản phẩm</label>
-                            <input type="text" placeholder="Nhập tên Sản phẩm" class="form-control name" id="slug"
+                            <label for="">{{__('product.name.title')}}</label>
+                            <input type="text" placeholder="{{__('product.name.placeholder')}}" class="form-control name" id="slug"
                                 onchange="ChangeToSlug()" name="name" value="{{ old('name') }}">
                             @if ($errors->has('name'))
                                 <p class="name-error alert-danger">{{ $errors->first('name') }}</p>
                             @endif
-
                         </div>
                         <div class="form-group">
-                            <label for="">Slug</label>
-                            <input type="text" placeholder="Nhập tên Sản phẩm" class="form-control slug"
+                            <label for="">{{__('product.slug.title')}}</label>
+                            <input type="text" placeholder="{{__('product.slug.placeholder')}}" class="form-control slug"
                                 id="convert_slug" name="slug" value="{{ old('slug') }}">
                             @if ($errors->has('slug'))
                                 <span class="text alert-danger fs-6"
@@ -43,41 +38,53 @@
                             @endif
                         </div>
                         <div class="form-group">
-                            <label for="">Mã sản phẩm (SKU)</label>
-                            <input type="text" placeholder="Nhập tên Sản phẩm" class="form-control product_sku"
+                            <label for="">{{__('product.product_sku.title')}}</label>
+                            <input type="text" placeholder="{{__('product.product_sku.placeholder')}}" class="form-control product_sku"
                                 id="product_sku" name="product_sku" value="{{ old('product_sku') }}">
 
                         </div>
                         <div class="form-group">
-                            <label for="parent_category">Danh mục</label>
-                            <select class="category form-select" id="parent_category" name="parent_category[]">
-                                <option value="">Chưa có</option>
+                            <label for="parent_category">{{__('product.category.title')}}</label>
+                            <select class="category form-select" id="parent_category" name="parent_category[]" multiple="multiple">
+                                <option value="">{{__('product.category.choose')}}</option>
                                 @if (count($listCategory) > 0)
                                     @foreach ($listCategory as $item)
-                                        <option {{ old('parent_category') == $item->id_category ? 'selected' : '' }}
+                                        <option
                                             data-img="{{ $item->image_category }}" value={{ $item->id_category }}>
                                             {{ $item->name_category }}</option>
+                                        @php
+                                            $categories = $item->childrendCategory;
+                                        @endphp
+                                        @while (count($categories) > 0)
+                                            @foreach ($categories as $child)
+                                                <option value="{{ $child->id_category }}"
+                                                    >
+                                                    ------{{ $child->name_category }}</option>
+                                            @endforeach
+                                            @php
+                                                $categories = $categories->flatMap->childrendCategory;
+                                            @endphp
+                                        @endwhile
                                     @endforeach
                                 @endif
-
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="">Mô tả</label>
+                            <label for="">{{__('product.description_short.title')}}</label>
                             <textarea name="desc_short" class="desc_short" id="desc_short" cols="30" rows="10">{{ old('desc_short') }}</textarea>
                         </div>
                         <div class="form-group">
-                            <label for="">Mô tả</label>
+                            <label for="">{{__('product.description.title')}}</label>
                             <textarea name="desc" class="desc" id="desc" cols="30" rows="10">{{ old('desc') }}</textarea>
                         </div>
 
                         <div class="form-group">
                             <div class="flex align-items-center justify-content-space-betweent">
-                                <label for="">Thêm thuộc tính</label>
+                                <label for="">{{__('product.attribute.title')}}</label>
 
                                 <button type="button" class="btn btn-modal btn-primary ms-2" data-bs-toggle="modal"
-                                    data-bs-target="#attribute">Thêm thuộc tính</button>
+                                    data-bs-target="#attribute">{{__('product.attribute.add')}}</button>
                                 {{-- <div class="modal fade" id="attribute" tabindex="-1" style="display: none;"
                                     aria-hidden="true">
                                     <div class="modal-dialog">
@@ -101,7 +108,7 @@
                             </div>
                             <table class="table" id="table-attribute">
                                 <thead>
-                                    <th>Tên thuộc tính</th>
+                                    <th>{{__('product.attribute.title')}}</th>
                                 </thead>
                                 <tbody>
                                     <tr>
@@ -133,7 +140,7 @@
                                 <tfoot class="t-foot">
                                     <tr>
                                         <td colspan="3">
-                                            <button type="button" class="btn btn-create">Thêm thuộc tính</button>
+                                            <button type="button" class="btn btn-create">{{__('product.attribute.add')}}</button>
                                         </td>
                                     </tr>
                                 </tfoot>
@@ -153,14 +160,14 @@
                     <div class="form-right">
                         <div class="form-group">
                             <input type="radio" name="status" id="status" class="status" value="0"
-                                style="width:auto;"><label for="">Ẩn</label>
+                                style="width:auto;"><label for="">{{__('product.status.hide')}}</label>
                             <input type="radio" name="status" checked id="status" class="status" value="1"
-                                style="width:auto;"> <label for="">Hiện</label>
+                                style="width:auto;"> <label for="">{{__('product.status.show')}}</label>
                         </div>
                         <div class="form-group">
-                            <label for="">Chọn thương hiệu</label>
+                            <label for="">{{__('product.brand.title')}}</label>
                             <select class=" brand form-control" id="brand" name="idBrand">
-                                <option value="">Chưa chọn thương hiệu</option>
+                                <option value="">{{__('product.brand.choose')}}</option>
                                 @if (count($getBrands) > 0)
                                     @foreach ($getBrands as $item)
                                         <option data-img="{{ $item->logo_brand }}" value={{ $item->id_brand }}>
@@ -170,8 +177,8 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="">Hình ảnh</label>
-                            <input type="file" name="image" id="" class="add-file" id="upload-file"
+                            <label for="">{{__('product.image.title')}}</label>
+                            <input type="file" name="image[]" id="" class="add-file" id="upload-file"
                                 accept="image/*" multiple>
                             <p class="image-error text text-danger"></p>
                             <div id="show-image" style="display:flex;align-items:center;flex-wrap: wrap; gap:10px;">
@@ -180,7 +187,7 @@
 
                         </div>
                         <div class="product-option">
-                            <label for="">Chọn Thông số kỹ thuật</label>
+                            <label for="">{{__('product.option.title')}}</label>
                             <div class="product-option__inner"></div>
                         </div>
                     </div>
@@ -207,9 +214,9 @@
     <script>
         $(document).ready(function() {
             // Render Image khi upload
-            //   $('.category').select2({
-            //     templateSelection: formatState
-            // });
+              $('.category').select2({
+                templateSelection: formatState
+            });
             btn_option = 1;
             let option_value = [];
             addOptionAttribute()
@@ -589,7 +596,7 @@
                 e.preventDefault();
                 let html = '';
                 $.ajax({
-                    type: "get",
+                    type: "GET",
                     url: "{{ route('admin.attr.apiListAttr') }}",
                     data: {
                         _token: "{{ csrf_token() }}"

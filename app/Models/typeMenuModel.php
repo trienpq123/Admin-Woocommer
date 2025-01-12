@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class typeMenuModel extends Model
 {
     use HasFactory;
-    protected $table = 'typeMenu';
+    protected $table = 'typemenu';
     protected $fillable = [
         'title',
         'enable'

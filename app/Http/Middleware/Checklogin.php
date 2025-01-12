@@ -16,6 +16,11 @@ class Checklogin
      */
     public function handle(Request $request, Closure $next): Response
     {
+        \Log::info('Check login middleware', [
+            'is_authenticated' => Auth::check(),
+            'session_id' => session()->getId(),
+            'user_id' => Auth::id()
+        ]);
         if(!Auth::user()){
             return redirect()->route('login');
         }

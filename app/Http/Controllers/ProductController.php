@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Repositories\Products\ProductRepositoryInterface;
 use App\Models\AttributeModel;
 use App\Models\BrandModel;
@@ -20,13 +21,16 @@ use Illuminate\Support\Facades\Validator;
 class ProductController extends Controller
 {
     protected $_ProductInterface;
-    public function __construct(ProductRepositoryInterface $ProductInterface){
+    public function __construct(ProductRepositoryInterface $ProductInterface)
+    {
         $this->_ProductInterface = $ProductInterface;
+        // dd(ProductModel::active()->get());
     }
     public function listProduct(Request $request)
     {
         $Interface = $this->_ProductInterface->index();
         $listProduct = $Interface['listProduct'];
+        // dd($listProduct);
         $getBrands = $Interface['getBrands'];
         $listCategory = $Interface['listCategory'];
         $listAttr =   $Interface['listAttr'];
@@ -46,7 +50,10 @@ class ProductController extends Controller
     {
         $listProduct = ProductModel::orderBy('id_product', 'desc')->get();
         $getBrands = BrandModel::orderBy('id_brand', 'desc')->get();
-        $listCategory = CategoryModel::whereNull('parent_category')->orderBy('id_category', 'desc')->get();
+        $listCategory = CategoryModel::whereNull('parent_category')->with(['childrendCategory' => function($query) {
+            $query->with('childrendCategory');
+        }])->orderBy('id_category', 'desc')->get();
+        // dd($listCategory);
         $listAttr = AttributeModel::orderBy('id_attr', 'desc')->get();
         return view('admin.layouts.products.add', compact('getBrands', 'listCategory', 'listProduct', 'listAttr'));
     }
@@ -71,7 +78,7 @@ class ProductController extends Controller
             $product = ProductModel::where('id_product', $id)->with('product_variants', 'skus_product_variant_options', 'product_variants.optionAttribute', 'product_variants.attribute')->first();
             $attribute = $product->attribute;
             $skus = $product->variants;
-            // dd($product);
+            // dd($product->variants);
             return view('admin.layouts.products.edit', compact('getBrands', 'listCategory', 'listProduct', 'listAttr', 'product'));
         }
         return view('admin.layouts.products.edit', compact('getBrands', 'listCategory', 'listProduct', 'listAttr'));
@@ -86,24 +93,18 @@ class ProductController extends Controller
         $p->p_desc_short = $request->desc_short;
         $p->p_desc = $request->desc;
         $p->id_brand = $request->idBrand;
-        $id_category = '';
+        $p->id_category = is_array($request->parent_category) ? implode(',', $request->parent_category) :'';
         $p->product_SKU = $request->product_sku;
         $p->status = $request->status;
         if ($request->attr) {
             $p->attribute = $request->attr;
         }
-        if ($request->product['variants']) {
-            $p->variants = $request->product['variants'];
-        }
-        $p->save();
-        if ($request->parent_category) {
-            $cateProduct = new CategoryProductModel();
-            foreach ($request->parent_category as $cate) {
-                $cateProduct->id_category =  $cate;
-                $cateProduct->id_product = $p->id_product;
-                $cateProduct->save();
+        if($request->product){
+            if ($request->product['variants']) {
+                $p->variants = $request->product['variants'];
             }
         }
+        $p->save();
         $get_last_product = ProductModel::orderBy('id_product', 'desc')->first();
         if ($request->image) {
 
@@ -135,7 +136,7 @@ class ProductController extends Controller
             }
         }
         // ADD VARIANTS
-        if ($request->attr) {
+        if ($request->attr && array_key_exists('title', $request->attr)) {
             $attr = $request->attr;
             foreach ($attr as $key => $value) {
                 $ProductVariants = ProductVariants::create([
@@ -202,6 +203,7 @@ class ProductController extends Controller
 
     public function putEditProduct(Request $request)
     {
+        // dd($request->all());
         $validator = Validator::make(
             $request->all(),
             [
@@ -219,25 +221,27 @@ class ProductController extends Controller
         $p->slug = $request->slug;
         $p->p_desc_short = $request->desc_short;
         $p->p_desc = $request->desc;
-        $p->id_brand = $request->idBrand;
-        $p->id_category = $request->id_category;
+        // $p->id_brand = $request->idBrand;
+        if ($request->parent_category) {
+            $implode_category = implode(',', $request->parent_category);
+            $p->id_category = $implode_category;
+        }
         $p->product_SKU = $request->product_sku;
         $p->status = $request->status;
-        if($request->attr){
+        if ($request->attr) {
             $p->attribute = $request->attr;
         }
-        if($request->product['variants']){
+        if ($request->product) {
             $p->variants = $request->product['variants'];
         }
         $p->save();
         if ($request->image) {
             foreach ($request->image as $image) {
-
                 $imageName = $image;
                 $name_image = time() . '_' . $imageName->getClientOriginalName();
                 $explode = explode('.', $name_image);
                 $typeImage = end($explode);
-                $imageExtensions = ['jpg', 'jpeg', 'gif', 'png', 'bmp', 'svg', 'svgz', 'cgm', 'djv', 'djvu', 'ico', 'ief', 'jpe', 'pbm', 'pgm', 'pnm', 'ppm', 'ras', 'rgb', 'tif', 'tiff', 'wbmp', 'xbm', 'xpm', 'xwd'];
+                $imageExtensions = ['jpg', 'jpeg', 'gif','webp', 'png', 'bmp', 'svg', 'svgz', 'cgm', 'djv', 'djvu', 'ico', 'ief', 'jpe', 'pbm', 'pgm', 'pnm', 'ppm', 'ras', 'rgb', 'tif', 'tiff', 'wbmp', 'xbm', 'xpm', 'xwd'];
                 if (in_array($typeImage, $imageExtensions)) {
                     $p_image = new ProductImageModel();
                     $path = 'public/uploads/images/products/';

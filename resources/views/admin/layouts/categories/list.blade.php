@@ -301,6 +301,7 @@
                         type: "GET",
                         url: "{{ route('admin.category.apiListCategory') }}",
                         dataSrc: 'data'
+                        
                     },
                     "columns": [{
                             data: null,

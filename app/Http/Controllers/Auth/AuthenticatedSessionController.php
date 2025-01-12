@@ -9,9 +9,11 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Laravel\Sanctum\HasApiTokens;
 
 class AuthenticatedSessionController extends Controller
 {
+    use HasApiTokens;
     /**
      * Display the login view.
      */
@@ -28,6 +30,13 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+
+        // $user = Auth::user();
+        // $token = $user->createToken($user->name)->plainTextToken;
+        
+        // Lưu token vào cơ sở dữ liệu
+        // $user->api_token = $token;
+        // $user->save();
 
         return redirect()->intended(RouteServiceProvider::HOME);
     }

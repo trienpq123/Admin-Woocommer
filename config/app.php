@@ -1,5 +1,6 @@
 <?php
 
+use App\Providers\CustomComponentsBlade;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
 
@@ -172,7 +173,9 @@ return [
         Spatie\Permission\PermissionServiceProvider::class,
         Mckenziearts\Notify\LaravelNotifyServiceProvider::class,
         App\Providers\RepositoryServiceProvider::class,
-        // Illuminate\Redis\RedisServiceProvider::class,
+        App\Providers\CustomComponentsBlade::class,
+        // CustomComponentsBlade\CustomComponentsBladeServiceProvider::class,
+        Illuminate\Redis\RedisServiceProvider::class,
     ])->toArray(),
 
     /*

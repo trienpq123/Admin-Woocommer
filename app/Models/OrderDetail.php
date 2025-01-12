@@ -12,7 +12,9 @@ class OrderDetail extends Model
     protected $fillable = [
         'id_product',
         'quanlity',
-        'id_order'
+        'id_order',
+        'total',
+
     ];
     protected $primaryKey = ['id_order','id_product'];
     public function product(){

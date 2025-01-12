@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('rate', function (Blueprint $table) {
+        Schema::create('rate_product', function (Blueprint $table) {
             $table->id('id')->autoIncrement();
             $table->integer('id_product');
             $table->foreign('id_product')->references('id_product')->on('product');
-            $table->integer('user');
-            $table->foreign('id_user')->references('id')->on('user');
+            $table->bigInteger('id_user')->nullable();
+            $table->foreign('id_user')->references('id')->on('users');
             $table->integer('status')->default(0);
             $table->integer('rate')->default(0);
             $table->timestamp('created_at')->useCurrent();
@@ -29,8 +29,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('create', function (Blueprint $table) {
-            //
-        });
+       Schema::table('rate_product', function (Blueprint $table) {
+           $table->dropColumn(['id_product', 'user', 'status', 'rate', 'created_at', 'updated_at']);
+       });
     }
 };

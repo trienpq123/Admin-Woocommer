@@ -7,7 +7,7 @@ use App\Models\attributeValueModel;
 use App\Repositories\Attributes\AttributeRepositoryInterface;
 use App\Repositories\BaseRepository;
 
-class Attributerepository extends BaseRepository implements AttributeRepositoryInterface
+class AttributeRepository extends BaseRepository implements AttributeRepositoryInterface
 {
     public function getModel()
     {

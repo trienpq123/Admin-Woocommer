@@ -155,6 +155,25 @@
 
             </ul>
         </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#banner" data-bs-toggle="collapse" href="#">
+                <i class="ri-sparkling-2-fill"></i><span>{{__('menu.banner')}} -- xong</span><i
+                    class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="banner" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="{{ route('admin.banner.listBanner') }}">
+                        <i class="bi bi-circle"></i><span>{{__('menu.list_banner')}} </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <i class="bi bi-circle"></i><span>{{__('menu.add_new_banner')}}</span>
+                    </a>
+                </li>
+
+            </ul>
+        </li>
     
       
 
