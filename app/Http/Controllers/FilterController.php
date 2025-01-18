@@ -13,10 +13,9 @@ class FilterController extends Controller
         // $lfilter_child = FilterModel::whereNotNull('_parent')->get();
         $listFilter = FilterModel::all();
         return view('admin.layouts.filter.list',compact('lfilter','listFilter'));
-        
     }
     public function addFilter(Request $request){
-        
+
     }
     public function postAddFilter(Request $request){
         $request->validate(
