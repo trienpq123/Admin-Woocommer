@@ -26,36 +26,25 @@ class DashboardController extends Controller
      */
     public function loginPost(LoginRequest $request)
     {
-        try {
-            $credentials = $request->validate([
-                'email' => 'required|email',
-                'password' => 'required',
-            ]);
-
-            if (Auth::attempt($credentials, true)) {
-                $request->session()->regenerate();
-                \Log::info('Login successful', [
-                    'user_id' => Auth::id(),
-                    'session_id' => session()->getId()
-                ]);
-                return redirect()->intended('admin/dashboard');
-            }
-
-            throw ValidationException::withMessages([
-                'email' => [trans('auth.failed')],
-            ]);
-
-        } catch (\Exception $e) {
-            \Log::error('Login error', [
-                'error' => $e->getMessage(),
-                'user_email' => $request->input('email'),
+        if (Auth::attempt($request->only(['email', 'password']))) {
+            $request->session()->regenerate();
+            \Log::info('Login successful', [
+                'user_id' => Auth::id(),
                 'session_id' => session()->getId()
             ]);
 
-            return back()->withErrors([
-                'login' => 'An unexpected error occurred. Please try again later.'
-            ]);
+            return redirect()->intended(route('admin.DashboardAdmin'));
         }
+
+        \Log::error('Login error', [
+            'error' => 'Invalid credentials',
+            'user_email' => $request->input('email'),
+            'session_id' => session()->getId()
+        ]);
+
+        throw ValidationException::withMessages([
+            'email' => trans('auth.failed'),
+        ]);
     }
 
     /**

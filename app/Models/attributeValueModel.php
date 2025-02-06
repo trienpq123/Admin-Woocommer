@@ -19,4 +19,14 @@ class attributeValueModel extends Model
     {
         return $this->belongsTo(AttributeModel::class, 'attribute_id', 'id_attr');
     }
+
+    public function getAttributeId($id,$query)
+    {
+        return $query->where('attribute_id', '=', $id);
+    }
+
+    public function ScopeLikeValue($value, $query)
+    {
+        return $query->where('value', 'like', '%' . $value . '%');
+    }
 }

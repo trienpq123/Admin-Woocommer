@@ -5,4 +5,5 @@ interface ProductRepositoryInterface extends RepositoryInterface
 {
   public function index();
   public function GetImageProduct();
+  public function getProducts(array $id);
 }

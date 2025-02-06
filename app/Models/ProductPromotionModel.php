@@ -9,10 +9,9 @@ class ProductPromotionModel extends Model
 {
     use HasFactory;
     protected $table = 'product_promotion';
-    protected $primaryKey = 'id_product_promotion';
+    protected $primaryKey = 'promotion_id';
     protected $casts = [
         'id_product' => 'array',
-
     ];
     protected $fillable = [
         'promotion_id',

@@ -10,6 +10,11 @@ use App\Repositories\BaseRepository;
 
 class CategoriesRepository extends BaseRepository implements CategoriesRepositoryInterface
 {
+    protected $_categoryRepository;
+    public function __construct(CategoryModel $category){
+        $this->_model = $category;
+    }
+
     public function getModel()
     {
         return CategoryModel::class;
@@ -94,5 +99,15 @@ class CategoriesRepository extends BaseRepository implements CategoriesRepositor
            return true;
         }
         return false;
+    }
+
+    public function getAll(){
+        return $this->_model::all();
+    }
+
+    // get parent null
+    public function parentsNull()
+    {
+        return $this->_model::whereNull('parent_category')->get();
     }
 }

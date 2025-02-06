@@ -2,9 +2,7 @@
 
 namespace App\Services;
 
-use App\Repositories\Products\ProductRepositoryInterface;
 use App\Repositories\Promotion\PromotionRepositoryInterface;
-use App\Repositories\Promotion\PromotionsRepository;
 use Carbon\Carbon;
 
 class PromotionService
@@ -71,20 +69,12 @@ class PromotionService
      * @param  int  $id
      * @return \App\Models\PromotionModel
      */
-    public function updateOrCreate($request,$id){
-        $date_start = '';
-        $date_end = '';
-        if ($request->date_start) {
-            $date_start = Carbon::parse($request->date_start)->toDateTimeString();
-        }
-        if ($request->date_end) {
-            $date_end = Carbon::parse($request->date_end)->toDateTimeString();
-        }
+    public function updateOrCreate($id,$request){
         $attributes = [
-           'title' => $request->name,
+            'title' => $request->name,
             'discount' => $request->discount,
-            'from' => $date_start,
-            'to' => $date_end,
+            'from' => $request->date_start ? Carbon::parse($request->date_start)->toDateTimeString() : '',
+            'to' => $request->date_end ? Carbon::parse($request->date_end)->toDateTimeString() : '',
             'status' => $request->status,
             'type' => $request->type,
         ];

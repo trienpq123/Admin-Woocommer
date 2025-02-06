@@ -2,17 +2,17 @@
 @section('articles')
     <div class="list-table">
         <div class="main" id="main">
-            <div class="alert alert-primary alert-dismissible fade show alert-fixed" role="alert">
+            {{-- <div class="alert alert-primary alert-dismissible fade show alert-fixed" role="alert">
                 A simple primary alert—check it out!
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
+            </div> --}}
             <div class="pagetitle">
-                <h1>Mã Khuyến Mãi</h1>
+                <h1>{{__('promotion.title')}}</h1>
                 <nav>
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                        <li class="breadcrumb-item">Mã Khuyến Mãi</li>
-                        <li class="breadcrumb-item active">Thêm Mã Khuyến Mãi mới</li>
+                        <li class="breadcrumb-item">{{__('promotion.breadcrum.index')}}</li>
+                        <li class="breadcrumb-item active">{{__('promotion.breadcrum.edit')}}</li>
                     </ol>
                 </nav>
             </div>
@@ -31,33 +31,32 @@
                 <div class="grid grid-tempalte-colum-7-3 gap-16">
                     <div class="form-left">
                         <div class="form-group">
-                            <label for="">Tên Mã Khuyến Mãi</label>
-                            <input type="text" placeholder="Nhập tên Mã Khuyến Mãi" class="form-control name"
+                            <label for="">{{__('promotion.name.title')}}</label>
+                            <input type="text" placeholder="{{__('promotion.name.placeholder')}}" class="form-control name"
                                 name="name" value="{{ $promotion->title ?? old('name') }}">
                             @error('name')
                                 <p class="name-error alert-danger">{{ $errors->first('name') }}</p>
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="">Code</label>
-                            <input type="text" placeholder="Nhập code" class="form-control code" name="code"
+                            <label for="">{{__('promotion.code.title')}}</label>
+                            <input type="text" placeholder="{{__('promotion.code.placeholder')}}" class="form-control code" name="code"
                                 value="{{ $promotion->code ? $promotion->code : old('code') }}">
                             @error('code')
                                 <p class="code-error alert-danger">{{ $errors->first('code') }}</p>
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="type">Loại giảm giá</label>
+                            <label for="type">{{__('promotion.select.title')}}</label>
                             <select name="type" class="form-select" id="type">
-                                <option value="">Chọn loại giảm giá</option>
-                                <option {{ $promotion->type == 1 ? 'selected' : '' }} value="1">Giá giá theo % giá trị
-                                    đơn hàng</option>
-                                <option {{ $promotion->type == 2 ? 'selected' : '' }} value="2">Giảm giá tiền</option>
+                                <option value="">{{__('promotion.select.placeholder')}}</option>
+                                <option {{ $promotion->type == 1 ? 'selected' : '' }} value="1">{{__('promotion.select.option.1')}}</option>
+                                <option {{ $promotion->type == 2 ? 'selected' : '' }} value="2">{{__('promotion.select.option.2')}}</option>
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="discount">Gía giảm</label>
+                            <label for="discount">{{__('promotion.discount.title')}}</label>
                             <input type="text" class="form-control" name="discount" id="discount"
                                 value="{{ $promotion->discount ?? old('discount') }}">
                             @error('discount')
@@ -66,21 +65,13 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="id_product">Sản phẩm</label>
+                            <label for="id_product">{{__('promotion.category.title')}}</label>
                             <select class="id_product form-select" id="id_product[]" name="id_product[]"
                                 multiple="multiple">
-                                <option value="">Chưa có</option>
+                                <option value="">{{__('promotion.category.placeholder')}}</option>
                                 @if (count($product) > 0)
                                     @foreach ($product as $item)
-                                        @if (isset($product_selected) && count($product_selected) > 0)
-                                            @foreach ($product_selected as $p_selected)
-                                                <option
-                                                    {{ $item->id_product == $p_selected->id_product ? 'selected' : '' }}
-                                                    value="{{ $item->id_product }}">{{ $item->name_product }}</option>
-                                            @endforeach
-                                        @else
-                                            <option value="{{ $item->id_product }}">{{ $item->name_product }}</option>
-                                        @endif
+                                        <option value="{{ $item->id_product }}" {{in_array($item->id_product, $getPromotionProduct) ? 'selected' : ''}} >{{ $item->name_product }}</option>
                                     @endforeach
                                 @endif
                             </select>

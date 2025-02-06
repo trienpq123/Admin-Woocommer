@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -58,13 +59,11 @@ class User extends Authenticatable  implements Authorizable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'created_at' => 'date:d-m-Y',
-        // 'updated_at' => 'dd-mm-y',
     ];
 
     protected function password() : Attribute{
         return Attribute::make(
-            get: fn ($value) => $value,
-            set: fn ($value) => encrypt($value),
+            set: fn ($value) => Hash::needsRehash($value) ? Hash::make($value) : $value
         );
     }
 

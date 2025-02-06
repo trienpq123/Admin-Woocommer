@@ -32,5 +32,10 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         return  $this->_model::create($attributes);
          
     }
+
+    public function getProducts(array $id)
+    {
+        return $this->_model::whereIn('id_product', $id)->get();
+    }
    
 }

@@ -121,11 +121,7 @@
             <ul id="product" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="{{ route('admin.product.listProduct') }}">
-                        <i class="bi bi-circle"></i><span>Danh sách sản phẩm</span>
-
-                    <a href="">
                         <i class="bi bi-circle"></i><span>{{__('menu.list_product')}}</span>
-
                     </a>
                 </li>
                 <li>

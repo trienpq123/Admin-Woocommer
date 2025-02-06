@@ -6,41 +6,27 @@ use App\Http\Requests\RequestCategory;
 use App\Models\AttributeModel;
 use App\Models\AttributeValue;
 use App\Models\CategoryModel;
-use App\Models\FilterCategory;
 use App\Models\filterCategoryModel;
 use App\Models\FilterCategoryOption;
-use App\Models\FilterModel;
-use App\Repositories\Categories\CategoriesRepositoryInterface;
-use CKSource\CKFinder\Filesystem\File\File;
+use App\Repositories\Categories\CategoriesRepositoryInterface as CategoriesRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redis;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
-use Termwind\Components\Raw;
 
 class CategoryController extends Controller
 {
-    protected $_CategoryInterface;
-    public function __construct(CategoriesRepositoryInterface $CategoryInterface){
-        $this->_CategoryInterface = $CategoryInterface;
+    protected $_categoryRepository;
+    public function __construct(CategoriesRepository $categoriesRepository){
+        $this->_categoryRepository = $categoriesRepository;
     }
 
     public function listCategory(Request $request)
     {
-        // dd(123);
         return view('admin.layouts.categories.list');
     }
 
-    public function apiListCategory(Request $request)
+    public function apiListCategory()
     {
-        // $listCategory = Redis::get('listCategory');
-        // if (!$listCategory) {
-            $listCategory = CategoryModel::orderBy('id_category', 'desc')->get();
-            $listCategory = json_decode($listCategory);
-        //     Redis::set('listCategory', $listCategory);
-        // }
-
-        // dd($listCategory);
+        $listCategory = json_decode($this->_categoryRepository->getAll());
         return response()->json([
             'status' => 200,
             'data' => $listCategory
@@ -50,7 +36,7 @@ class CategoryController extends Controller
     public function addCategory(Request $request)
     {
         $attr = AttributeModel::all();
-        $listCategory = CategoryModel::parentsNull()->get();
+        $listCategory = $this->_categoryRepository->parentsNull();
         $attributes = AttributeModel::with(['attributevalue' => function($query) {
             $query->where('is_required', AttributeValue::SHOW_IS_REQUIRED);
         }])->where('active', AttributeModel::ACTIVE)->get();

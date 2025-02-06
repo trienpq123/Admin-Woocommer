@@ -1,3 +1,0 @@
-<invoke name="builtin_run_terminal_command">
-<parameter name="command">mkdir -p app/Widgets</parameter>
-</invoke>

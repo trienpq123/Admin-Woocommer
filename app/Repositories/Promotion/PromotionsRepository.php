@@ -103,6 +103,6 @@ class PromotionsRepository extends BaseRepository implements PromotionRepository
     }
 
     public function updateOrCreate($id,$attributes = []){
-        return $this->_model::updateOrCreate(['id' => $id],$atrtributes);
+        return $this->_model::updateOrCreate(['id' => $id],$attributes);
     }
 }

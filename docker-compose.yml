@@ -99,14 +99,15 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: cell_phones
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
-   
+      # Regular user for application
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: password
     restart: unless-stopped
     ports:
       - "3307:3306"
     volumes:
       - db_data:/var/lib/mysql
+      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
 
   phpmyadmin:
     container_name: phpmyadmin
@@ -115,9 +116,8 @@ services:
     ports:
       - "8888:80"
     environment:
-      - PMA_HOST=mysql
-      - PMA_ARBITRARY=1
       - PMA_HOST=db
+      - PMA_ARBITRARY=1
     depends_on:
       - db
     links:
@@ -133,5 +133,3 @@ services:
 >>>>>>> 91c698627fd695c05faa1935846aa5e9f4ed8764
 volumes:
   db_data:
-
-  

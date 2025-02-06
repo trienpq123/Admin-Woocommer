@@ -33,4 +33,13 @@ class AttributeModel extends Model
     public function scopeGetAttribute($query,$id){
         return $query->where('id_attr',$id);
     }
+    public function getActive($query)
+    {
+        return $query->where('active',$this->ACTIVE);
+    }
+
+    public function getDesc($query)
+    {
+        return $query->orderBy('desc');
+    }
 }

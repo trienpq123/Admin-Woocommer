@@ -17,7 +17,7 @@ use App\Http\Controllers\PagesController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\PromotionProduct;
+use App\Http\Controllers\PromotionProductController;
 use App\Http\Controllers\RateController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SystemController;
@@ -85,12 +85,12 @@ Route::group([ 'middleware' => 'Localization'],function() {
             Route::delete('/delete-product-image',[ProductController::class,'deleteImageProduct'])->name('deleteImageProduct');
         });
         Route::prefix('promotion')->name('promotion.')->group(function(){
-            Route::get('/',[PromotionProduct::class,'index'])->name('index');
-            Route::get('/create',[PromotionProduct::class,'create'])->name('create');
-            Route::post('/store',[PromotionProduct::class,'store'])->name('store');
-            Route::get('/edit/{id}',[PromotionProduct::class,'edit'])->name('edit');
-            Route::post('/update/{id}',[PromotionProduct::class,'update'])->name('update');
-            Route::get('/delete/{id}',[PromotionProduct::class,'delete'])->name('delete');
+            Route::get('/',[PromotionProductController::class,'index'])->name('index');
+            Route::get('/create',[PromotionProductController::class,'create'])->name('create');
+            Route::post('/store',[PromotionProductController::class,'store'])->name('store');
+            Route::get('/edit/{id}',[PromotionProductController::class,'edit'])->name('edit');
+            Route::post('/update/{id}',[PromotionProductController::class,'update'])->name('update');
+            Route::get('/delete/{id}',[PromotionProductController::class,'delete'])->name('delete');
         });
         Route::prefix('comment')->name('comment.')->group(function(){
             Route::get('/',[CommentController::class,'index'])->name('index');

@@ -1,10 +1,14 @@
+<<<<<<< Updated upstream
 <<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
 
 node_modules/
 npm-debug.log
 .git/
 .gitignore
 .DS_Store
+<<<<<<< Updated upstream
 *.log
 *.swp
 *.bak
@@ -33,3 +37,27 @@ node_modules
 .git
 .DS_Store
 >>>>>>> 91c698627fd695c05faa1935846aa5e9f4ed8764
+=======
+*.log
+*.swp
+*.bak
+dist/
+build/
+coverage/
+.vscode/
+.idea/
+*.md
+!README.md
+tmp/
+temp/
+logs/
+*.tar
+*.gz
+*.zip
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+.tox/
+.cache/
+>>>>>>> Stashed changes

@@ -3,15 +3,12 @@
 namespace App\Providers;
 
 use App\Models\AttributeModel;
-use App\Models\OrderDetail;
 use App\Models\User;
 use App\Observers\UserObserve;
 use App\Repositories\Attributes\Attributerepository;
 use App\Repositories\Attributes\AttributeRepositoryInterface;
 use App\Repositories\Categories\CategoriesRepository;
 use App\Repositories\Categories\CategoriesRepositoryInterface;
-use App\Repositories\Orders\OrderInterface;
-use App\Repositories\Orders\OrderRepository;
 use App\Repositories\Products\ProductRepository;
 use App\Repositories\Products\ProductRepositoryInterface;
 use App\Repositories\Profile\ProfileRepositoryInterface;
@@ -20,8 +17,6 @@ use App\Repositories\Promotion\PromotionRepositoryInterface;
 use App\Repositories\Promotion\PromotionsRepository;
 use App\Repositories\Roles\RoleRepositoryInterface;
 use App\Repositories\Roles\RoleRespository;
-use App\Services\PromotionSerivceInterface;
-use App\Services\PromotionService;
 use App\View\Components\user\childNavLevel1;
 use App\View\Components\user\nav;
 use App\View\Components\user\productItem;

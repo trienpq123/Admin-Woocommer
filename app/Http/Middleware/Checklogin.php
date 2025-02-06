@@ -21,7 +21,7 @@ class Checklogin
             'session_id' => session()->getId(),
             'user_id' => Auth::id()
         ]);
-        if(!Auth::user()){
+        if(!Auth::check()){
             return redirect()->route('login');
         }
         return $next($request);
