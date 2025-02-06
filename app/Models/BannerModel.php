@@ -8,12 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class BannerModel extends Model
 {
     use HasFactory;
-    protected $table = "banner";
-    protected $primaryKey = "id_banner";
+    protected $table = "banners";
     protected $fillable = [
         'link_img',
-        'alt',
-        'name_img'
+        'title',
+        'name_img',
+        'status',
+        'index',
     ];
     CONST CREATED_AT = NULL;
     CONST UPDATED_AT = NULL;

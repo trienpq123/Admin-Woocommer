@@ -16,7 +16,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         return ProductModel::class;
     }
     public function index(){
-        $listProduct = $this->_model::orderBy('id_product', 'desc')->get();
+        $listProduct = $this->_model::orderBy('id_product', 'desc')->with('images')->get();
         $getBrands = BrandModel::orderBy('id_brand', 'desc')->get();
         $listCategory = CategoryModel::whereNull('parent_category')->orderBy('id_category', 'desc')->get();
         $listAttr = AttributeModel::orderBy('id_attr', 'desc')->get();
@@ -24,9 +24,13 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
        
     }
 
-
     public function GetImageProduct(){
         return $this->_model::with('images')->get();
+    }
+
+    public function create($attributes = []){
+        return  $this->_model::create($attributes);
+         
     }
    
 }

@@ -13,6 +13,8 @@ class AttributeValue extends Model
         'attribute_id',
         'value',
     ];
+    const SHOW_IS_REQUIRED = 1;
+    const HIDE_IS_REQUIRED = 0;
 
     public function attribute()
     {

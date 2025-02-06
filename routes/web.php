@@ -23,7 +23,10 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SystemController;
 use App\Http\Controllers\UserController;
 use App\Models\FilterCategoryOption;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Facades\Socialite;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,13 +38,18 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-Route::get('/', [IndexController::class, 'indexUser'])->name('index');  
-
+Route::get('/', [IndexController::class, 'indexUser'])->name('index');
+Route::group(['middleware' => ['role:Administrator']], function () {
+    Route::get('/pulse-overview',function(){
+        echo 'ok';
+    });
+});
 Route::get('login',[DashboardController::class,'login'])->name('login');
 Route::post('login',[DashboardController::class,'loginPost'])->name('loginPost');
+
+Route::get('/redirect/{driver}',[DashboardController::class,'redirectToProvider'])->name('redirectToGoogle');
+Route::get('/auth/{driver}/callback',[DashboardController::class,'handleGoogleCallback'])->name('handleGoogleCallback');
 Route::group([ 'middleware' => 'Localization'],function() {
-  
     Route::get('logout',[DashboardController::class,'logout'])->name('logout');
     Route::middleware(['check_login'])->prefix('admin')->name('admin.')->group(function(){
         Route::get('/dashboard',[IndexController::class,'index'])->name('DashboardAdmin');
@@ -115,6 +123,7 @@ Route::group([ 'middleware' => 'Localization'],function() {
             Route::get('/order-detail',[OrderController::class,'orderDetail'])->name('orderDetail');
             // Route::get('/edit',[OrderController::class,'editBrand'])->name('editBrand');
             Route::get('/add',[OrderController::class,'orderAdd'])->name('orderAdd');
+            Route::post('/add',[OrderController::class,'orderAddStore'])->name('orderAddStore');
             // Route::post('/edit',[OrderController::class,'putEditBrand'])->name('putEditBrand');
             // Route::delete('/delete',[OrderController::class,'deleteBrand'])->name('deleteBrand');
         });
@@ -144,7 +153,7 @@ Route::group([ 'middleware' => 'Localization'],function() {
             Route::get('/add',[BannerController::class,'addBanner'])->name('addBanner');
             Route::get('/edit',[BannerController::class,'editBanner'])->name('editBanner');
             Route::post('/add',[BannerController::class,'postAddBanner'])->name('postAddBanner');
-            Route::post('/edit',[BannerController::class,'putEditBanner'])->name('putEditBanner');
+            Route::post('/edit/{id}',[BannerController::class,'putEditBanner'])->name('putEditBanner');
             Route::delete('/delete',[BannerController::class,'deleteBanner'])->name('deleteBanner');
         });
         Route::prefix('menu')->name('menu.')->group(function() {
@@ -176,7 +185,7 @@ Route::group([ 'middleware' => 'Localization'],function() {
             // AJAX
             Route::post('/ajax/attribute',[AttributeController::class,'ajaxAttribute'])->name('ajaxAttribute');
         });
-   
+
         Route::prefix('attr-cat')->name('attr-cat.')->group(function() {
             // Route::get('/',[AttributeController::class,'listAttr'])->name('listAttr');
             // Route::get('/api/list',[AttributeController::class,'apiListAttr'])->name('apiListAttr');
@@ -190,7 +199,7 @@ Route::group([ 'middleware' => 'Localization'],function() {
         });
 
         Route::prefix('system')->name('system.')->group(function(){
-           
+
             Route::match(['get','post'],'/',[SystemController::class,'index'])->name('config');
 
         });
@@ -213,22 +222,25 @@ Route::group([ 'middleware' => 'Localization'],function() {
             Route::post('/add',[PermissionController::class,'PermissionFormPostAdd'])->name('permisson.store');
             Route::get('/delete/{id}',[PermissionController::class,'PermissionDelete'])->name('permisson.delete');
         });
-        Route::middleware(['role:Administrator'])->prefix('User')->name('User.')->group(function(){
+        Route::prefix('User')->name('User.')->group(function(){
             Route::get('/',[UserController::class,'index'])->name('User.index') ;
             // Route::get('/add',[UserController::class,'UserFormAdd'])->name('User.create')->middleware(['permission:add_user']);
-            Route::get('/add',[UserController::class,'UserFormAdd'])->name('User.create');
-            Route::get('/edit-user/{id}',[UserController::class,'UserFormEdit'])->name('User.edit');
+            Route::get('/add',[UserController::class,'UserFormAdd'])->name('User.create')->middleware(['role_or_permission:user.add|Super Admin']);
+            Route::get('/edit-user/{id}',[UserController::class,'UserFormEdit'])->name('User.edit')->middleware(['role_or_permission:user.edit|Super Admin']);
             // ->middleware(['permission:edit user']);
             Route::put('/edit-user/{id}',[UserController::class,'UserFormUpdate'])->name('User.update');
             // Route::post('/add',[UserController::class,'UserFormPostAdd'])->name('User.store')->middleware(['permission:add_user']);
-            Route::post('/add',[UserController::class,'UserFormPostAdd'])->name('User.store');
+            Route::post('/add',[UserController::class,'UserFormPostAdd'])->name('User.store')->middleware(['role_or_permission:user.add|Super Admin']);
             Route::get('/delete/{id}',[UserController::class,'UserDelete'])->name('User.delete');
+            // Route::post('destroy',[UserController::class,'destroy'])->name('User.destroy');
             Route::get('/get-permission-role',[UserController::class,'getPermissionRole'])->name('user.getPermissionRole');
         });
 
         Route::prefix('profile')->name('profile.')->group(function(){
-            Route::get('/{id}',[ProfileController::class,'edit'])->name('edit');
-            Route::put('/{id}',[ProfileController::class,'update'])->name('update');
+            Route::get('/',[ProfileController::class,'index'])->name('index');
+            
+            Route::put('/change-password',[ProfileController::class,'update'])->name('updatePassword');
+            // Route::post('/edit-profile',[ProfileController::class,'editProfile'])->name('editProfile');
         });
         Route::get('ckeditor', [FileController::class,'index'])->name('indexCkeditor');
         Route::post('ckeditor/upload', [FileController::class,'uploadFile'])->name('uploadFile');

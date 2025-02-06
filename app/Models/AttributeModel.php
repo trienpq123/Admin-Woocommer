@@ -18,11 +18,19 @@ class AttributeModel extends Model
     CONST UPDATED_AT = NULL;
     CONST CREATED_AT = NULL;
 
+    // Active/Hide Attribute
+    const ACTIVE = 1;
+    const HIDE = 0;
+
     // public function category(){
     //     return $this->belongsTo(CategoryModel::class,'id_category','id_category');
     // }
 
     public function attributevalue(){
         return $this->hasMany(attributeValueModel::class,'attribute_id','id_attr');
+    }
+
+    public function scopeGetAttribute($query,$id){
+        return $query->where('id_attr',$id);
     }
 }

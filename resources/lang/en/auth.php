@@ -6,6 +6,6 @@
         'password' => 'Password',
         're_password' => 'Enter Again Password',
         'role' => 'Role',
-        'permisstion' => 'permission'
+        'permission' => 'permission'
     ]
 ?>

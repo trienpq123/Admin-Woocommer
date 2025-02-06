@@ -16,6 +16,15 @@
                     </ol>
                 </nav>
             </div>
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <form id="form-add" action="{{ route('admin.promotion.update', ['id' => $promotion->id]) }}"
                 enctype="multipart/form-data" method="post">
                 @csrf
@@ -25,11 +34,17 @@
                             <label for="">Tên Mã Khuyến Mãi</label>
                             <input type="text" placeholder="Nhập tên Mã Khuyến Mãi" class="form-control name"
                                 name="name" value="{{ $promotion->title ?? old('name') }}">
+                            @error('name')
+                                <p class="name-error alert-danger">{{ $errors->first('name') }}</p>
+                            @enderror
                         </div>
                         <div class="form-group">
                             <label for="">Code</label>
                             <input type="text" placeholder="Nhập code" class="form-control code" name="code"
                                 value="{{ $promotion->code ? $promotion->code : old('code') }}">
+                            @error('code')
+                                <p class="code-error alert-danger">{{ $errors->first('code') }}</p>
+                            @enderror
                         </div>
                         <div class="form-group">
                             <label for="type">Loại giảm giá</label>
@@ -45,6 +60,9 @@
                             <label for="discount">Gía giảm</label>
                             <input type="text" class="form-control" name="discount" id="discount"
                                 value="{{ $promotion->discount ?? old('discount') }}">
+                            @error('discount')
+                                <p class="discount-error alert-danger">{{ $errors->first('discount') }}</p>
+                            @enderror
                         </div>
 
                         <div class="form-group">
@@ -56,7 +74,8 @@
                                     @foreach ($product as $item)
                                         @if (isset($product_selected) && count($product_selected) > 0)
                                             @foreach ($product_selected as $p_selected)
-                                                <option {{ $item->id_product == $p_selected->id_product ? 'selected' : '' }}
+                                                <option
+                                                    {{ $item->id_product == $p_selected->id_product ? 'selected' : '' }}
                                                     value="{{ $item->id_product }}">{{ $item->name_product }}</option>
                                             @endforeach
                                         @else
@@ -87,12 +106,18 @@
                                 <input type="datetime-local" class="form-control" name="date_start" id="date-start"
                                     value="{{ $promotion->from ?? old('date_start') }}">
                                 <p class="date-start-error text text-danger">Chưa chọn ngày bắt đầu</p>
+                                @error('date_start')
+                                    <p class="date-start-error alert-danger">{{ $errors->first('date_start') }}</p>
+                                @enderror
                             </div>
                             <div class="col-lg-12">
                                 <label for="date-start">Ngày kết thúc</label>
                                 <input type="datetime-local" class="form-control" name="date_end" id="date-end"
-                                    value="{{ $promotion->to ?? old('date_end') }}"">
+                                    value="{{ $promotion->to ?? old('date_end') }}">
                                 <p class="date-start-error text text-danger">Chưa chọn ngày kết thúc</p>
+                                @error('date_end')
+                                    <p class="date-start-error alert-danger">{{ $errors->first('date_end') }}</p>
+                                @enderror
                             </div>
                         </div>
 

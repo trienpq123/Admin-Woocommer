@@ -97,7 +97,7 @@
             <br>
             <div class="row">
                 <div class="col-lg-4 col-md-12 col-xs-12">
-                   
+
                     <div class="accordion" id="accordionExample">
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingOne">
@@ -126,6 +126,71 @@
                                         </ul>
                                         <div class="text-right m-1 ">
                                             <button type="submit" name="Pagesubmit" class="btn btn-submit">Lưu</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#custom-link" aria-expanded="false" aria-controls="custom-link">
+                                    Danh mục
+                                </button>
+                            </h2>
+                            <div id="custom-link" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                                data-bs-parent="#custom-link" style="">
+                                <div class="accordion-body">
+                                    <form action="" name="category">
+                                        <ul class="list-group" id="menu-category" data-bs-parent="#menu-toggle">
+
+                                            @if (count($category) > 0)
+                                                @foreach ($category as $item)
+                                                    <li class="list-group-item">
+                                                        <input class="form-check-input me-1" type="checkbox" name="links[]"
+                                                            data-link="{{ env('APP_URL') . '/category/' . $item->slug }}"
+                                                            value="{{ $item->id_category }}" aria-label="...">
+                                                        <label for="">{{ $item->name_category }}</label>
+                                                    </li>
+                                                @endforeach
+                                            @endif
+
+                                        </ul>
+                                        <div class="text-right m-1 ">
+                                            <button type="submit" name="Pagesubmit" class="btn btn-submit">Lưu</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#custom-link" aria-expanded="false" aria-controls="custom-link">
+                                    Custom Link
+                                </button>
+                            </h2>
+                            <div id="custom-link" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                                data-bs-parent="#custom-link" style="">
+                                <div class="accordion-body">
+                                    <form action="" name="custom">
+                                        <ul class="list-group" id="menu-pages" data-bs-parent="#menu-toggle">
+                                            <li class="list-group-item">
+                                                <label for="">Tiêu đề</label>
+                                                <input type="text" class="form-control me-1" placeholder="Tên menu"
+                                                    name="title">
+                                            </li>
+                                            <li class="list-group-item">
+                                                <label for="">Đường dẫn</label>
+                                                <input type="text" placeholder="#" class="form-control me-1"
+                                                    name="link">
+                                            </li>
+
+                                        </ul>
+                                        <div class="text-right m-1 ">
+                                            <button type="submit" name="customLinkSubmit" value="customLinkSubmit"
+                                                class="btn btn-submit">Lưu</button>
+                                        </div>
                                     </form>
                                 </div>
                             </div>
@@ -134,96 +199,63 @@
 
 
                 </div>
-                <div class="accordion" id="custom-link">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="headingOne">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#custom-link" aria-expanded="false" aria-controls="custom-link">
-                                Custom Link
-                            </button>
-                        </h2>
-                        <div id="custom-link" class="accordion-collapse collapse" aria-labelledby="headingOne"
-                            data-bs-parent="#custom-link" style="">
-                            <div class="accordion-body">
-                                <form action="" name="custom">
-                                    <ul class="list-group" id="menu-pages" data-bs-parent="#menu-toggle">
-                                        <li class="list-group-item">
-                                            <label for="">Tiêu đề</label>
-                                            <input type="text" class="form-control me-1" placeholder="Tên menu"
-                                                name="title">
-                                        </li>
-                                        <li class="list-group-item">
-                                            <label for="">Đường dẫn</label>
-                                            <input type="text" placeholder="#" class="form-control me-1" name="link">
-                                        </li>
-
-                                    </ul>
-                                    <div class="text-right m-1 ">
-                                        <button type="submit" name="customLinkSubmit" value="customLinkSubmit"
-                                            class="btn btn-submit">Lưu</button>
-                                    </div>
-                                </form>
-                            </div>
+                <div class="col-lg-8 col-md-12 col-xs-12">
+                    <div class="box-white" style="background:#fff;padding:8px;">
+                        <div class="d-flex justify-content-betweent"
+                            style="justify-content: space-between; align-items: center">
+                            <h3 class="ladi-title fs-14 fw-normal">Danh sách menu</h3>
+                            <button class="btn btn-primary m-2" id="btn-save-menu" type="button"
+                                data-name="btn-save-menu">Lưu
+                                menu</button>
                         </div>
+                        <ul class="sortable list-unstyled" id="sortable">
+                            <x-listMenu :menu="$menu" />
+                            {{-- @if (count($menu) > 0)
+                                @foreach ($menu as $m)
+                                    <li style="position: relative" id="sortableId" data-position-menu="{{ $m->position }}"
+                                        data-id-menu="{{ $m->id_menu }}" data-parent-menu="{{ $m->parent_menu }}">
+                                        <a class="btn btn-edit" data-name="edit-menu" data-id="{{ $m->id_menu }}"
+                                            style="position:absolute; z-index: 99999; right: 35px; "><i
+                                                class="fas fa-edit"></i></a>
+                                        <a class="btn btn-delete" data-name="edit-menu" data-id="{{ $m->id_menu }}"
+                                            style="position:absolute; z-index: 99999; right: 0; "><i class="fas fa-close"></i></a>
+                                        <div class="block block-title">{{ $m->title }}</div>
+                                        <ul class="sortable list-unstyled">
+                                            @if (count($m->chirendMenu) > 0)
+                                                @foreach ($m->chirendMenu as $cm)
+                                                    <li style="position: relative" id="sortableId"
+                                                        data-position-menu="{{ $cm->position }}" data-name="edit-product"
+                                                        data-id="{{ $m->id_menu }}" data-id-menu="{{ $cm->id_menu }}"
+                                                        data-parent-menu="{{ $cm->parent_menu }}">
+                                                        <a class="btn btn-edit" data-name="edit-menu"
+                                                            data-id="{{ $cm->id_menu }}"
+                                                            style="position:absolute; z-index: 99999; right: 35px; "><i
+                                                                class="fas fa-edit"></i></a>
+                                                        <a class="btn btn-delete" data-name="edit-menu"
+                                                            data-id="{{ $cm->id_menu }}"
+                                                            style="position:absolute; z-index: 99999; right: 0; "><i
+                                                                class="fas fa-close"></i></a>
+                                                        <div style="position: relative" class="block block-title"
+                                                            data-position-menu="{{ $cm->position }}"
+                                                            data-id-menu="{{ $cm->id_menu }}"
+                                                            data-parent-menu="{{ $cm->parent_menu }}">{{ $cm->title }}
+                                                        </div>
+                                                        <ul class="sortable list-unstyled"></ul>
+                                                    </li>
+                                                @endforeach
+                                            @endif
+                                        </ul>
+                                    </li>
+                                @endforeach
+                            @endif --}}
+
+                        </ul>
                     </div>
 
 
                 </div>
             </div>
-            <div class="col-lg-8 col-md-12 col-xs-12">
-                <div class="box-white" style="background:#fff;padding:8px;">
-                    <div class="d-flex justify-content-betweent"
-                        style="justify-content: space-between; align-items: center">
-                        <h3 class="ladi-title fs-14 fw-normal">Danh sách menu</h3>
-                        <button class="btn btn-primary m-2" id="btn-save-menu" type="button" data-name="btn-save-menu">Lưu
-                            menu</button>
-                    </div>
-                    <ul class="sortable list-unstyled" id="sortable">
-                        <x-listMenu :menu="$menu" />
-                        {{-- @if (count($menu) > 0)
-                            @foreach ($menu as $m)
-                                <li style="position: relative" id="sortableId" data-position-menu="{{ $m->position }}"
-                                    data-id-menu="{{ $m->id_menu }}" data-parent-menu="{{ $m->parent_menu }}">
-                                    <a class="btn btn-edit" data-name="edit-menu" data-id="{{ $m->id_menu }}"
-                                        style="position:absolute; z-index: 99999; right: 35px; "><i
-                                            class="fas fa-edit"></i></a>
-                                    <a class="btn btn-delete" data-name="edit-menu" data-id="{{ $m->id_menu }}"
-                                        style="position:absolute; z-index: 99999; right: 0; "><i class="fas fa-close"></i></a>
-                                    <div class="block block-title">{{ $m->title }}</div>
-                                    <ul class="sortable list-unstyled">
-                                        @if (count($m->chirendMenu) > 0)
-                                            @foreach ($m->chirendMenu as $cm)
-                                                <li style="position: relative" id="sortableId"
-                                                    data-position-menu="{{ $cm->position }}" data-name="edit-product"
-                                                    data-id="{{ $m->id_menu }}" data-id-menu="{{ $cm->id_menu }}"
-                                                    data-parent-menu="{{ $cm->parent_menu }}">
-                                                    <a class="btn btn-edit" data-name="edit-menu"
-                                                        data-id="{{ $cm->id_menu }}"
-                                                        style="position:absolute; z-index: 99999; right: 35px; "><i
-                                                            class="fas fa-edit"></i></a>
-                                                    <a class="btn btn-delete" data-name="edit-menu"
-                                                        data-id="{{ $cm->id_menu }}"
-                                                        style="position:absolute; z-index: 99999; right: 0; "><i
-                                                            class="fas fa-close"></i></a>
-                                                    <div style="position: relative" class="block block-title"
-                                                        data-position-menu="{{ $cm->position }}"
-                                                        data-id-menu="{{ $cm->id_menu }}"
-                                                        data-parent-menu="{{ $cm->parent_menu }}">{{ $cm->title }}
-                                                    </div>
-                                                    <ul class="sortable list-unstyled"></ul>
-                                                </li>
-                                            @endforeach
-                                        @endif
-                                    </ul>
-                                </li>
-                            @endforeach
-                        @endif --}}
 
-                    </ul>
-                </div>
-
-
-            </div>
         </div>
 
 
@@ -435,7 +467,7 @@
                                         <li style="position: relative" id="sortableId" data-position="" data-id-menu=""
                                             data-parent-menu="">
                                             <div class="block block-title">${title}</div>
-                                            <div class="type-page"><span>Page</span></div>
+                                            <div class="type-page"><span>category</span></div>
                                             <div class="actions">
                                                 <span class="drop-down"><i class=" ri-arrow-down-s-line"></i></span>
                                             </div>
@@ -472,7 +504,8 @@
                         type: "custom"
                     }
                     array.push(option)
-                    item += `<li style="position: relative" id="sortableId" data-position="" data-id-menu=""
+                    item += `
+                                        <li style="position: relative" id="sortableId" data-position="" data-id-menu=""
                                             data-parent-menu="">
                                             <div class="block block-title">${title}</div>
                                             <div class="type-page"><span>Page</span></div>
@@ -497,12 +530,95 @@
                                                     </div>
                                                 </form>
                                             </div>
-                                        </li>`
+                                        </li>
+                                `
+                    break;
+                case "category":
+                    alert("category")
+                    let checkboxes = $(this).find('input[type="checkbox"]:checked');
+                    for (let i = 0; i < checkboxes.length; i++) {
+                        let value = $(checkboxes[i]).val();
+                        let link = $(checkboxes[i]).attr('data-link');
+                        let title = $(checkboxes[i]).parent().find('label').text();
+                        option = {
+                            id: value,
+                            title: title,
+                            link: link,
+                            type: "category"
+                        }
+                        if (array.length > 0) {
+                            console.log(option, array)
+                            if (!array.find((val) => val.id === option.id)) {
+                                array.push(option);
+                                item += `
+                                        <li style="position: relative" id="sortableId" data-position="" data-id-menu=""
+                                            data-parent-menu="">
+                                            <div class="block block-title">${title}</div>
+                                            <div class="type-page"><span>Page</span></div>
+                                            <div class="actions">
+                                                <span class="drop-down"><i class=" ri-arrow-down-s-line"></i></span>
+                                            </div>
+                                            <div class="form-show">
+                                                <button type="button" class="btn btn-outline-danger text-right m-2">Xoá bỏ</button>
+                                                <form action="" method="post">
+                                                    @csrf
+                                                    <div class="form-group">
+                                                        <label for="url">URL</label>
+                                                        <input type="text" id="url" name="url" placeholder="#" value="${link}">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="title">Nhãn Đều Hướng</label>
+                                                        <input type="text" id="title" name="title" placeholder="Tiêu đề" value="${title}">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <button type="submit" name="updateMenuForm" class="btn btn-primary">Save</button>
+                                                        <button type="button" class="btn btn-outline-danger">Huỷ</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </li>
+                                `
+                            } else {
+                                alert("Đã tồn tại")
+                            }
+                        } else {
+                            array.push(option);
+                            item += `
+                                        <li style="position: relative" id="sortableId" data-position="" data-id-menu=""
+                                            data-parent-menu="">
+                                            <div class="block block-title">${title}</div>
+                                            <div class="type-page"><span>Page</span></div>
+                                            <div class="actions">
+                                                <span class="drop-down"><i class=" ri-arrow-down-s-line"></i></span>
+                                            </div>
+                                            <div class="form-show">
+                                                <button type="button" class="btn btn-outline-danger text-right m-2">Xoá bỏ</button>
+                                                <form action="" method="post">
+                                                    @csrf
+                                                    <div class="form-group">
+                                                        <label for="url">URL</label>
+                                                        <input type="text" id="url" name="url" placeholder="#" value="${link}">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="title">Nhãn Đều Hướng</label>
+                                                        <input type="text" id="title" name="title" placeholder="Tiêu đề" value="${title}">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <button type="submit" name="updateMenuForm" class="btn btn-primary">Save</button>
+                                                        <button type="button" class="btn btn-outline-danger">Huỷ</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </li>
+                                `
+                        }
+                    }
                     break;
                 default:
                     break;
             }
             $('.sortable').first().append(item);
+            console.log(array)
             $.ajax({
                 method: "POST",
                 url: "{{ route('admin.menu.creatingMenu') }}",

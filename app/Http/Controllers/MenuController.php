@@ -194,10 +194,11 @@ class MenuController extends Controller
     {
         $pages = $this->pageRepository->getAll();
         $menu = MenuModel::whereNull('parent_menu')->with('chirendMenu')->orderBy('position', 'asc')->get();
+        $category = CategoryModel::whereNull('parent_category')->with('childrendCategory')->get();
         // dd($menu);
         $getTypeMenu = typeMenuModel::orderBy('id', 'desc')->get();
 
-        return view('admin.layouts.main_menu.edit', compact('pages', 'menu', 'getTypeMenu', 'id'));
+        return view('admin.layouts.main_menu.edit', compact('pages', 'menu', 'getTypeMenu', 'id', 'category'));
     }
 
     public function updateTypeMenu(Request $request, $id)

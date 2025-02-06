@@ -73,7 +73,7 @@
                                         <h5 class="card-title text-center pb-0 fs-4">Đăng nhập</h5>
                                         <p class="text-center small">Nhập tài khoản và mật khẩu</p>
                                     </div>
-                                 
+
                                     <form class="row g-3 needs-validation"  action="{{ route('loginPost') }}" method="post">
                                         @csrf
                                         <div class="col-12">
@@ -105,6 +105,14 @@
                                         </div>
                                     
                                     </form>
+                                    <div class="mt-3 text-left">
+                                        <p class="mb-0">Chưa co tài khoản? <a href="pages-register.html"
+                                                class="text-primary">Đăng ký</a></p>
+                                    </div>
+                                    <div class="mt-3 text-center">
+                                        <p class="mb-0"> <a href="{{route('redirectToGoogle', ['driver' => 'google'])}}"
+                                                class="text-primary">Đăng nhập Google</a></p>
+                                    </div>
 
                                 </div>
                             </div>

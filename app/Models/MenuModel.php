@@ -31,4 +31,10 @@ class MenuModel extends Model
     public function chirendMenu(){
         return $this->hasMany(MenuModel::class,'parent_menu','id_menu')->with('menu');
     }
+    public function parentMenu(){
+        return $this->belongsTo(MenuModel::class,'parent_menu','id_menu');
+    }
+    public function scopeParentNull($query){
+        return $query->whereNull('parent_menu');
+    }
 }

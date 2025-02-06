@@ -54,13 +54,26 @@
                         </div>
                         <div class="form-group">
                             <label for="parent_category">Danh mục</label>
-                            <select class="category form-select" id="parent_category" name="parent_category[]">
+                            <select class="category form-select" id="parent_category" name="parent_category[]" multiple>
                                 <option value="">Chưa có</option>
                                 @if (count($listCategory) > 0)
                                     @foreach ($listCategory as $item)
                                         <option {{ $product->id_category == $item->id_category ? 'selected' : '' }}
                                             data-img="{{ $item->image_category }}" value={{ $item->id_category }}>
                                             {{ $item->name_category }}</option>
+                                        @php
+                                            $categories = $item->childrendCategory;
+                                        @endphp
+                                        @while (count($categories) > 0)
+                                            @foreach ($categories as $child)
+                                                <option value="{{ $child->id_category }}"
+                                                    {{ $product->id_category == $child->id_category ? 'selected' : '' }}>
+                                                    ------{{ $child->name_category }}</option>
+                                            @endforeach
+                                            @php
+                                                $categories = $categories->flatMap->childrendCategory;
+                                            @endphp
+                                        @endwhile
                                     @endforeach
                                 @endif
 
@@ -96,7 +109,7 @@
                                                         <option value="0">Chưa chọn</option>
                                                         @foreach ($listAttr as $count => $item)
                                                             <option
-                                                                {{ $p_variants['name'] == $item->id_attr ? 'selected' : 'disabled' }}
+                                                                {{ $p_variants['name'] == $item->id_attr ? 'selected' : '' }}
                                                                 value="{{ $item->id_attr }}">{{ $item->name }}
                                                             </option>
                                                         @endforeach
@@ -106,155 +119,164 @@
                                                     <input type="text" placeholder="Giá trị"
                                                         class="add-option form-control">
                                                     <div class="container-option">
-                                                        @if (count($p_variants['title']) > 0)
+                                                        @if (array_key_exists('title', $p_variants) && count($p_variants['title']) > 0)
                                                             @foreach ($p_variants['title'] as $p_option)
-                                                                
-                                                                    <div class="badge-2" id="btn-1">
-                                                                        {{ $p_option }}<span class="close"
-                                                                            data-value="{{ $p_option }}"
-                                                                            data-id="btn-1">x</span>
-                                                                    </div>
-                                                                    <input hidden="" type="text"
-                                                                        name="attr[{{ $key }}][title][]"
-                                                                        value=" {{ $p_option }} ">
-                                                      
-                                                          
-                                                        @endforeach
-                                    @endif
-                                    @php
-                                        // dd($p_variants['title']);
-                                    @endphp
+                                                                <div class="badge-2" id="btn-1">
+                                                                    {{ $p_option }}<span class="close"
+                                                                        data-value="{{ $p_option }}"
+                                                                        data-id="btn-1">x</span>
+                                                                </div>
+                                                                <input hidden="" type="text"
+                                                                    name="attr[{{ $key }}][title][]"
+                                                                    value=" {{ $p_option }} ">
+                                                            @endforeach
+                                                        @endif
+                                                        @php
+                                                            // dd($p_variants['title']);
+                                                        @endphp
 
-                        </div>
-                        </td>
-
-                        </tr>
-                        @endforeach
-
-                        </tbody>
-                        <tfoot class="t-foot">
-                            <tr>
-                                <td colspan="3">
-                                    <button type="button" class="btn btn-create">Thêm thuộc tính</button>
-                                </td>
-                            </tr>
-                        </tfoot>
-                        </table>
-                    </div>
-                    <div class="form-group table-price">
-                        <label for="">Chỉnh sửa bảng giá</label>
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Mã sản phẩm</th>
-                                    @foreach ($product->product_variants as $item)
-                                        <th>{{ $item->attribute->name }}</th>
-                                    @endforeach
-                                    <th>Giá</th>
-                                    <th>Giá giảm</th>
-                                    <th>Hàng tồn kho</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                                @if (count($product->variants) > 0)
-                                    @foreach ($product->variants as $key =>  $variants)
-                                  
-                                        @php
-                                            $modifer_class = ''; 
-                                            if (is_array($variants['title'])) {
-                                                foreach ($variants['title'] as  $value) {
-                                                    if ($key >= 1) {
-                                                        $modifer_class = $modifer_class . '-' . $value;
-                                                    } else {
-                                                        $modifer_class = $modifer_class . $value;
-                                                    }
-                                                }
-                                            }
-                                        @endphp
-
-                                        <tr class="td-variant-{{ $modifer_class }}">
-                                            <td> <input type="checkbox">
+                                                    </div>
                                             </td>
 
-                                            @if (is_array($variants['title']))
-                                                
-                                                @foreach ($variants['title']  as $value)
-                                                    
-                                                  
-                                                    <td class="{{ $value }}">
-                                                        {{ $value }}
-                                                        <input type="text"
-                                                            name="product[variants][{{ $key }}][title][]"
-                                                            value="{{ $value }}">
-                                                    </td>
-                                                    
-                                                @endforeach
-                                                
-                                            @endif
-
-
-                                            <td>
-                                                <input type="number"
-                                                    name="product[variants][{{ $key }}][price]"
-                                                    value="{{ $variants['price'] }}" class="product_price">
-                                            </td>
-                                            <td>
-                                                <input type="number"
-                                                    name="product[variants][{{ $key }}][price_old]"
-                                                    value="{{ $variants['price_old'] }}" class="product_price_old">
-                                            </td>
-                                            <td>
-                                                <input type="number" value="{{ $variants['stock'] }}"
-                                                    name="product[variants][{{ $key++ }}][stock]"
-                                                    class="product_stock">
-                                            </td>
                                         </tr>
                                     @endforeach
-                                @endif
 
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="form-right">
-                    <div class="form-group">
-                        <input type="radio" name="status" id="status" class="status" value="0"
-                            style="width:auto;"><label for="">Ẩn</label>
-                        <input type="radio" name="status" checked id="status" class="status" value="1"
-                            style="width:auto;"> <label for="">Hiện</label>
-                    </div>
-                    <div class="form-group">
-                        <label for="">Chọn thương hiệu</label>
-                        <select class=" brand form-control" id="brand" name="idBrand">
-                            <option>Chưa chọn thương hiệu</option>
-                            @if (count($getBrands) > 0)
-                                @foreach ($getBrands as $item)
-                                    <option data-img="{{ $item->logo_brand }}" value={{ $item->id_brand }}>
-                                        {{ $item->name_brand }}</option>
-                                @endforeach
-                            @endif
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="">Hình ảnh</label>
-                        <input type="file" name="image" id="" class="add-file" id="upload-file"
-                            accept="image/*" multiple>
-                        <p class="image-error text text-danger"></p>
-                        <div id="show-image" style="display:flex;align-items:center;flex-wrap: wrap; gap:10px;">
-                            {{-- RENDER IMAGE --> JAVASCRIPT -- Line 202 --}}
+                                </tbody>
+                                <tfoot class="t-foot">
+                                    <tr>
+                                        <td colspan="3">
+                                            <button type="button" class="btn btn-create">Thêm thuộc tính</button>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
                         </div>
+                        <div class="form-group table-price">
+                            <label for="">Chỉnh sửa bảng giá</label>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Mã sản phẩm</th>
+                                        @foreach ($product->product_variants as $item)
+                                            <th>{{ $item->attribute->name }}</th>
+                                        @endforeach
+                                        <th>Giá</th>
+                                        <th>Giá giảm</th>
+                                        <th>Hàng tồn kho</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
 
+                                    @if (isset($product->variants) && count($product->variants) > 0)
+                                        @foreach ($product->variants as $key => $variants)
+                                            @php
+                                                $modifer_class = '';
+                                                if (is_array($variants['title'])) {
+                                                    foreach ($variants['title'] as $value) {
+                                                        if ($key >= 1) {
+                                                            $modifer_class = $modifer_class . '-' . $value;
+                                                        } else {
+                                                            $modifer_class = $modifer_class . $value;
+                                                        }
+                                                    }
+                                                } else {
+                                                    $modifer_class = $variants['title'];
+                                                }
+                                            @endphp
+
+                                            <tr class="td-variant-{{ $modifer_class }}">
+                                                <td> <input type="checkbox">
+                                                </td>
+
+                                                @if (is_array($variants['title']))
+                                                    @foreach ($variants['title'] as $value)
+                                                        <td class="{{ $value }}">
+                                                            {{ $value }}
+                                                            <input type="text"
+                                                                name="product[variants][{{ $key }}][title][]"
+                                                                value="{{ $value }}">
+                                                        </td>
+                                                    @endforeach
+                                                @else
+                                                    <td class="{{ $variants['title'] }}">t
+                                                        {{-- {{ $variants['title'] }} --}}
+                                                        <input type="text" name="product[variants][][title][]"
+                                                            value="{{ $variants['title'] }}">
+                                                    </td>
+                                                @endif
+
+
+                                                <td>
+                                                    <input type="number"
+                                                        name="product[variants][{{ $key }}][price]"
+                                                        value="{{ $variants['price'] }}" class="product_price">
+                                                </td>
+                                                <td>
+                                                    <input type="number"
+                                                        name="product[variants][{{ $key }}][price_old]"
+                                                        value="{{ $variants['price_old'] }}" class="product_price_old">
+                                                </td>
+                                                <td>
+                                                    <input type="number" value="{{ $variants['stock'] }}"
+                                                        name="product[variants][{{ $key++ }}][stock]"
+                                                        class="product_stock">
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
+
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <div class="product-option">
-                        <label for="">Chọn Thông số kỹ thuật</label>
-                        <div class="product-option__inner"></div>
+                    <div class="form-right">
+                        <div class="form-group">
+                            <input type="radio" name="status" id="status" class="status" value="0"
+                                style="width:auto;"><label for="">Ẩn</label>
+                            <input type="radio" name="status" checked id="status" class="status" value="1"
+                                style="width:auto;"> <label for="">Hiện</label>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Chọn thương hiệu</label>
+                            <select class=" brand form-control" id="brand" name="idBrand">
+                                <option>Chưa chọn thương hiệu</option>
+                                @if (count($getBrands) > 0)
+                                    @foreach ($getBrands as $item)
+                                        <option data-img="{{ $item->logo_brand }}" value={{ $item->id_brand }}>
+                                            {{ $item->name_brand }}</option>
+                                    @endforeach
+                                @endif
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Hình ảnh</label>
+                            <input type="file" name="image[]" id="" class="add-file" id="upload-file"
+                                accept="image/*" multiple>
+                            <p class="image-error text text-danger"></p>
+                            <div id="show-image" style="display:flex;align-items:center;flex-wrap: wrap; gap:10px;">
+                                {{-- RENDER IMAGE --> JAVASCRIPT -- Line 202 --}}
+                                @if ($product->images->count() > 0)
+                                    @foreach ($product->images as $item)
+                                        <div class="form-group image-item"
+                                            style="width:120px;height:120px; padding: 8px;background-color:#d9e1ef;">
+                                            <img src="{{ $item->link_img }}" alt=""
+                                                style="height:100%; object-fit:cover;">
+
+                                        </div>
+                                    @endforeach
+                                @endif
+                            </div>
+
+                        </div>
+                        <div class="product-option">
+                            <label for="">Chọn Thông số kỹ thuật</label>
+                            <div class="product-option__inner"></div>
+                        </div>
                     </div>
                 </div>
+                <button type="submit" class="btn btn-submit">Xác nhận</button>
+            </form>
         </div>
-        <button type="submit" class="btn btn-submit">Xác nhận</button>
-        </form>
-    </div>
     </div>
 @endsection
 
@@ -484,8 +506,9 @@
                 }
             });
             // SELECT 2
-            $('.js-example-basic-multiple-1').select2();
-            $('.js-example-basic-multiple-2').select2();
+            $('.category').select2({
+                templateSelection: formatState
+            });
             // Element Show Brand
             function formatState(state) {
                 console.log(state.element.attributes[0].value);

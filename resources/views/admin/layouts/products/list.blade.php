@@ -1407,33 +1407,5 @@
 
         })
     </script>
-    <script src="//cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
-    <script>
-        CKEDITOR.replace('desc', {
-            filebrowserUploadUrl: "{{ route('admin.uploadFile', ['_token' => csrf_token()]) }}",
-            filebrowserUploadMethod: 'form'
-        });
-        CKEDITOR.replace('desc_edit', {
-            filebrowserUploadUrl: "{{ route('admin.uploadFile', ['_token' => csrf_token()]) }}",
-            filebrowserUploadMethod: 'form'
-        });
-    </script>
-    <script>
-        CKEDITOR.replace('desc_short', {
-            filebrowserUploadUrl: "{{ route('admin.uploadFile', ['_token' => csrf_token()]) }}",
-            filebrowserUploadMethod: 'form'
-        });
-        CKEDITOR.replace('desc_short_edit', {
-            filebrowserUploadUrl: "{{ route('admin.uploadFile', ['_token' => csrf_token()]) }}",
-            filebrowserUploadMethod: 'form'
-        });
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // SELECT 2
-            $('.js-example-basic-single').select2();
 
-        });
-    </script>
 @endpush

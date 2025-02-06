@@ -2,35 +2,118 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
+use Laravel\Socialite\Facades\Socialite;
 
 class DashboardController extends Controller
 {
-    public function login(Request $request){
+    public function login(Request $request)
+    {
         return view('admin.login');
     }
 
-    public function loginPost(Request $request){
-        $array = $request->only('email','password');
-        $user = [
-            'email' => $request->email,
-            'password' => $request->password
-        ];
-        if (Auth::attempt($user)){
-            
-            return redirect()->route('admin.DashboardAdmin');
+    /**
+     * Handle account login request
+     *
+     * @param LoginRequest $request
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function loginPost(LoginRequest $request)
+    {
+        try {
+            $credentials = $request->validate([
+                'email' => 'required|email',
+                'password' => 'required',
+            ]);
+
+            if (Auth::attempt($credentials, true)) {
+                $request->session()->regenerate();
+                \Log::info('Login successful', [
+                    'user_id' => Auth::id(),
+                    'session_id' => session()->getId()
+                ]);
+                return redirect()->intended('admin/dashboard');
+            }
+
+            throw ValidationException::withMessages([
+                'email' => [trans('auth.failed')],
+            ]);
+
+        } catch (\Exception $e) {
+            \Log::error('Login error', [
+                'error' => $e->getMessage(),
+                'user_email' => $request->input('email'),
+                'session_id' => session()->getId()
+            ]);
+
+            return back()->withErrors([
+                'login' => 'An unexpected error occurred. Please try again later.'
+            ]);
         }
-        notify()->error('Tài khoản hoặc mật khẩu không đúng!','Lỗi');
-        return back()->with('success','Tài khoản hoặc mật khẩu không đúng');
     }
 
-    public function logout(){
+    /**
+     * Handle response after user authenticated
+     *
+     * @param Request $request
+     * @param Auth $user
+     *
+     * @return \Illuminate\Http\Response
+     */
+    protected function authenticated(Request $request, $user)
+    {
+        return redirect()->intended(RouteServiceProvider::HOME);
+    }
+    public function logout()
+    {
         Auth::logout();
         return redirect()->route('login');
+    }
+
+    public function redirectToGoogle(Request $request){
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function handleGoogleCallback(Request $request,$driver)
+    {
+        try {
+            $user = Socialite::driver($driver)
+            ->setHttpClient(new \GuzzleHttp\Client(['verify' => false]))
+            ->stateless()
+            ->user();
+        } catch (\Exception $e) {
+            \Log::error('Login error', [
+                'error' => $e->getMessage(),
+                'user_email' => $request->input('email'),
+                'session_id' => session()->getId()
+            ]);
+            return redirect()->route('login');
+        }
+        $existsUser = User::where('email', $user->getEmail())->first();
+        if ($existsUser) {
+            Auth::login($existsUser, true);
+            return redirect()->intended('admin/dashboard');
+        }else{
+            $newUser = User::create([
+                'name' => $user->getName(),
+                'email' => $user->getEmail(),
+                'password' => '123456',
+                'provider_name' => $driver,
+                'provider_id' => $user->getId(),
+            ]);
+            Auth::login($newUser, true);
+        }
+        $request->session()->regenerate();
+        return redirect()->intended('admin/dashboard');
+    }
+
+    public function redirectToProvider($driver){
+        return Socialite::driver($driver)->redirect();
     }
 }

@@ -13,8 +13,9 @@
     <div id="main" class="main">
         <div class="list-table">
             <div class="wrap-container">
-
-                <a href="{{ route('admin.User.User.create') }}" class="btn btn-add" data-name="add-product">Thêm mới</a>
+                @if (auth()->user()->can('user.add') || auth()->user()->hasRole('Super Admin'))
+                    <a href="{{ route('admin.User.User.create') }}" class="btn btn-add" data-name="add-product">Thêm mới</a>
+                @endif
                 <button class="btn btn-delete delete-checkbox" id="delete-checkbox" disabled
                     data-name="popup-delete-checkbox">Xoá</button>
 
@@ -26,11 +27,16 @@
                             <tr>
                                 <th>STT</th>
 
+                                <th>Ảnh đại diện</th>
                                 <th>Họ Và Tên</th>
+                                <th>Bộ phận</th>
                                 <th>Chức Vụ</th>
-                                <th>Quyền</th>
+                                @if (auth()->user()->can('user.edit') || auth()->user()->hasRole('Super Admin'))
                                 <th></th>
-                                <th></th>
+                                @endif
+                                @if (auth()->user()->can('user.delete') || auth()->user()->hasRole('Super Admin'))
+                                    <th></th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody>
@@ -39,18 +45,24 @@
                             @endphp
                             @foreach ($User as $item)
                                 <tr>
+
                                     <td>
-                                        <input type="checkbox" id="item-check" name="item-check[]"
-                                            value="{{ $item->id }}">
+                                        <input type="checkbox" class="item-check" name="item-check[]"
+                                            value="{{ $item['id'] }}">
+                                    </td>
+                                    <td>
+                                        <img src="https://static.vecteezy.com/system/resources/previews/019/896/008/original/male-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png"
+                                            alt="Profile" class="rounded-circle" width="40px" height="40px">
                                     </td>
                                     <td>{{ $item->name . '-' . $item->id }}</td>
-                                    <td class="{{ $item->getRoleNames()->count() > 0 ? 'badge badge-soft-info' : '' }}">
+                                    <td>{{ $item->Teams->name }}</td>
+                                    <td class="{{ $item->getRoleNames()->count() > 0 ? ' text-center' : '' }}">
                                         @foreach ($item->getRoleNames() as $role)
-                                            {{ $role }}
+                                            <span class="badge badge-soft-info"> {{ $role }}</span>
                                         @endforeach
                                     </td>
 
-                                    @if ($item->getPermissionNames()->count() > 0)
+                                    {{-- @if ($item->getPermissionNames()->count() > 0)
                                         <td>
                                             @foreach ($item->getPermissionNames() as $permission)
                                                 <span class="badge badge-soft-info">{{ $permission }}</span>
@@ -58,20 +70,26 @@
                                         </td>
                                     @else
                                         <td></td>
-                                    @endif
-
+                                    @endif --}}
+                                    @if (Auth::user()->isAdmin() || Auth::user()->hasPermissionTo('user.edit'))
                                     <td><a href="{{ route('admin.User.User.edit', ['id' => $item->id]) }}" class="btn-edit"
-                                            data-name="edit-product" data-id="{{ $item->id }}"><span><i class="ri-edit-box-line"></i></span></a></td>
+                                            data-name="edit-product" data-id="{{ $item->id }}"><span><i
+                                                    class="ri-edit-box-line"></i></span></a></td>
+                                    @endif
                                     {{-- class="btn-edit"  --}}
-                                    <td><a href="{{ route('admin.User.User.delete', ['id' => $item->id]) }}"
-                                            class="btn-delete"><span><i class="ri-delete-bin-2-line"></i></span></a></td>
+
+                                    @if (Auth::user()->isAdmin() || Auth::user()->hasPermissionTo('user.delete'))
+                                        <td><a href="{{ route('admin.User.User.delete', ['id' => $item->id]) }}"
+                                                class="btn-delete"><span><i class="ri-delete-bin-2-line"></i></span></a>
+                                        </td>
+                                    @endif
                                 </tr>
                             @endforeach
                         </tbody>
 
                         <tfoot>
                             <tr>
-                                <td><input type="checkbox" name="" id="" class="check-all"></td>
+                                <td><input type="checkbox" name="checkAll" id="checkAll" class="check-all"></td>
                             </tr>
                         </tfoot>
                     </table>
@@ -183,47 +201,34 @@
 @push('script-action')
     <script>
         $(document).ready(function() {
-            $('.check-all').change(function() {
-
-                if ($(this).is(':checked')) {
-                    if ($(this).prop('checked')) {
-                        $('.item-check').not(this).prop('checked', true)
-                    }
-                    // $('tr input:checkbox').attr('checked','checked');
-
-                    let getValueCheckbox = document.querySelectorAll('#item-check');
-
-                    for (let i = 0; i < getValueCheckbox.length; i++) {
-
-                        array.push(getValueCheckbox[i].value);
-                        getValueCheckbox[i].addEventListener("click", function() {
-                            if (this.checked) {
-                                array.push(getValueCheckbox[i].value)
-                            } else {
-                                let array_new = array.filter(function(arr) {
-                                    return arr != getValueCheckbox[i].value;
-                                })
-                                array = array_new;
-                            }
-                        })
-
-                    }
+            $('#table').DataTable()
+            $('.check-all').click(function() {
+                if (this.checked) {
+                    $('.btn.btn-delete.delete-checkbox').prop('disabled', false);
                 } else {
-                    $('tr input:checkbox').removeAttr('checked');
-                    array = [];
+                    $('.btn.btn-delete.delete-checkbox').prop('disabled', true);
                 }
-            })
+                $('.item-check').prop('checked', this.checked);
+            });
+
+            $('.item-check').click(function() {
+                if (this.checked) {
+                    $('.btn.btn-delete.delete-checkbox').prop('disabled', false);
+                } else {
+                    $('.btn.btn-delete.delete-checkbox').prop('disabled', true);
+                }
+                if ($('.item-check:checked').length === $('.item-check').length) {
+                    $('.check-all').prop('checked', true);
+                } else {
+                    $('.check-all').prop('checked', false);
+                }
+            });
             $('.delete-checkbox').click(function() {
                 let name = $(this).attr('data-name');
                 $('.popup-modal' + '.' + name).toggleClass('active');
-                // $('.popup-modal').click(function(){
-                //     $('.popup-modal').removeClass('active');
-                // });
                 $('.btn-close').click(function() {
                     $('.popup-modal').removeClass('active');
                 });
-
-
             })
 
             $('.action-delete').click(function() {
@@ -231,28 +236,38 @@
             })
 
             $('.action-agree').click(function() {
+
+                const token = $('meta[name="api-token"]').attr('content');
                 let array = []
-                let getValueCheckbox = document.querySelectorAll('#item-check');
+                let getValueCheckbox = document.querySelectorAll('.item-check');
 
                 for (let i = 0; i < getValueCheckbox.length; i++) {
                     if (getValueCheckbox[i].checked) {
                         array.push(getValueCheckbox[i].value);
                     }
                 }
+                const url = `{{ route('user.auth.user.destroy') }}`
+                console.log(url + 123);
                 $.ajax({
-                    type: "DELETE",
-                    url: "{{ route('admin.brand.deleteBrand') }}",
-                    data: {
-                        data: array,
-                        _token: "{{ csrf_token() }}"
+                    type: "delete",
+                    url: url,
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
+                    data: JSON.stringify({
+                        ids: array
+                    }),
                     success: (res) => {
                         if (res.status == 200) {
-                            $('#table').DataTable().destroy()
-                            getDataTable();
-                            $('.alert').toggleClass('active')
-                            $('.popup-modal').removeClass('active');
+                            $('#table').DataTable().ajax().reload()
+
+                            location.reload();
                         }
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
                     }
 
                 })

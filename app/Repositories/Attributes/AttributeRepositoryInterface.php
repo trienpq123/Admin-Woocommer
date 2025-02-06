@@ -1,5 +1,5 @@
 <?php
-namespace App\Repositories\Attributes;
+namespace App\Repositories\AttributeValues;
 use App\Repositories\RepositoryInterface;
 interface AttributeRepositoryInterface extends RepositoryInterface
 {

@@ -2,31 +2,45 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RequestCategory;
 use App\Models\AttributeModel;
+use App\Models\AttributeValue;
 use App\Models\CategoryModel;
 use App\Models\FilterCategory;
 use App\Models\filterCategoryModel;
 use App\Models\FilterCategoryOption;
 use App\Models\FilterModel;
+use App\Repositories\Categories\CategoriesRepositoryInterface;
 use CKSource\CKFinder\Filesystem\File\File;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 use Termwind\Components\Raw;
 
 class CategoryController extends Controller
 {
+    protected $_CategoryInterface;
+    public function __construct(CategoriesRepositoryInterface $CategoryInterface){
+        $this->_CategoryInterface = $CategoryInterface;
+    }
+
     public function listCategory(Request $request)
     {
-
-
-
+        // dd(123);
         return view('admin.layouts.categories.list');
     }
 
     public function apiListCategory(Request $request)
     {
-        $listCategory = CategoryModel::orderBy('id_category', 'desc')->get();
+        // $listCategory = Redis::get('listCategory');
+        // if (!$listCategory) {
+            $listCategory = CategoryModel::orderBy('id_category', 'desc')->get();
+            $listCategory = json_decode($listCategory);
+        //     Redis::set('listCategory', $listCategory);
+        // }
+
+        // dd($listCategory);
         return response()->json([
             'status' => 200,
             'data' => $listCategory
@@ -36,47 +50,32 @@ class CategoryController extends Controller
     public function addCategory(Request $request)
     {
         $attr = AttributeModel::all();
-        $listCategory = CategoryModel::all();
-        return view('admin.layouts.categories.add', compact('listCategory', 'attr'));
+        $listCategory = CategoryModel::parentsNull()->get();
+        $attributes = AttributeModel::with(['attributevalue' => function($query) {
+            $query->where('is_required', AttributeValue::SHOW_IS_REQUIRED);
+        }])->where('active', AttributeModel::ACTIVE)->get();
+        return view('admin.layouts.categories.add', compact('listCategory', 'attr', 'attributes'));
     }
 
     public function editCategory(Request $request)
-    {   
+    {
         $cate =  CategoryModel::find($request->id);
-        $listCategory = CategoryModel::whereNot('id_category', '=', $request->id)->get();
-        if($cate){
-            $att_cat = $cate->with(['attribute_category'])->where('id_category', $request->id)->first();
-            if($att_cat){
-                $att_option = FilterCategoryOption::where('id_filter_category', $att_cat->attribute_category->id_filter_category)->get();
-                if ($att_option) {
-                    return view('admin.layouts.categories.edit', compact('cate', 'listCategory', 'att_cat', 'att_option'));
-                }
-            }
-        }
-       
-       
-        return view('admin.layouts.categories.edit', compact('cate', 'listCategory', 'att_cat'));
+        $attributes = AttributeModel::where('active', AttributeModel::ACTIVE)->get();
+        $listCategory = CategoryModel::parentsNull()->get();
+        return view('admin.layouts.categories.edit', compact('cate', 'listCategory','attributes'));
     }
 
-    public function postAddCategory(Request $request)
+    /**
+     * Store a newly created category in storage.
+     *
+     * @param  \App\Http\Requests\RequestCategory  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function postAddCategory(RequestCategory $request)
     {
-      
-        $validator = Validator::make(
 
-            [
-                'name' => 'required|max:255',
-
-            ],
-            [
-                'name.required' => 'Tên không được bỏ trống',
-            ]
-        );
-        if ($validator->fails()) {
-            // dd($validator->errors());
-            return back()->with(['errors' => $validator->errors()]);
-        };
         $category = new CategoryModel();
-        $category->name_category = $request->name;
+        $category->name_category = $request->name_category;
         $category->slug = $request->slug;
         $category->desc_category = $request->desc_short;
         if ($request->parent_category) {
@@ -104,40 +103,24 @@ class CategoryController extends Controller
             //     );
             // }
         }
-        $category->hide = $request->status;
+        $category->hide = $request->hide;
         $category->meta_title =  $request->meta_title;
         $category->meta_description =  $request->meta_description;
         $category->meta_keyword =  $request->meta_keywords;
         $category->tags = $request->tags;
         $category->save();
-        $lastCategory =  CategoryModel::orderBy('id_category', 'desc')->first();
-      
-        if ($request->attr) {
-                $filterCategory =  filterCategoryModel::create([
-                    'id_category' => $lastCategory->id_category,
-                    'id_attr' => $request->attr['id_attr']
+
+        if ($request->attr && !empty($request->attr['value'])) {
+            foreach($request->attr as $item){
+                filterCategoryModel::create([
+                    'id_category' => $category->id_category,
+                    'id_attr' => $item['id_attr'],
+                    'value' => implode(',', $item['value'])
                 ]);
-                
-                // $filterCategorys = filterCategoryModel::orderBy('id_filter_category', 'desc')->first();
-
-                if ($filterCategory) {
-                    if ($request->attr['option'] && count($request->attr['option']) > 0) {
-                        foreach ($request->attr['option'] as $item) {
-                            $filter = new FilterCategoryOption();
-                            $filter->id_category = $lastCategory->id_category;
-                            $filter->id_filter_category = $filterCategory->id_filter_category;
-                            $filter->name = $item['name'];
-                            $filter->value = $item['value'];
-                            $filter->save();
-                        }
-                    }
-                }
-
-        
+            }
         }
 
-        // dd($request->attr);
-        return back()->with(['status' => 200, 'message' => 'Thêm thành công']);
+        return redirect()->route('admin.category.listCategory')->with('success', 'Thành công');
     }
 
     public function putEditCategory(Request $request, $id)
@@ -182,18 +165,19 @@ class CategoryController extends Controller
             }
         }
         $category->hide = $request->status;
+        $category->ihome = $request->ihome;
         $category->meta_title =  $request->meta_title;
         $category->meta_description =  $request->meta_description;
         $category->meta_keyword =  $request->meta_keywords;
         $category->tags = $request->tags;
         $category->desc_category = $request->desc_short;
         $category->save();
-        if ($request->attr && $request->attr['id_attr']) {
+        if ($request->attr) {
            
             if ($request->attr['id_attr']) {
                 $filterCategorys =  filterCategoryModel::where('id_category', '=', $id)->first();
                 if ($filterCategorys) {
-                    if ($request->attr['option'] && count($request->attr['option']) > 0) {
+                    if (isset($request->attr['option'])) {
                         // dd($request->attr['option']);
                         foreach ($request->attr['option'] as $item) {
                             $filter = FilterCategoryOption::where('id_filter_category', '=', $filterCategorys->id_filter_category)->where('name','regexp',$item['name'])->first();

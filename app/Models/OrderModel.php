@@ -22,4 +22,6 @@ class OrderModel extends Model
     ];
     protected $table ='order';
     protected $primaryKey = 'id_order';
+    CONST UPDATED_AT = null;
+    CONST CREATED_AT = null;
 }
