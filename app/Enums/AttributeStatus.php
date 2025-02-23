@@ -4,6 +4,6 @@ namespace App\Enums;
 
 class AttributeStatus
 {
-    protected const ACTIVE = 1;
-    protected const INACTIVE = 2;
+    public const ACTIVE = 1;
+    public const INACTIVE = 2;
 }

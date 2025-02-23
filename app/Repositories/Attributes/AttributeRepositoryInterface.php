@@ -5,7 +5,7 @@ namespace App\Repositories\Attributes;
 use App\Repositories\RepositoryInterface;
 interface AttributeRepositoryInterface extends RepositoryInterface
 {
-   public function getAll();  
+   public function getAll();
    public function apiListAttr();
    public function addAttr();
    public function edit($id);
@@ -13,6 +13,6 @@ interface AttributeRepositoryInterface extends RepositoryInterface
    public function update($id, $attributes = []);
    public function delete($id,$attributes = []);
    public function attributevalue();
-
    public function Active();
+   public function Desc();
 }

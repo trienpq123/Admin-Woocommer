@@ -16,7 +16,7 @@ class AttributeRepository extends BaseRepository implements AttributeRepositoryI
 
     public function apiListAttr()
     {
-        return $this->_model::with('attributevalue')->orderBy('id_attr', 'desc')->get();
+        return $this->_model::with('attributevalue')->Active()->Desc();
     }
 
     public function addAttr()
@@ -31,10 +31,13 @@ class AttributeRepository extends BaseRepository implements AttributeRepositoryI
 
     public function store(array $request)
     {
-        $attr = new AttributeModel();
-        $attr->name = $option['name'];
-        if (key_exists('file', $option)) {
-            $imageName = $option['file'];
+        $attrModel = $this->_model;
+        if($request['attr']['option']['id']){
+            $attrModel = $this->_model::find($request['attr']['option']['id']);
+        }
+        $attrModel->name = $request['attr']['option']['name'];
+        if (key_exists('file', $request)) {
+            $imageName = $request['file'];
             $name_image = time() . '_' . $imageName->getClientOriginalName();
             $explode = explode('.', $name_image);
             $typeImage = end($explode);
@@ -43,20 +46,20 @@ class AttributeRepository extends BaseRepository implements AttributeRepositoryI
                 $path = 'admin/uploads/images/attribute/';
                 $imageName->move($path, $name_image);
                 $link_url = env('APP_URL') . '/' . $path . $name_image;
-                $attr->image = $link_url;
+                $attrModel->image = $link_url;
             }
         }
-        $attr->save();
+        $attrModel->save();
         if ($option['position']) {
             $positions = explode(',', $option['position']);
             foreach ($positions as $o) {
                 $attVal = new attributeValueModel();
-                $attVal->attribute_id = $attr->id_attr;
+                $attVal->attribute_id = $attrModel->id_attr;
                 $attVal->value = $o;
                 $attVal->save();
             }
             // $attVal = new attributeValueModel();
-            // $attVal->attribute_id = $attr->id_attr;
+            // $attVal->attribute_id = $attrModel->id_attr;
             // $attVal->value = json_encode($option['position']);
             // $attVal->save();
         }
@@ -108,7 +111,7 @@ class AttributeRepository extends BaseRepository implements AttributeRepositoryI
     }
     public function Desc()
     {
-        return $this->_model->desc();
+        return $this->_model->Desc();
     }
 
     public function getCategory()

@@ -50,7 +50,6 @@ class CategoryController extends Controller
     {
         $cate =  $this->_categoryRepository->find($request->id);
         $attributes = $this->_attributeRepository->active()->get();
-        dd($attributes);
         $listCategory = $this->_categoryRepository->parentsNull()->get();
         return view('admin.layouts.categories.edit', compact('cate', 'listCategory','attributes'));
     }
@@ -63,45 +62,7 @@ class CategoryController extends Controller
      */
     public function postAddCategory(RequestCategory $request)
     {
-
-        $category = new CategoryModel();
-        $category->name_category = $request->name_category;
-        $category->slug = $request->slug;
-        $category->desc_category = $request->desc_short;
-        if ($request->parent_category) {
-            $category->parent_category = $request->parent_category;
-        };
-        if ($request->image) {
-            $imageName = $request->image;
-            $name_image = time() . '_' . $imageName->getClientOriginalName();
-            $explode = explode('.', $name_image);
-            $typeImage = end($explode);
-            $imageExtensions = ['jpg', 'jpeg', 'gif', 'png', 'bmp', 'svg', 'svgz', 'cgm', 'djv', 'djvu', 'ico', 'ief', 'jpe', 'pbm', 'pgm', 'pnm', 'ppm', 'ras', 'rgb', 'tif', 'tiff', 'wbmp', 'xbm', 'xpm', 'xwd'];
-            if (in_array($typeImage, $imageExtensions)) {
-                $path = 'public/uploads/images/';
-                $imageName->move($path, $name_image);
-                $link_url = env('APP_URL') . '/' . $path . $name_image;
-                $category->image_category = $link_url;
-                $category->name_image = $name_image;
-            }
-        }
-        $category->hide = $request->hide;
-        $category->meta_title =  $request->meta_title;
-        $category->meta_description =  $request->meta_description;
-        $category->meta_keyword =  $request->meta_keywords;
-        $category->tags = $request->tags;
-        $category->save();
-
-        if ($request->attr && !empty($request->attr['value'])) {
-            foreach($request->attr as $item){
-                filterCategoryModel::create([
-                    'id_category' => $category->id_category,
-                    'id_attr' => $item['id_attr'],
-                    'value' => implode(',', $item['value'])
-                ]);
-            }
-        }
-
+        $this->_categoryRepository->store($request);
         return redirect()->route('admin.category.listCategory')->with('success', 'Thành công');
     }
 

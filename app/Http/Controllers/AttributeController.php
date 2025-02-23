@@ -7,15 +7,15 @@ use App\Models\AttributeModel;
 use App\Models\AttributeValue;
 use App\Models\attributeValueModel;
 use App\Models\CategoryModel;
-use App\Repositories\Attributes\AttributeRepository;
+use App\Repositories\Attributes\AttributeRepositoryInterface;
 use Illuminate\Http\Request;
 
 class AttributeController extends Controller
 {
-    private AttributeRepository $attributeRepository;
-    public function __construct(AttributeRepository $attributeRepository)
+    private AttributeRepositoryInterface $attributeRepository;
+    public function __construct(AttributeRepositoryInterface $attributeRepository)
     {
-        $this->$attributeRepository = $attributeRepository;
+        $this->attributeRepository = $attributeRepository;
     }
 
     public function listAttr(Request $request)
@@ -25,7 +25,7 @@ class AttributeController extends Controller
 
     public function apiListAttr(Request $request)
     {
-        $listAttr = $this->attributeRepository->Active()->Desc()->get();
+        $listAttr = $this->attributeRepository->apiListAttr()->get();
         return response()->json([
             'data' => $listAttr
         ]);
@@ -40,15 +40,18 @@ class AttributeController extends Controller
 
     public function editAttr(Request $request)
     {
-
         $listAttr = $this->attributeRepository->getAttribute($request->id)->with('attributevalue')->first();
         return response()->json([
             'data' => $listAttr,
         ]);
     }
 
-    public function postAddAttr(AttributeRequest $request)
+    public function postAddAttr(Request $request)
     {
+        // dd($request->all());
+        // in array attr has  array another if is null return back with error
+        if(empty($request->attr))
+            return back()->with(['message' => 'Lỗi']);
         if ($request->attr && $request->attr['option']) {
             foreach ($request->attr['option'] as $option) {
                 $this->attributeRepository->store($request->all());

@@ -43,7 +43,7 @@
                                 aria-label="Close">X</button>
                         </div>
                         <div class="modal-body">
-                            <form action="{{ route('admin.attr.putEditAttr') }}" method="post"
+                            <form action="{{ route('admin.attr.postAddAttr') }}" method="post"
                                 enctype="multipart/form-data">
                                 @csrf
                                 <div class="list-attr">
@@ -62,7 +62,7 @@
                                                 <div class="form-group">
                                                     <label for="">Giá trị thuộc tính</label>
                                                     <input type="text" placeholder="Nhập tên thuộc danh mục"
-                                                        class="form-control" id="slug" name="attr[option][1][position]"
+                                                        class="form-control" id="slug" name="attr[option][1][value]"
                                                         data-role="tagsinput">
                                                     <p class="name-error text text-danger"></p>
                                                 </div>
@@ -262,7 +262,6 @@
 
             $('body').on('change', 'input[type="checkbox"]', function() {
                 var anyChecked = $('input[type="checkbox"]:checked').length
-
                 // Kiểm tra xem có checkbox nào được chọn hay không
                 if (anyChecked > 0) {
                     // Nếu có checkbox được chọn, loại bỏ thuộc tính "disable" khỏi button (nếu có)
@@ -311,22 +310,20 @@
                         {
                             data: null,
                             render: function(data, type, row, meta) {
-
+                                console.log(data);
                                 let span_value = '';
                                 for (let i = 0; i < data.attributevalue.length; i++) {
                                     span_value +=
                                         `<span class="badge badge-soft-info">${data.attributevalue[i].value}</span>`
                                 }
                                 return span_value != '' ? span_value : '';
-                                // return `<a class="btn-edit"  data-name="edit-product" data-id="${data.id_category}">Chỉnh sửa</a>`
-                                // return data.attributevalue[0].value ? data.attributevalue[0].value : '';
                             }
                         },
                         {
                             data: null,
                             render: function(data, type, row, meta) {
                                 // console.log(data);
-                                return `<div class="d-flex align-items-center btn-action">
+                                return `<div class="d-flex align-items-center btn-action m-md-auto">
                                             <button  data-bs-toggle="modal" data-bs-target="#form-edit" class="btn-edit"  data-name="edit-product" data-id="${data.id_attr}"><i class="ri-edit-box-line"></i></button>
                                             <a href="{{ route('admin.attr.deleteAttrSet') }}?id=${data.id_attr}" class="btn btn-delete" id="action-delete"  data-id="${data.id_attr}"><i class="ri-delete-bin-5-line"></i></a>
                                         </div>`
@@ -448,37 +445,26 @@
             $('body').on('change', '#item-check', function(e) {
                 e.preventDefault();
                 if ($(this).is(':checked')) {
-
-
                     array = array.filter((arr) => arr !== $(this).val());
                     array.push($(this).val())
 
                 } else {
-
                     array = array.filter((arr) => arr !== $(this).val());
                     console.log($(this).val());
-
                 }
 
             })
 
             // Tích vào là tất cả checkbox tích
             $('.item-check-all').change(function() {
-
                 if ($(this).is(':checked')) {
                     if ($(this).prop('checked')) {
                         $('.item-check').not(this).prop('checked', true)
                     }
-
-
                     let getValueCheckbox = document.querySelectorAll('#item-check');
-
                     for (let i = 0; i < getValueCheckbox.length; i++) {
                         array = array.filter((arr) => arr !== getValueCheckbox[i].value);
                         array.push(getValueCheckbox[i].value)
-
-
-
                     }
                 } else {
                     $('.item-check').not(this).prop('checked', false)
@@ -489,9 +475,6 @@
             $('.delete-checkbox').click(function() {
                 let name = $(this).attr('data-name');
                 $('.popup-modal' + '.' + name).toggleClass('active');
-                // $('.popup-modal').click(function(){
-                //     $('.popup-modal').removeClass('active');
-                // });
                 $('.btn-close').click(function() {
                     $('.popup-modal').removeClass('active');
                 });
@@ -597,7 +580,7 @@
                                                     <label for="">Giá trị thuộc tính</label>
                                                     <input type="text" placeholder="Nhập tên thuộc danh mục"
                                                         class="form-control " id="slug" name="attr[option][` +
-                num_position_attr + `][position]"
+                num_position_attr + `][value]"
                                                         data-role="tagsinput">
                                                     <p class="name-error text text-danger"></p>
                                                 </div>
