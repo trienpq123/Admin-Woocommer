@@ -55,8 +55,8 @@
                                 <label for="">Thêm danh mục</label>
                                 <input type="text" placeholder="Nhập tên danh mục" class="form-control name"
                                     id="slug" onkeydown="ChangeToSlug()" name="name_category">
-                                @if ($errors->has('name'))
-                                    <p class="text alert-danger fs-8" style="font-size: 12px">{{ $errors->first('name') }}
+                                @if ($errors->has('name_category'))
+                                    <p class="text alert-danger fs-8" style="font-size: 12px">{{ $errors->first('name_category') }}
                                     </p>
                                 @endif
 

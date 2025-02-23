@@ -108,6 +108,7 @@ class CategoriesRepository extends BaseRepository implements CategoriesRepositor
     // get parent null
     public function parentsNull()
     {
-        return $this->_model::whereNull('parent_category')->get();
+        return $this->_model::whereNull('parent_category');
     }
+
 }

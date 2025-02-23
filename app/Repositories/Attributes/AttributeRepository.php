@@ -115,4 +115,10 @@ class AttributeRepository extends BaseRepository implements AttributeRepositoryI
     {
         return $this->_model::with('category');
     }
+
+    public function attributevalue(){
+        return $this->_model::with(['attributevalue' => function($query) {
+            $query->where('is_required', AttributeValue::SHOW_IS_REQUIRED);
+        }])->where('value', '=', $this->id)->first();
+    }
 }

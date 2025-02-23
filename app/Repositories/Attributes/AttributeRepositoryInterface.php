@@ -12,4 +12,7 @@ interface AttributeRepositoryInterface extends RepositoryInterface
    public function store(array $request);
    public function update($id, $attributes = []);
    public function delete($id,$attributes = []);
+   public function attributevalue();
+
+   public function Active();
 }

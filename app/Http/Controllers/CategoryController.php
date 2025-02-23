@@ -8,6 +8,7 @@ use App\Models\AttributeValue;
 use App\Models\CategoryModel;
 use App\Models\filterCategoryModel;
 use App\Models\FilterCategoryOption;
+use App\Repositories\Attributes\AttributeRepositoryInterface;
 use App\Repositories\Categories\CategoriesRepositoryInterface as CategoriesRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -15,8 +16,10 @@ use Illuminate\Support\Facades\Validator;
 class CategoryController extends Controller
 {
     protected $_categoryRepository;
-    public function __construct(CategoriesRepository $categoriesRepository){
+    protected $_attributeRepository;
+    public function __construct(CategoriesRepository $categoriesRepository, AttributeRepositoryInterface $attributeRepository){
         $this->_categoryRepository = $categoriesRepository;
+        $this->_attributeRepository = $attributeRepository;
     }
 
     public function listCategory(Request $request)
@@ -35,7 +38,7 @@ class CategoryController extends Controller
 
     public function addCategory(Request $request)
     {
-        $attr = AttributeModel::all();
+        $attr = $this->_attributeRepository->getAll();
         $listCategory = $this->_categoryRepository->parentsNull();
         $attributes = AttributeModel::with(['attributevalue' => function($query) {
             $query->where('is_required', AttributeValue::SHOW_IS_REQUIRED);
@@ -45,9 +48,10 @@ class CategoryController extends Controller
 
     public function editCategory(Request $request)
     {
-        $cate =  CategoryModel::find($request->id);
-        $attributes = AttributeModel::where('active', AttributeModel::ACTIVE)->get();
-        $listCategory = CategoryModel::parentsNull()->get();
+        $cate =  $this->_categoryRepository->find($request->id);
+        $attributes = $this->_attributeRepository->active()->get();
+        dd($attributes);
+        $listCategory = $this->_categoryRepository->parentsNull()->get();
         return view('admin.layouts.categories.edit', compact('cate', 'listCategory','attributes'));
     }
 
@@ -80,14 +84,6 @@ class CategoryController extends Controller
                 $category->image_category = $link_url;
                 $category->name_image = $name_image;
             }
-            // else{
-            //     return response()->json(
-            //      [
-            //         'status' => 404,
-            //         'message' => ["image" =>  "Tệp phải là hình ảnh"]
-            //      ]
-            //     );
-            // }
         }
         $category->hide = $request->hide;
         $category->meta_title =  $request->meta_title;
@@ -132,7 +128,7 @@ class CategoryController extends Controller
             // Xóa hình ảnh trong thư mục
             $path = 'public/uploads/images/';
 
-            if (file_exists($path . $category->name_image)) {
+            if ( $category->name_image && file_exists($path . $category->name_image)) {
                 unlink($path . $category->name_image);
             }
             $imageName = $request->image;

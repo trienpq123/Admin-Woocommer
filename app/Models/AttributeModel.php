@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\AttributeStatus;
+use Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -35,7 +37,7 @@ class AttributeModel extends Model
     }
     public function getActive($query)
     {
-        return $query->where('active',$this->ACTIVE);
+        return $query->where('active',AttributeStatus::ACTIVE);
     }
 
     public function getDesc($query)

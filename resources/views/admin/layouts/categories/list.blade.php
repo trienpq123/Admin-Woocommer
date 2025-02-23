@@ -1,10 +1,10 @@
 @extends('admin.index')
 @section('articles')
     <div id="main" class="main">
-        <div class="alert alert-primary alert-dismissible fade show alert-fixed" role="alert">
+        {{-- <div class="alert alert-primary alert-dismissible fade show alert-fixed" role="alert">
             A simple primary alert—check it out!
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+        </div> --}}
         <div class="pagetitle">
             <h1>Thuộc tính</h1>
             <nav>
