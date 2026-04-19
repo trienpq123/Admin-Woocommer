@@ -7739,11 +7739,7 @@
                 "issues": "https://github.com/laravel/pint/issues",
                 "source": "https://github.com/laravel/pint"
             },
-<<<<<<< Updated upstream
-            "time": "2024-01-22T09:04:15+00:00"
-=======
-            "time": "2025-01-14T16:20:53+00:00"
->>>>>>> Stashed changes
+            "time": "2024-01-22T09:04:15+00:00",
         },
         {
             "name": "mockery/mockery",
