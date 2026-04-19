@@ -27,7 +27,6 @@ RUN composer install --no-dev --no-interaction --no-progress --no-scripts
 # Set permissions
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache && \
     chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
-RUN apt-get update && apt-get install -y netcat-traditional
 
 # Expose port 80
 EXPOSE 80
