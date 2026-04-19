@@ -31,4 +31,8 @@ RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache && \
 # Expose port 80
 EXPOSE 80
 
-CMD until nc -z -v -w30 $DB_HOST $DB_PORT; do echo "Waiting for DB..."; sleep 2; done && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=${PORT:-80}
+# Run Laravel migrations and serve the application
+CMD [ "php", "artisan", "migrate", "--force" ] && \
+    php artisan optimize:clear && \
+    php artisan optimize && \
+    php artisan serve --host=0.0.0.0 --port=${PORT:-80}
