@@ -12,6 +12,8 @@ services:
       - app
     depends_on:
       - app
+    environment:
+      - DB_HOST=db
   app:
     build:
       context: .
