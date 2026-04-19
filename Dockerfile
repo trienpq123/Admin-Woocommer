@@ -23,7 +23,7 @@ COPY .env /var/www/html
 
 # Install composer dependencies
 COPY composer.json composer.lock ./
-RUN composer install --no-dev --no-interaction --no-progress --no-suggest
+RUN composer install --no-dev --no-interaction --no-progress --no-suggest --no-scripts
 
 # Set permissions
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache && \
