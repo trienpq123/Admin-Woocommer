@@ -32,5 +32,5 @@ RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache && \
 # Expose port 80
 EXPOSE 80
 
-RUN php artisan migrate --force
+RUN php artisan key:generate && php artisan migrate --force && php artisan config:clear
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=80"]
