@@ -22,6 +22,7 @@ COPY . .
 COPY .env /var/www/html
 
 # Install composer dependencies
+COPY composer.json composer.lock ./
 RUN composer install --no-dev --no-interaction --no-progress --no-suggest
 
 # Set permissions
