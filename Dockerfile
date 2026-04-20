@@ -32,7 +32,8 @@ RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache && \
 EXPOSE 80
 
 # Run Laravel migrations and serve the application
-CMD php artisan migrate --force && \
+CMD php bootstrap/create-database.php && \
+    php artisan migrate --force && \
     php artisan optimize:clear && \
     php artisan optimize && \
     php artisan serve --host=0.0.0.0 --port=${PORT:-80}
